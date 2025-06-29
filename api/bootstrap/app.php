@@ -24,6 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->throttleWithRedis();
         $middleware->api(append: ['throttle:api']);
+
+        $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

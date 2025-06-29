@@ -1,18 +1,17 @@
 meta {
-  name: Register
+  name: Request Token
   type: http
-  seq: 3
+  seq: 1
 }
 
 post {
-  url: http://api.scribeflow.lan/api/register
+  url: http://api.scribeflow.lan/api/sanctum/token
   body: formUrlEncoded
   auth: inherit
 }
 
 body:form-urlencoded {
-  name: Tomas Alba
   email: talba@example.com
   password: 123threebytree
-  password_confirmation: 123threebytree
+  device_name: bruno
 }
