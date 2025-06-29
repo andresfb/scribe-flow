@@ -1,0 +1,18 @@
+meta {
+  name: Register
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://api.scribeflow.lan/api/register
+  body: formUrlEncoded
+  auth: inherit
+}
+
+body:form-urlencoded {
+  name: Tomas Alba
+  email: talba@example.com
+  password: 123threebytree
+  password_confirmation: 123threebytree
+}
