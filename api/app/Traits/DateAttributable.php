@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Traits;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
+
+trait DateAttributable
+{
+    protected function localizedDate(): Attribute
+    {
+        return Attribute::make(
+            get: static function (?Carbon $value) {
+                if ($value === null) {
+                    return null;
+                }
+
+                return Carbon::parse($value)->timezone(
+                    auth()->user()->timezone ?? Config::string('constant.default_timezone')
+                );
+            },
+        );
+    }
+}
