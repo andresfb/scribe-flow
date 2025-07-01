@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Lists;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +14,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property bool $active
  * @property int $order
  */
-class PieceType extends Model
+class PieceStatus extends Model
 {
     use HasFactory;
     use HasSlug;
@@ -24,6 +24,8 @@ class PieceType extends Model
     protected $fillable = [
         'slug',
         'name',
+        'active',
+        'order',
     ];
 
     public function getSlugOptions(): SlugOptions

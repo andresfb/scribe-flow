@@ -1,7 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Pieces;
 
+use App\Models\Lists\PiecePov;
+use App\Models\Lists\PieceStatus;
+use App\Models\Lists\PieceTense;
+use App\Models\Lists\PieceType;
+use App\Models\Pieces\Scopes\PieceWithScope;
+use App\Models\User;
 use App\Traits\DateAttributable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,15 +17,23 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Spatie\Tags\HasTags;
 
 /**
  * @property int $id
  * @property int $user_id
  * @property int $piece_type_id
  * @property int $piece_status_id
+ * @property int $piece_pov_id
+ * @property int $piece_tense_id
  * @property string $slug
  * @property string $title
+ * @property string $genre
+ * @property string $sub_genre
+ * @property string $setting_time_period
+ * @property string $setting_location
  * @property string $synopsis
+ * @property array $themes
  * @property int $target_word_count
  * @property int $current_word_count
  * @property Carbon $start_date
@@ -31,23 +45,31 @@ use Spatie\Sluggable\SlugOptions;
  */
 class Piece extends Model
 {
+    use DateAttributable;
     use HasFactory;
     use HasSlug;
+    use HasTags;
     use SoftDeletes;
-    use DateAttributable;
 
     protected $fillable = [
         'user_id',
         'piece_type_id',
         'piece_status_id',
+        'piece_pov_id',
+        'piece_tense_id',
         'slug',
         'title',
+        'genre',
+        'sub_genre',
+        'setting_time_period',
+        'setting_location',
         'synopsis',
         'target_word_count',
         'current_word_count',
         'start_date',
         'target_completion_date',
         'completion_date',
+        'themes',
     ];
 
     public function user(): BelongsTo
@@ -65,11 +87,27 @@ class Piece extends Model
         return $this->belongsTo(PieceStatus::class);
     }
 
+    public function piecePov(): BelongsTo
+    {
+        return $this->belongsTo(PiecePov::class);
+    }
+
+    public function pieceTense(): BelongsTo
+    {
+        return $this->belongsTo(PieceTense::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug');
+    }
+
+    protected static function booted(): void
+    {
+        parent::booted();
+        self::addGlobalScope(new PieceWithScope);
     }
 
     protected function casts(): array
@@ -80,6 +118,7 @@ class Piece extends Model
             'start_date' => 'date',
             'target_completion_date' => 'date',
             'completion_date' => 'date',
+            'themes' => 'array',
         ];
     }
 

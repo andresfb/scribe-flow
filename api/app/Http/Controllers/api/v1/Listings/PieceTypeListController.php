@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\api\v1\PieceTypes;
+namespace App\Http\Controllers\api\v1\Listings;
 
-use App\Actions\PieceTypes\PieceTypeListAction;
+use App\Actions\Listings\PieceTypeListAction;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponses;
 use Illuminate\Http\JsonResponse;

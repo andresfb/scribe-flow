@@ -1,0 +1,15 @@
+meta {
+  name: List Pieces
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://api.scribeflow.lan/api/v1/pieces?include=tags
+  body: none
+  auth: inherit
+}
+
+params:query {
+  include: tags
+}

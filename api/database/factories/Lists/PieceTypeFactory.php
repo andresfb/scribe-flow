@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Lists;
 
-use App\Models\PieceStatus;
+use App\Models\Lists\PieceType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PieceStatusFactory extends Factory
+class PieceTypeFactory extends Factory
 {
-    protected $model = PieceStatus::class;
+    protected $model = PieceType::class;
 
     public function definition(): array
     {

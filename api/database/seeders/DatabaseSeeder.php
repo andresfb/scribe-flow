@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PieceTypeSeeder::class,
             PieceStatusSeeder::class,
+            PiecePovSeeder::class,
+            PieceTenseSeeder::class,
         ]);
     }
 }

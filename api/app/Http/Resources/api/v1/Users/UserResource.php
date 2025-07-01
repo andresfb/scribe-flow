@@ -18,9 +18,9 @@ class UserResource extends JsonResource
                 'name' => $this->name,
                 'email' => $this->email,
                 'timezone' => $this->timezone,
-                'email_verified_at' => $this->email_verified_at->toDateString() ?? '',
-                'created_at' => $this->created_at->toDateString(),
-                'updated_at' => $this->updated_at->toDateString(),
+                'email_verified_at' => $this->email_verified_at->toDatetimeString() ?? '',
+                'created_at' => $this->created_at->toDatetimeString(),
+                'updated_at' => $this->updated_at->toDatetimeString(),
                 $this->mergeWhen($this->whenLoaded('tokens'), [
                     'tokens_count' => $this->tokens->count(),
                 ]),

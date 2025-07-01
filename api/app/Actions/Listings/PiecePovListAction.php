@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\PieceStatuses;
+namespace App\Actions\Listings;
 
-use App\Models\PieceStatus;
+use App\Models\Lists\PiecePov;
 
-final readonly class PieceStatusesListAction
+final readonly class PiecePovListAction
 {
     /**
      * Execute the action.
      */
     public function handle(): array
     {
-        return PieceStatus::query()
+        return PiecePov::query()
             ->where('active', true)
             ->orderBy('order')
             ->get()

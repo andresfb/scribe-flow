@@ -11,8 +11,12 @@ trait DateAttributable
     protected function localizedDate(): Attribute
     {
         return Attribute::make(
-            get: static function (?Carbon $value) {
+            get: static function (Carbon|string|null $value) {
                 if ($value === null) {
+                    return null;
+                }
+
+                if ($value === '') {
                     return null;
                 }
 

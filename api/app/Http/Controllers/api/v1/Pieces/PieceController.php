@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\api\v1\Pieces;
 
+use App\Actions\Pieces\PieceGetAction;
 use App\Http\Controllers\Controller;
 use App\Http\QueryBuilders\api\v1\Pieces\PieceListQuery;
 use App\Http\Requests\api\v1\Pieces\PieceListRequest;
 use App\Http\Requests\api\v1\Pieces\PieceRequest;
 use App\Http\Resources\api\v1\Pieces\PieceResource;
-use App\Models\Piece;
+use App\Models\Pieces\Piece;
 use App\Traits\ApiResponses;
 use App\Traits\RelationshipIncluder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -25,7 +26,7 @@ class PieceController extends Controller
         $this->authorize('viewAny', Piece::class);
 
         return PieceResource::collection(
-            $query->with($this->include('user') ? 'user' : '')
+            $query->loadRelationship($this->include('tags') ? 'tags' : null)
                 ->paginate()
                 ->appends($request->query())
         );
@@ -38,27 +39,28 @@ class PieceController extends Controller
         return new PieceResource(Piece::create($request->validated()));
     }
 
-    public function show(Piece $piece): PieceResource
+    public function show(string $piece, PieceGetAction $action): PieceResource
     {
-        $this->authorize('view', $piece);
+        $model = $action->handle($piece);
+        $this->authorize('view', $model);
 
-        return new PieceResource($piece);
+        return new PieceResource($model);
     }
 
-    public function update(PieceRequest $request, Piece $piece): PieceResource
+    public function update(PieceRequest $request, string $piece, PieceGetAction $action): PieceResource
     {
-        $this->authorize('update', $piece);
+        $model = $action->handle($piece);
+        $this->authorize('update', $model);
+        $model->update($request->validated());
 
-        $piece->update($request->validated());
-
-        return new PieceResource($piece);
+        return new PieceResource($model);
     }
 
-    public function destroy(Piece $piece): JsonResponse
+    public function destroy(string $piece, PieceGetAction $action): JsonResponse
     {
+        $model = $action->handle($piece);
         $this->authorize('delete', $piece);
-
-        $piece->delete();
+        $model->delete();
 
         return $this->ok('Piece deleted');
     }

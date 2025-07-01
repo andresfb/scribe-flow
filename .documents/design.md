@@ -84,11 +84,19 @@ CREATE TABLE pieces (
     user_id BIGINT UNSIGNED NOT NULL,
     title VARCHAR(255) NOT NULL,
     slug VARCHAR(255) NOT NULL,
+    genre VARCHAR(100) NULL,
+    sub_genre VARCHAR(100) NULL,
     type ENUM('novel', 'short_story', 'novella', 'poem', 'screenplay', 'other') NOT NULL,
     status ENUM('seed', 'idea', 'planning', 'research', 'drafting', 'editing', 'revision', 'beta_reading', 'submission', 'published', 'abandoned') NOT NULL DEFAULT 'seed',
+    pov ENUM('first_person', 'second_person', 'third_person_limited', 'third_person_omniscient', 'multiple', 'other') NULL,
+    tense ENUM('past', 'present', 'future', 'mixed') NULL,
     synopsis TEXT NULL,
     target_word_count INT UNSIGNED NULL,
     current_word_count INT UNSIGNED DEFAULT 0,
+    setting_time_period VARCHAR(255) NULL,
+    setting_location VARCHAR(255) NULL,
+    themes JSON NULL,
+    tags JSON NULL,
     start_date DATE NULL,
     target_completion_date DATE NULL,
     completion_date DATE NULL,
@@ -96,27 +104,8 @@ CREATE TABLE pieces (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     INDEX idx_user_status (user_id, status),
-    INDEX idx_slug (slug)
-);
-```
-
-#### piece_metadata
-```sql
-CREATE TABLE piece_metadata (
-    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    piece_id BIGINT UNSIGNED NOT NULL,
-    genre VARCHAR(100) NULL,
-    sub_genre VARCHAR(100) NULL,
-    pov ENUM('first_person', 'second_person', 'third_person_limited', 'third_person_omniscient', 'multiple', 'other') NULL,
-    tense ENUM('past', 'present', 'future', 'mixed') NULL,
-    setting_time_period VARCHAR(255) NULL,
-    setting_location VARCHAR(255) NULL,
-    themes JSON NULL,
-    tags JSON NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (piece_id) REFERENCES pieces(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_piece (piece_id)
+    INDEX idx_slug (slug),
+    INDEX idx_genre (genre)
 );
 ```
 

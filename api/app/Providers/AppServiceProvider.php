@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +29,13 @@ class AppServiceProvider extends ServiceProvider
         $this->configureCommands();
         $this->configureModels();
         $this->configureVite();
+
+        if ($this->app->isProduction()) {
+            $this->app['request']->server->set('HTTPS','on');
+            URL::forceScheme('https');
+        } else {
+            URL::forceScheme('http');
+        }
 
         RateLimiter::for('api', static function (Request $request) {
             // 60 requests per minute, segmented by user ID or IP

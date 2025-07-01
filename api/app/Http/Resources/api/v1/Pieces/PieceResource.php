@@ -2,8 +2,9 @@
 
 namespace App\Http\Resources\api\v1\Pieces;
 
+use App\Http\Resources\api\v1\Tags\TagResource;
 use App\Http\Resources\api\v1\Users\UserResource;
-use App\Models\Piece;
+use App\Models\Pieces\Piece;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,6 +21,18 @@ class PieceResource extends JsonResource
                 'title' => $this->title,
                 'type' => $this->pieceType->name,
                 'status' => $this->pieceStatus->name,
+                'pov' => $this->piecePov->name,
+                'tense' => $this->pieceTense->name,
+                'genre' => $this->genre ?? '',
+                'sub_genre' => $this->sub_genre ?? '',
+                'setting_time_period' =>  $this->when(
+                    $request->routeIs('pieces.show'),
+                    $this->setting_time_period ?? '',
+                ),
+                'setting_location' =>  $this->when(
+                    $request->routeIs('pieces.show'),
+                    $this->setting_location ?? '',
+                ),
                 'synopsis' => $this->when(
                     $request->routeIs('pieces.show'),
                     $this->synopsis ?? ''
@@ -29,45 +42,28 @@ class PieceResource extends JsonResource
                 'start_date' => $this->start_date->toDateString() ?? '',
                 'target_completion_date' => $this->target_completion_date->toDateString() ?? '',
                 'completion_date' => $this->completion_date->toDateString() ?? '',
-                'created_at' => $this->created_at->toDateString(),
-                'updated_at' => $this->updated_at->toDateString(),
+                'themes' => $this->when(
+                    $request->routeIs('pieces.show'),
+                    $this->themes
+                ),
+                'tags' => TagResource::collection($this->whenLoaded('tags')),
+                'created_at' => $this->created_at->toDatetimeString(),
+                'updated_at' => $this->updated_at->toDatetimeString(),
             ],
             'relationships' => [
-                'relationships' => [
-                    'author' => [
-                        'data' => [
-                            'type' => 'user',
-                            'id' => $this->user_id,
-                        ],
-                        'links' => [
-                            'self' => route('user.show', ['user' => $this->user_id]),
-                        ],
-                    ],
-                ],
-                'type' => [
+                'author' => [
                     'data' => [
-                        'type' => 'piece_type',
-                        'id' => $this->piece_type_id,
+                        'type' => 'user',
+                        'id' => $this->user_id,
                     ],
                     'links' => [
-                        // TODO: add the piece_type show route
-//                        'self' => route('piece-type.show', ['type' => $this->piece_type_id]),
-                    ]
-                ],
-                'status' => [
-                    'data' => [
-                        'type' => 'piece_status',
-                        'id' => $this->piece_status_id,
-                    ],
-                    'links' => [
-                        // TODO: add the piece_status show route
-//                        'self' => route('piece-status.show', ['status' => $this->piece_status_id]),
+                        'self' => route('user.show', ['user' => $this->user_id]),
                     ],
                 ],
             ],
             'includes' => new UserResource($this->whenLoaded('user')),
             'links' => [
-                'self' => route('pieces.show', ['piece' => $this->id]),
+                'self' => route('pieces.show', ['piece' => $this->slug]),
             ],
         ];
     }
