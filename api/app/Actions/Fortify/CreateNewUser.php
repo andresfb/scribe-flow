@@ -34,7 +34,7 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         $position = Location::get();
-        $timezone = $position->timezone ?? Config::string('constant.default_timezone');
+        $timezone = $position->timezone ?? Config::string('constants.default_timezone');
 
         return User::create([
             'name' => $input['name'],

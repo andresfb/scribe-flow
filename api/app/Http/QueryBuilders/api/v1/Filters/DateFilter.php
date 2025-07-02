@@ -2,16 +2,36 @@
 
 namespace App\Http\QueryBuilders\api\v1\Filters;
 
+use Carbon\CarbonImmutable;
 use Spatie\QueryBuilder\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 class DateFilter implements Filter
 {
+    private string $timezone;
+
+    private array $translations = [
+        'created' => 'created_at',
+        'updated' => 'updated_at',
+    ];
+
+    public function __construct()
+    {
+        $this->timezone = config('constants.default_timezone');
+    }
+
     public function __invoke(Builder $query, $value, string $property): void
     {
+        $property = $this->translations[$property] ?? $property;
+
         // if a single date was passed: filter[created_at]=2025-06-20
         if (! is_array($value)) {
-            $query->where($property, '>=', $value);
+            $query->where(
+                $property,
+                '>=',
+                CarbonImmutable::parse($value)
+                    ->timezone($this->timezone)
+            );
 
             return;
         }
@@ -21,8 +41,10 @@ class DateFilter implements Filter
         // filter[created_at][to_date]=2025-06-30
         if (isset($value['from_date'], $value['to_date'])) {
             $query->whereBetween($property, [
-                $value['from_date'],
-                $value['to_date'],
+                CarbonImmutable::parse($value['from_date'])
+                    ->startOfDay(),
+                CarbonImmutable::parse($value['to_date'])
+                    ->endOfDay(),
             ]);
         }
     }

@@ -15,7 +15,7 @@ class TagFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'slug' => $this->faker->slug(),
-            'type' => $this->faker->word(),
+            'type' => null,
             'order_column' => $this->faker->randomNumber(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

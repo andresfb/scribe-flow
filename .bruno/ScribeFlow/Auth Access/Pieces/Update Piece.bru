@@ -1,0 +1,19 @@
+meta {
+  name: Update Piece
+  type: http
+  seq: 2
+}
+
+put {
+  url: http://api.scribeflow.lan/api/v1/pieces/olivias-love-1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "current_word_count": "542",
+    "target_completion_date": "2025-08-17",
+    "tags": ["first love", "Coming of Age"]
+  }
+}

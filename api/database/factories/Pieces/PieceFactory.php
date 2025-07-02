@@ -17,8 +17,12 @@ class PieceFactory extends Factory
 
     public function definition(): array
     {
+        $now = Carbon::now()
+            ->subDays(
+                $this->faker->numberBetween(0, 25)
+            );
+
         return [
-            'slug' => $this->faker->slug(),
             'title' => $this->faker->word(),
             'genre' => $this->faker->word(),
             'sub_genre' => $this->faker->word(),
@@ -27,18 +31,17 @@ class PieceFactory extends Factory
             'synopsis' => $this->faker->paragraphs(asText: true),
             'target_word_count' => $this->faker->randomNumber(),
             'current_word_count' => $this->faker->randomNumber(),
-            'start_date' => Carbon::now(),
-            'target_completion_date' => Carbon::now(),
-            'completion_date' => Carbon::now(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-
+            'start_date' => $now->clone()->addWeeks($this->faker->numberBetween(1, 3)),
+            'target_completion_date' => $now->clone()->addDays($this->faker->numberBetween(25, 90)),
+            'completion_date' => $now->clone()->addDays($this->faker->numberBetween(30, 365)),
+            'created_at' => $now,
+            'updated_at' => $now,
             'themes' => [
-                $this->faker->slug() => $this->faker->paragraph(),
+                $this->faker->slug() => $this->faker->words($this->faker->numberBetween(1, 2), true),
                 $this->faker->slug() => [
-                    $this->faker->paragraph(),
-                    $this->faker->paragraph(),
-                    $this->faker->paragraph(),
+                    $this->faker->words($this->faker->numberBetween(1, 3), true),
+                    $this->faker->words($this->faker->numberBetween(1, 3), true),
+                    $this->faker->words($this->faker->numberBetween(1, 3), true),
                 ],
                 $this->faker->slug() => [
                     $this->faker->word(),
@@ -47,7 +50,7 @@ class PieceFactory extends Factory
                 ]
             ],
 
-            'user_id' => User::factory(),
+            'user_id' =>User::factory(),
             'piece_type_id' => PieceType::factory(),
             'piece_status_id' => PieceStatus::factory(),
             'piece_pov_id' => PiecePov::factory(),

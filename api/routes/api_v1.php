@@ -37,7 +37,7 @@ Route::middleware(['auth:sanctum'])
             ->name('piece-tenses.list');
 
         Route::resource('/pieces', PieceController::class, [
-            'except' => ['edit', 'create']
+            'except' => ['edit']
         ]);
 
     });

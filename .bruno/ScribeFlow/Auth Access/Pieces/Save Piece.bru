@@ -1,0 +1,36 @@
+meta {
+  name: Save Piece
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://api.scribeflow.lan/api/v1/pieces
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "user_id": "1",
+    "title": "Olivia's Love",
+    "piece_type_id": "3",
+    "piece_status_id": "1",
+    "piece_pov_id": "1",
+    "piece_tense_id": "2",
+    "genre": "Coming of Age",
+    "setting_time_period": "Contemporary",
+    "setting_location": "Any town USA",
+    "synopsis": "The story of how Carmen met Josh",
+    "target_word_count": "6000",
+    "current_word_count": "0",
+    "start_date": "",
+    "target_completion_date": "",
+    "completion_date": "",
+    "themes": {
+      "central": "love",
+      "related": ["young", "yerning"] 
+    },
+    "tags": ["young life", "first love", "Cristal Considine"]
+  }
+}

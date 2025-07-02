@@ -11,10 +11,10 @@ final readonly class PieceGetAction
     /**
      * Execute the action.
      */
-    public function handle(string $slug): Piece
+    public function handle(string $slug, int $userId): Piece
     {
         return Piece::where('slug', $slug)
-            ->where('user_id', auth()->id())
+            ->where('user_id', $userId)
             ->with('tags')
             ->firstOrFail();
     }

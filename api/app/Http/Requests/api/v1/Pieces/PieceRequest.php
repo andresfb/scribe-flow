@@ -8,22 +8,29 @@ class PieceRequest extends FormRequest
 {
     public function rules(): array
     {
-        return [
-            'piece_type_id' => ['required', 'exists:piece_types'],
-            'piece_status_id' => ['required', 'exists:piece_statuses'],
-            'piece_pov_id' => ['required', 'exists:piece_povs'],
-            'user_id' => ['required', 'exists:users'],
-            'title' => ['required', 'min:3', 'max:150'],
+        $rules = [
             'genre' => ['nullable', 'string', 'min:2', 'max:100'],
             'sub_genre' => ['nullable', 'string', 'min:2', 'max:100'],
             'setting_time_period' => ['nullable', 'string', 'min:2', 'max:255'],
             'setting_location' => ['nullable', 'string', 'min:2', 'max:255'],
             'synopsis' => ['nullable', 'string'],
             'target_word_count' => ['nullable', 'integer'],
-            'current_word_count' => ['required', 'integer'],
             'start_date' => ['nullable', 'date'],
             'target_completion_date' => ['nullable', 'date'],
             'completion_date' => ['nullable', 'date'],
+            'themes' => ['nullable', 'array'],
+            'tags.*' => ['nullable', 'string'],
         ];
+
+        $required = $this->routeIs('pieces.create') ? 'required' : 'nullable';
+
+        $rules['current_word_count'] = [$required, 'integer'];
+        $rules['piece_type_id'] = [$required, 'exists:piece_types,id'];
+        $rules['piece_status_id'] = [$required, 'exists:piece_statuses,id'];
+        $rules['piece_pov_id'] = [$required, 'exists:piece_povs,id'];
+        $rules['piece_tense_id'] = [$required, 'exists:piece_tenses,id'];
+        $rules['title'] = [$required, 'min:3', 'max:150'];
+
+        return $rules;
     }
 }

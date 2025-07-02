@@ -15,40 +15,60 @@ class PieceResource extends JsonResource
     {
         return [
             'type' => 'piece',
-            'id' => $this->id,
+            'id' => $this->slug,
             'attributes' => [
-                'slug' => $this->slug,
-                'title' => $this->title,
-                'type' => $this->pieceType->name,
-                'status' => $this->pieceStatus->name,
-                'pov' => $this->piecePov->name,
-                'tense' => $this->pieceTense->name,
+                'user_id' => $this->user_id,
+                'title' => $this->title ?? '',
+                'type' => $this->pieceType?->name ?? '',
+                'status' => $this->pieceStatus?->name ?? '',
+                'pov' => $this->piecePov?->name ?? '',
+                'tense' => $this->pieceTense?->name ?? '',
+                'piece_type_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->piece_type_id ?? 0
+                ),
+                'piece_status_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->piece_status_id ?? 0
+                ),
+                'piece_pov_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->piece_pov_id ?? 0
+                ),
+                'piece_tense_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->piece_tense_id ?? 0
+                ),
                 'genre' => $this->genre ?? '',
                 'sub_genre' => $this->sub_genre ?? '',
                 'setting_time_period' =>  $this->when(
-                    $request->routeIs('pieces.show'),
+                    $request->routeIs('pieces.show', 'pieces.create'),
                     $this->setting_time_period ?? '',
                 ),
                 'setting_location' =>  $this->when(
-                    $request->routeIs('pieces.show'),
+                    $request->routeIs('pieces.show', 'pieces.create'),
                     $this->setting_location ?? '',
                 ),
                 'synopsis' => $this->when(
-                    $request->routeIs('pieces.show'),
+                    $request->routeIs('pieces.show', 'pieces.create'),
                     $this->synopsis ?? ''
                 ),
                 'target_word_count' => $this->target_word_count ?? 0,
-                'current_word_count' => $this->current_word_count,
-                'start_date' => $this->start_date->toDateString() ?? '',
-                'target_completion_date' => $this->target_completion_date->toDateString() ?? '',
-                'completion_date' => $this->completion_date->toDateString() ?? '',
-                'themes' => $this->when(
-                    $request->routeIs('pieces.show'),
-                    $this->themes
+                'current_word_count' => $this->current_word_count ?? 0,
+                'start_date' => $this->start_date?->toDateString() ?? '',
+                'target_completion_date' => $this->target_completion_date?->toDateString() ?? '',
+                'completion_date' => $this->completion_date?->toDateString() ?? '',
+                'created_at' => $this->created_at?->toDatetimeString() ?? '',
+                'updated_at' => $this->updated_at?->toDatetimeString() ?? '',
+                'themes' => $this->whenNull(
+                    $request->routeIs('pieces.show', 'pieces.create'),
+                    $this->themes ?? []
                 ),
-                'tags' => TagResource::collection($this->whenLoaded('tags')),
-                'created_at' => $this->created_at->toDatetimeString(),
-                'updated_at' => $this->updated_at->toDatetimeString(),
+                'tags' => $this->whenLoaded(
+                    'tags',
+                    TagResource::collection($this->tags),
+                    []
+                ),
             ],
             'relationships' => [
                 'author' => [
@@ -63,7 +83,10 @@ class PieceResource extends JsonResource
             ],
             'includes' => new UserResource($this->whenLoaded('user')),
             'links' => [
-                'self' => route('pieces.show', ['piece' => $this->slug]),
+                'self' => $this->when(
+                    ! $request->routeIs('pieces.create'),
+                    route('pieces.show', ['piece' => $this->slug])
+                ),
             ],
         ];
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Dtos\Pieces\PieceStoreItem;
 use App\Models\Lists\PiecePov;
 use App\Models\Lists\PieceStatus;
 use App\Models\Lists\PieceTense;
@@ -11,6 +12,7 @@ use App\Models\Lists\PieceType;
 use App\Models\Pieces\Piece;
 use Exception;
 use Illuminate\Console\Command;
+
 use function Laravel\Prompts\clear;
 
 final class TestAppCommand extends Command
@@ -26,9 +28,23 @@ final class TestAppCommand extends Command
         try {
             $this->info("\nStarting at: ".now()."\n");
 
+            return;
+        } catch (Exception $e) {
+            $this->error("\nError Testing");
+            $this->error($e->getMessage().PHP_EOL);
+        } finally {
+            $this->info("\nDone at: ".now()."\n");
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function populate(): void
+    {
+        for ($i = 0; $i < 10; $i++) {
             Piece::factory()
-                ->count(5)
-                ->hasTags(4)
+                ->hasTags(random_int(1, 5))
                 ->create([
                     'user_id' => 1,
                     'piece_type_id' => PieceType::where('active', true)
@@ -49,12 +65,7 @@ final class TestAppCommand extends Command
                         ->id,
                 ]);
 
-            return;
-        } catch (Exception $e) {
-            $this->error("\nError Testing");
-            $this->error($e->getMessage().PHP_EOL);
-        } finally {
-            $this->info("\nDone at: ".now()."\n");
+            echo '.';
         }
     }
 }

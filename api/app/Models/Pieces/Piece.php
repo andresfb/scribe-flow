@@ -57,7 +57,6 @@ class Piece extends Model
         'piece_status_id',
         'piece_pov_id',
         'piece_tense_id',
-        'slug',
         'title',
         'genre',
         'sub_genre',
@@ -100,8 +99,9 @@ class Piece extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('title')
-            ->saveSlugsTo('slug');
+            ->generateSlugsFrom(['title', 'user_id'])
+            ->saveSlugsTo('slug')
+            ->slugsShouldBeNoLongerThan(50);
     }
 
     protected static function booted(): void
@@ -120,6 +120,13 @@ class Piece extends Model
             'completion_date' => 'date',
             'themes' => 'array',
         ];
+    }
+
+    protected function slug(): Attribute
+    {
+        return Attribute::make(
+            get: static fn($value): string => $value ?? 'new',
+        );
     }
 
     protected function startDate(): Attribute

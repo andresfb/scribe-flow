@@ -13,7 +13,7 @@ trait ApiResponses
 
     protected function error(string $message, array $data = [], int $status = 400): JsonResponse
     {
-        return $this->response($message, $data, $status);
+        return $this->response($message, $data, max($status, 400));
     }
 
     protected function response(string $message, array $data, int $status): JsonResponse

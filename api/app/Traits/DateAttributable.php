@@ -21,7 +21,7 @@ trait DateAttributable
                 }
 
                 return Carbon::parse($value)->timezone(
-                    auth()->user()->timezone ?? Config::string('constant.default_timezone')
+                    auth()->user()->timezone ?? Config::string('constants.default_timezone')
                 );
             },
         );

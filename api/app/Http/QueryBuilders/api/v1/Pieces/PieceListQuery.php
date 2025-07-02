@@ -7,6 +7,7 @@ use App\Http\QueryBuilders\api\v1\Filters\FuzzyFilter;
 use App\Http\Requests\api\v1\Pieces\PieceListRequest;
 use App\Models\Pieces\Piece;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class PieceListQuery extends QueryBuilder
@@ -19,16 +20,16 @@ class PieceListQuery extends QueryBuilder
         parent::__construct($builder, $request);
 
         $this->allowedSorts(
-            'piece_type_id',
-            'piece_status_id',
-            'piece_pov_id',
-            'piece_tense_id',
-            'genre',
-            'sub_genre',
-            'start_date',
-            'completion_date',
-            'created_at',
-            'updated_at',
+            AllowedSort::field('genre'),
+            AllowedSort::field('sub_genre'),
+            AllowedSort::field('type', 'piece_type_id'),
+            AllowedSort::field('status', 'piece_status_id'),
+            AllowedSort::field('pov', 'piece_pov_id'),
+            AllowedSort::field('tense', 'piece_tense_id'),
+            AllowedSort::field('started', 'start_date'),
+            AllowedSort::field('completed', 'completion_date'),
+            AllowedSort::field('created', 'created_at'),
+            AllowedSort::field('updated', 'updated_at'),
         )
         ->allowedFilters(
             AllowedFilter::exact('status', 'piece_status_id'),
@@ -37,8 +38,8 @@ class PieceListQuery extends QueryBuilder
             AllowedFilter::exact('tense', 'piece_tense_id'),
             AllowedFilter::partial('genre'),
             AllowedFilter::partial('sub_genre'),
-            AllowedFilter::partial('setting_time_period'),
-            AllowedFilter::partial('setting_location'),
+            AllowedFilter::partial('period', 'setting_time_period'),
+            AllowedFilter::partial('location', 'setting_location'),
             AllowedFilter::custom(
                 'search',
                 new FuzzyFilter(
@@ -50,7 +51,7 @@ class PieceListQuery extends QueryBuilder
                     'setting_location'
                 )
             ),
-            AllowedFilter::custom('created_at', new DateFilter),
+            AllowedFilter::custom('created', new DateFilter),
             AllowedFilter::custom('start_date', new DateFilter),
             AllowedFilter::custom('completion_date', new DateFilter),
         );
