@@ -11,6 +11,10 @@ use Spatie\Sluggable\SlugOptions;
  * @property int $id
  * @property string $slug
  * @property string $name
+ * @property string $description
+ * @property int $min_count
+ * @property int $max_count
+ * @property bool $randomizable
  * @property bool $active
  * @property int $order
  */
@@ -24,7 +28,25 @@ class PieceType extends Model
     protected $fillable = [
         'slug',
         'name',
+        'description',
+        'min_count',
+        'max_count',
+        'randomizable',
+        'active',
     ];
+
+    public static function getWordCount(int $pieceTypeId): int
+    {
+        $type = self::query()
+            ->where('id', $pieceTypeId)
+            ->first();
+
+        if ($type === null) {
+            return 1000;
+        }
+
+        return (int) ceil(($type->min_count + $type->max_count) / 2);
+    }
 
     public function getSlugOptions(): SlugOptions
     {
@@ -36,7 +58,10 @@ class PieceType extends Model
     protected function casts(): array
     {
         return [
+            'randomizable' => 'boolean',
             'active' => 'boolean',
+            'min_count' => 'integer',
+            'max_count' => 'integer',
             'order' => 'integer',
         ];
     }

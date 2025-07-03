@@ -19,10 +19,14 @@ class PieceResource extends JsonResource
             'attributes' => [
                 'user_id' => $this->user_id,
                 'title' => $this->title ?? '',
-                'type' => $this->pieceType?->name ?? '',
-                'status' => $this->pieceStatus?->name ?? '',
-                'pov' => $this->piecePov?->name ?? '',
-                'tense' => $this->pieceTense?->name ?? '',
+                'type' => $this->type?->name ?? '',
+                'status' => $this->status?->name ?? '',
+                'pov' => $this->pov?->name ?? '',
+                'tense' => $this->tense?->name ?? '',
+                'genre' => $this->genre?->name ?? '',
+                'sub_genre' => $this->subGenre?->name ?? '',
+                'tone' => $this->tone?->name ?? '',
+                'theme' => $this->theme?->name ?? '',
                 'piece_type_id' => $this->when(
                     $request->routeIs('pieces.create'),
                     $this->piece_type_id ?? 0
@@ -39,8 +43,22 @@ class PieceResource extends JsonResource
                     $request->routeIs('pieces.create'),
                     $this->piece_tense_id ?? 0
                 ),
-                'genre' => $this->genre ?? '',
-                'sub_genre' => $this->sub_genre ?? '',
+                'piece_genre_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->piece_genre_id ?? 0
+                ),
+                'piece_sub_genre_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->piece_sub_genre_id ?? 0
+                ),
+                'piece_tone_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->piece_tone_id ?? 0
+                ),
+                'piece_theme_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->piece_theme_id ?? 0
+                ),
                 'setting_time_period' =>  $this->when(
                     $request->routeIs('pieces.show', 'pieces.create'),
                     $this->setting_time_period ?? '',

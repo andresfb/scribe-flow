@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Dtos\Pieces\PieceStoreItem;
+use App\Models\Lists\PieceGenre;
 use App\Models\Lists\PiecePov;
 use App\Models\Lists\PieceStatus;
 use App\Models\Lists\PieceTense;
+use App\Models\Lists\PieceTheme;
+use App\Models\Lists\PieceTone;
 use App\Models\Lists\PieceType;
 use App\Models\Pieces\Piece;
 use Exception;
@@ -60,6 +62,22 @@ final class TestAppCommand extends Command
                         ->first()
                         ->id,
                     'piece_tense_id' => PieceTense::where('active', true)
+                        ->inRandomOrder()
+                        ->first()
+                        ->id,
+                    'piece_genre_id' => PieceGenre::where('active', true)
+                        ->inRandomOrder()
+                        ->first()
+                        ->id,
+                    'piece_sub_genre_id' => PieceGenre::where('active', true)
+                        ->inRandomOrder()
+                        ->first()
+                        ->id,
+                    'piece_tone_id' => PieceTone::where('active', true)
+                        ->inRandomOrder()
+                        ->first()
+                        ->id,
+                    'piece_theme_id' => PieceTheme::where('active', true)
                         ->inRandomOrder()
                         ->first()
                         ->id,

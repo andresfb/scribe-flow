@@ -2,9 +2,11 @@
 
 namespace Database\Factories\Pieces;
 
+use App\Models\Lists\PieceGenre;
 use App\Models\Lists\PiecePov;
 use App\Models\Lists\PieceStatus;
 use App\Models\Lists\PieceTense;
+use App\Models\Lists\PieceTone;
 use App\Models\Lists\PieceType;
 use App\Models\Pieces\Piece;
 use App\Models\User;
@@ -24,8 +26,6 @@ class PieceFactory extends Factory
 
         return [
             'title' => $this->faker->word(),
-            'genre' => $this->faker->word(),
-            'sub_genre' => $this->faker->word(),
             'setting_time_period' => $this->faker->paragraph(),
             'setting_location' => $this->faker->word(),
             'synopsis' => $this->faker->paragraphs(asText: true),
@@ -36,25 +36,16 @@ class PieceFactory extends Factory
             'completion_date' => $now->clone()->addDays($this->faker->numberBetween(30, 365)),
             'created_at' => $now,
             'updated_at' => $now,
-            'themes' => [
-                $this->faker->slug() => $this->faker->words($this->faker->numberBetween(1, 2), true),
-                $this->faker->slug() => [
-                    $this->faker->words($this->faker->numberBetween(1, 3), true),
-                    $this->faker->words($this->faker->numberBetween(1, 3), true),
-                    $this->faker->words($this->faker->numberBetween(1, 3), true),
-                ],
-                $this->faker->slug() => [
-                    $this->faker->word(),
-                    $this->faker->word(),
-                    $this->faker->word(),
-                ]
-            ],
 
             'user_id' =>User::factory(),
             'piece_type_id' => PieceType::factory(),
             'piece_status_id' => PieceStatus::factory(),
             'piece_pov_id' => PiecePov::factory(),
             'piece_tense_id' => PieceTense::factory(),
+            'piece_genre_id' => PieceGenre::factory(),
+            'piece_sub_genre_id' => PieceGenre::factory(),
+            'piece_tone_id' => PieceTone::factory(),
+            'piece_sub_tone_id' => PieceTone::factory(),
         ];
     }
 }

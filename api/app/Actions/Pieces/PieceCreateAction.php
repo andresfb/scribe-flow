@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Actions\Pieces;
 
+use App\Actions\Listings\PieceGenresListAction;
 use App\Actions\Listings\PiecePovListAction;
 use App\Actions\Listings\PieceStatusesListAction;
 use App\Actions\Listings\PieceTenseListAction;
+use App\Actions\Listings\PieceThemesListAction;
+use App\Actions\Listings\PieceTonesListAction;
 use App\Actions\Listings\PieceTypeListAction;
 use App\Actions\Listings\TagsListAction;
 use App\Dtos\Pieces\PieceCreateItem;
@@ -19,6 +22,9 @@ final readonly class PieceCreateAction
         private PieceStatusesListAction $statusesListAction,
         private PiecePovListAction $povsListAction,
         private PieceTenseListAction $tensesListAction,
+        private PieceGenresListAction $genresListAction,
+        private PieceTonesListAction $tonesListAction,
+        private PieceThemesListAction $themesListAction,
         private TagsListAction $tagsListAction
     ) {}
 
@@ -36,6 +42,9 @@ final readonly class PieceCreateAction
             statuses: $this->statusesListAction->handle(),
             povs: $this->povsListAction->handle(),
             tenses: $this->tensesListAction->handle(),
+            genres: $this->genresListAction->handle(),
+            tones: $this->tonesListAction->handle(),
+            themes: $this->themesListAction->handle(),
             tags: $this->tagsListAction->handle(),
         );
     }

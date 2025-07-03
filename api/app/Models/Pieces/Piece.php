@@ -2,9 +2,12 @@
 
 namespace App\Models\Pieces;
 
+use App\Models\Lists\PieceGenre;
 use App\Models\Lists\PiecePov;
 use App\Models\Lists\PieceStatus;
 use App\Models\Lists\PieceTense;
+use App\Models\Lists\PieceTheme;
+use App\Models\Lists\PieceTone;
 use App\Models\Lists\PieceType;
 use App\Models\Pieces\Scopes\PieceWithScope;
 use App\Models\User;
@@ -26,6 +29,10 @@ use Spatie\Tags\HasTags;
  * @property int $piece_status_id
  * @property int $piece_pov_id
  * @property int $piece_tense_id
+ * @property int $piece_genre_id
+ * @property int $piece_sub_genre_id
+ * @property int $piece_tone_id
+ * @property int $piece_theme_id
  * @property string $slug
  * @property string $title
  * @property string $genre
@@ -57,6 +64,10 @@ class Piece extends Model
         'piece_status_id',
         'piece_pov_id',
         'piece_tense_id',
+        'piece_genre_id',
+        'piece_sub_genre_id',
+        'piece_tone_id',
+        'piece_theme_id',
         'title',
         'genre',
         'sub_genre',
@@ -76,24 +87,44 @@ class Piece extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function pieceType(): BelongsTo
+    public function type(): BelongsTo
     {
         return $this->belongsTo(PieceType::class);
     }
 
-    public function pieceStatus(): BelongsTo
+    public function status(): BelongsTo
     {
         return $this->belongsTo(PieceStatus::class);
     }
 
-    public function piecePov(): BelongsTo
+    public function pov(): BelongsTo
     {
         return $this->belongsTo(PiecePov::class);
     }
 
-    public function pieceTense(): BelongsTo
+    public function tense(): BelongsTo
     {
         return $this->belongsTo(PieceTense::class);
+    }
+
+    public function genre(): BelongsTo
+    {
+        return $this->belongsTo(PieceGenre::class);
+    }
+
+    public function subGenre(): BelongsTo
+    {
+        return $this->belongsTo(PieceGenre::class, 'piece_sub_genre_id');
+    }
+
+    public function tone(): BelongsTo
+    {
+        return $this->belongsTo(PieceTone::class);
+    }
+
+    public function theme(): BelongsTo
+    {
+        return $this->belongsTo(PieceTheme::class);
     }
 
     public function getSlugOptions(): SlugOptions
@@ -118,7 +149,6 @@ class Piece extends Model
             'start_date' => 'date',
             'target_completion_date' => 'date',
             'completion_date' => 'date',
-            'themes' => 'array',
         ];
     }
 

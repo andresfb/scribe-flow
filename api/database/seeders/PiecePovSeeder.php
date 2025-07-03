@@ -9,13 +9,14 @@ class PiecePovSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('piece_types')->insert([
-            ['slug' => 'novel', 'name' => 'Novel', 'active' => true, 'order' => 1],
-            ['slug' => 'novella', 'name' => 'Novella', 'active' => true, 'order' => 2],
-            ['slug' => 'short-story', 'name' => 'Short Story', 'active' => true, 'order' => 3],
-            ['slug' => 'screenplay', 'name' => 'Screenplay', 'active' => true, 'order' => 4],
-            ['slug' => 'poem', 'name' => 'Poem', 'active' => true, 'order' => 5],
-            ['slug' => 'other', 'name' => 'Other', 'active' => true, 'order' => 6],
+        DB::table('piece_povs')->insert([
+            ['slug' => 'first-person', 'name' => 'First Person', 'active' => true, 'order' => 1],
+            ['slug' => 'second-person', 'name' => 'Second Person', 'active' => true, 'order' => 2],
+            ['slug' => 'third-person-limited', 'name' => 'Third Person Limited', 'active' => true, 'order' => 3],
+            ['slug' => 'third-person-objective', 'name' => 'Third Person Objective', 'active' => true, 'order' => 4],
+            ['slug' => 'third-person-omniscient', 'name' => 'Third Person Omniscient', 'active' => true, 'order' => 5],
+            ['slug' => 'multiple', 'name' => 'Multiple', 'active' => true, 'order' => 6],
+            ['slug' => 'other', 'name' => 'Other', 'active' => true, 'order' => 7],
         ]);
     }
 }

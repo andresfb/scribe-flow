@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
             PieceStatusSeeder::class,
             PiecePovSeeder::class,
             PieceTenseSeeder::class,
+            PieceGenreSeeder::class,
+            PieceToneSeeder::class,
+            PieceThemeSeeder::class,
         ]);
     }
 }

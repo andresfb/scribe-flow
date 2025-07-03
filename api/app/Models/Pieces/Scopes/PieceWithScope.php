@@ -11,10 +11,14 @@ class PieceWithScope implements Scope
     public function apply(Builder $builder, Model $model): void
     {
         $builder->with([
-            'pieceType',
-            'pieceStatus',
-            'piecePov',
-            'pieceTense',
+            'type',
+            'status',
+            'pov',
+            'tense',
+            'genre',
+            'subGenre',
+            'tone',
+            'theme',
         ]);
     }
 }

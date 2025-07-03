@@ -3,11 +3,13 @@
 namespace App\Http\Requests\api\v1\Users;
 
 use App\Actions\Fortify\PasswordValidationRules;
+use App\Traits\FailedValidator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
 class UserUpdateRequest extends FormRequest
 {
+    use FailedValidator;
     use PasswordValidationRules;
 
     public function rules(): array

@@ -50,6 +50,9 @@ class PieceController extends Controller
                     'statuses' => $item->statuses,
                     'povs' => $item->povs,
                     'tenses' => $item->tenses,
+                    'genres' => $item->genres,
+                    'tones' => $item->tones,
+                    'themes' => $item->themes,
                     'tags' => $item->tags,
                 ],
             ]);
