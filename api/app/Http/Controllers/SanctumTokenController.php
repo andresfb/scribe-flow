@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 
 class SanctumTokenController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): array
     {
         $request->validate([
             'email' => 'required|email|exists:users,email',

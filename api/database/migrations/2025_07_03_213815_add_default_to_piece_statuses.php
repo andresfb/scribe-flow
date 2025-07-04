@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('piece_statuses', static function (Blueprint $table) {
+        Schema::table('piece_statuses', static function (Blueprint $table): void {
             $table->boolean('default')
                 ->after('active')
                 ->default(false);
@@ -21,7 +21,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('piece_statuses', static function (Blueprint $table) {
+        Schema::table('piece_statuses', static function (Blueprint $table): void {
             $table->dropColumn('default');
         });
     }

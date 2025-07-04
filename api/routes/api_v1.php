@@ -13,7 +13,7 @@ use App\Http\Controllers\api\v1\Users\UserController;
 use Illuminate\Http\Request;
 
 Route::middleware(['auth:sanctum'])
-    ->group(static function () {
+    ->group(static function (): void {
 
         Route::post('/test', static function (Request $request) {
             $request->validate([

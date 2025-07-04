@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('pieces', static function (Blueprint $table) {
+        Schema::table('pieces', static function (Blueprint $table): void {
             $table->dropForeign(['piece_pov_id']);
             $table->unsignedBigInteger('piece_pov_id')
                 ->nullable()
@@ -32,7 +32,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('pieces', static function (Blueprint $table) {
+        Schema::table('pieces', static function (Blueprint $table): void {
             $table->dropForeign(['piece_pov_id']);
             $table->unsignedBigInteger('piece_pov_id')
                 ->nullable(false)

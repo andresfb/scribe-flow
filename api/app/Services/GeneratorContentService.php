@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Dtos\Ai\PromptItem;
 use App\Enums\GeneratorStatus;
 use App\Models\GeneratorRequest;
 use App\Models\Lists\PieceStatus;
@@ -48,7 +49,7 @@ readonly class GeneratorContentService
 
             $content = json_decode($outputText, true, 512, JSON_THROW_ON_ERROR);
 
-            DB::transaction(function () use ($content, $output, $promptItem) {
+            DB::transaction(function () use ($content, $output, $promptItem): void {
                 $data = $promptItem->pieceItem->toArray();
                 $data['user_id'] = $this->request->user_id;
                 $data['piece_status_id'] = PieceStatus::getDefault();
@@ -80,13 +81,17 @@ readonly class GeneratorContentService
                 'response' => ['error' => (array) $e],
             ];
 
-            if ($output !== null) {
+            if ($output instanceof Response) {
                 $response = $this->encodeResponse($output);
                 $response['error'] = (array) $e;
 
                 $data['response'] = $response;
-                $data['service'] = $promptItem ? $promptItem->generator->provider : 'unknown';
-                $data['model'] = $promptItem ? $promptItem->generator->getModel() : 'unknown';
+                $data['service'] = $promptItem instanceof PromptItem
+                    ? $promptItem->generator->provider
+                    : 'unknown';
+                $data['model'] = $promptItem instanceof PromptItem
+                    ? $promptItem->generator->getModel()
+                    : 'unknown';
                 $data['total_tokens'] = ($output->usage->completionTokens + $output->usage->promptTokens) ?? 0;
             }
 
@@ -104,7 +109,7 @@ readonly class GeneratorContentService
      */
     private function encodeResponse(?Response $response): array
     {
-        if ($response === null) {
+        if (!$response instanceof Response) {
             return [];
         }
 

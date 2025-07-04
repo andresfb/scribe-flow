@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('generator_requests', static function (Blueprint $table) {
+        Schema::create('generator_requests', static function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(User::class)
                 ->constrained('users');

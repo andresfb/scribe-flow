@@ -19,14 +19,14 @@ class UserItem extends Data
     {
         $userData = parent::toArray();
 
-        if (empty($this->password)) {
+        if (blank($this->password)) {
             unset($userData['password']);
         } else {
             $userData['password'] = Hash::make($this->password);
             $userData['email_verified_at'] = now();
         }
 
-        if (empty($this->timezone)) {
+        if (blank($this->timezone)) {
             unset($userData['timezone']);
         }
 

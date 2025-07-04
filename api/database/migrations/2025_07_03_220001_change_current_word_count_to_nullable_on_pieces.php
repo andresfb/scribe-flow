@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('pieces', static function (Blueprint $table) {
+        Schema::table('pieces', static function (Blueprint $table): void {
             $table->string('current_word_count')
                 ->nullable()
                 ->change();
@@ -17,7 +17,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('pieces', static function (Blueprint $table) {
+        Schema::table('pieces', static function (Blueprint $table): void {
             $table->string('current_word_count')
                 ->nullable(false)
                 ->change();

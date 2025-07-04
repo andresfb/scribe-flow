@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('tags', static function (Blueprint $table) {
+        Schema::table('tags', static function (Blueprint $table): void {
             $table->timestamp('deleted_at')
                 ->after('order_column')
                 ->nullable();
@@ -17,7 +17,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('tags', static function (Blueprint $table) {
+        Schema::table('tags', static function (Blueprint $table): void {
             $table->dropColumn('deleted_at');
         });
     }

@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('generator_requests', static function (Blueprint $table) {
+        Schema::table('generator_requests', static function (Blueprint $table): void {
             $table->string('service')
                 ->nullable()
                 ->change();
@@ -23,7 +23,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('generator_requests', static function (Blueprint $table) {
+        Schema::table('generator_requests', static function (Blueprint $table): void {
             $table->string('service')->nullable(false)->change();
 
             $table->string('model')->nullable(false)->change();

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DateFilter implements Filter
 {
-    private string $timezone;
+    private readonly string $timezone;
 
     private array $translations = [
         'created' => 'created_at',

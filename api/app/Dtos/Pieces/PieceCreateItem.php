@@ -15,7 +15,6 @@ use Spatie\Tags\Tag;
 final readonly class PieceCreateItem
 {
     /**
-     * @param Piece $piece
      * @param array<PieceType> $types
      * @param array<PieceStatus> $statuses
      * @param array<PiecePov> $povs

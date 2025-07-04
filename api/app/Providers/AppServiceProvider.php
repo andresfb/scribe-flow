@@ -37,11 +37,10 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('http');
         }
 
-        RateLimiter::for('api', static function (Request $request) {
+        RateLimiter::for('api', static fn(Request $request) =>
             // 60 requests per minute, segmented by user ID or IP
-            return Limit::perMinute(90)
-                ->by($request->user()?->id ?: $request->ip());
-        });
+            Limit::perMinute(90)
+            ->by($request->user()?->id ?: $request->ip()));
     }
 
     /**

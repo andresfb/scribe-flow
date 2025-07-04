@@ -11,7 +11,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('pieces', static function (Blueprint $table) {
+        Schema::table('pieces', static function (Blueprint $table): void {
             $table->foreignIdFor(PieceGenre::class)
                 ->nullable()
                 ->after('piece_tense_id')
@@ -43,7 +43,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('pieces', static function (Blueprint $table) {
+        Schema::table('pieces', static function (Blueprint $table): void {
             $table->dropForeign(['piece_genre_id']);
             $table->dropColumn('piece_genre_id');
 

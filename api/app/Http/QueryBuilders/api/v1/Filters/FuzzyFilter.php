@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class FuzzyFilter implements Filter
 {
-    private array $columns;
+    private readonly array $columns;
 
     private array $relationProperties = [];
 
@@ -43,9 +43,9 @@ class FuzzyFilter implements Filter
 
     protected function applyFilters(Builder $query, array $attributes, string $value): void
     {
-        $query->where(function (Builder $query) use ($attributes, $value) {
+        $query->where(function (Builder $query) use ($attributes, $value): void {
             foreach (Arr::wrap($attributes) as $attribute) {
-                $query->orWhere(function ($query) use ($attribute, $value) {
+                $query->orWhere(function ($query) use ($attribute, $value): void {
                     foreach (explode(' ', $value) as $searchTerm) {
                         $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
                     }
@@ -61,9 +61,9 @@ class FuzzyFilter implements Filter
         }
     }
 
-    protected function applyRelationFilter(Builder $query, $relation, array $attributes, $value): void
+    protected function applyRelationFilter(Builder $query, $relation, array $attributes, string $value): void
     {
-        $query->orWhereHas($relation, function (Builder $query) use ($attributes, $value) {
+        $query->orWhereHas($relation, function (Builder $query) use ($attributes, $value): void {
             $this->applyFilters($query, $attributes, $value);
         });
     }
@@ -83,11 +83,7 @@ class FuzzyFilter implements Filter
             return false;
         }
 
-        if (Str::startsWith($property, $query->getModel()->getTable().'.')) {
-            return false;
-        }
-
-        return true;
+        return !Str::startsWith($property, $query->getModel()->getTable().'.');
     }
 
     protected function isProperty(Builder $query, string $property): bool
@@ -96,10 +92,7 @@ class FuzzyFilter implements Filter
             return false;
         }
 
-        if (Str::contains($property, '.') && ! Str::startsWith($property, $query->getModel()->getTable().'.')) {
-            return false;
-        }
-
-        return true;
+        return !(Str::contains($property, '.')
+            && ! Str::startsWith($property, $query->getModel()->getTable().'.'));
     }
 }
