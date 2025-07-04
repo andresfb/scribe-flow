@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Pieces;
 
 use App\Models\Lists\PieceGenre;
@@ -50,7 +52,7 @@ use Spatie\Tags\HasTags;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class Piece extends Model
+final class Piece extends Model
 {
     use DateAttributable;
     use HasFactory;
@@ -155,7 +157,7 @@ class Piece extends Model
     protected function slug(): Attribute
     {
         return Attribute::make(
-            get: static fn($value): string => $value ?? 'new',
+            get: static fn ($value): string => $value ?? 'new',
         );
     }
 

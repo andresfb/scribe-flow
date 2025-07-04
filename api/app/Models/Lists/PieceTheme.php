@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Lists;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +16,7 @@ use Spatie\Tags\HasSlug;
  * @property string $description
  * @property bool $active
  */
-class PieceTheme extends Model
+final class PieceTheme extends Model
 {
     use HasFactory;
     use HasSlug;

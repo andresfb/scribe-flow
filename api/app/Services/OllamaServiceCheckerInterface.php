@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Interfaces\ServiceCheckerInterface;
@@ -8,7 +10,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
-class OllamaServiceCheckerInterface implements ServiceCheckerInterface
+final class OllamaServiceCheckerInterface implements ServiceCheckerInterface
 {
     public function isAvailable(): bool
     {

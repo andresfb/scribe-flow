@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -8,7 +10,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class SanctumTokenController extends Controller
+final class SanctumTokenController extends Controller
 {
     public function __invoke(Request $request): array
     {
@@ -35,7 +37,7 @@ class SanctumTokenController extends Controller
         );
 
         return [
-            'token' => $token->plainTextToken
+            'token' => $token->plainTextToken,
         ];
     }
 }

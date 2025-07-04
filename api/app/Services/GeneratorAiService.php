@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Dtos\Ai\PromptItem;
@@ -7,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Prism\Prism\Prism;
 use Prism\Prism\Text\Response;
 
-class GeneratorAiService
+final class GeneratorAiService
 {
     public function generate(PromptItem $promptItem): Response
     {
@@ -24,7 +26,7 @@ class GeneratorAiService
                 'presence_penalty' => $promptItem->generator->presence_penalty,
             ])
             ->withClientOptions([
-                'timeout' => $promptItem->generator->request_timeout
+                'timeout' => $promptItem->generator->request_timeout,
             ])
             ->withPrompt($promptItem->prompt)
             ->asText();

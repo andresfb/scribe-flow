@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories\Spatie\Tags;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 use Spatie\Tags\Tag;
 
-class TagFactory extends Factory
+final class TagFactory extends Factory
 {
     protected $model = Tag::class;
 

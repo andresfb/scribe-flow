@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Lists;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +16,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property bool $active
  * @property int $order
  */
-class PieceTense extends Model
+final class PieceTense extends Model
 {
     use HasFactory;
     use HasSlug;

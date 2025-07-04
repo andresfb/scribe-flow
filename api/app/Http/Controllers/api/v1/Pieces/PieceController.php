@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\api\v1\Pieces;
 
 use App\Actions\Pieces\PieceCreateAction;
@@ -21,10 +23,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Throwable;
 
-class PieceController extends Controller
+final class PieceController extends Controller
 {
-    use AuthorizesRequests;
     use ApiResponses;
+    use AuthorizesRequests;
     use RelationshipIncluder;
 
     public function index(PieceListRequest $request, PieceListQuery $query): AnonymousResourceCollection

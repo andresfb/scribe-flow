@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PieceGenreSeeder extends Seeder
+final class PieceGenreSeeder extends Seeder
 {
     public function run(): void
     {

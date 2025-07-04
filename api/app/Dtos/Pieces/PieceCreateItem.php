@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dtos\Pieces;
 
 use App\Models\Lists\PieceGenre;
@@ -15,14 +17,14 @@ use Spatie\Tags\Tag;
 final readonly class PieceCreateItem
 {
     /**
-     * @param array<PieceType> $types
-     * @param array<PieceStatus> $statuses
-     * @param array<PiecePov> $povs
-     * @param array<PieceTense> $tenses
-     * @param array<PieceGenre> $genres
-     * @param array<PieceTone> $tones
-     * @param array<PieceTheme> $themes
-     * @param array<Tag> $tags
+     * @param  array<PieceType>  $types
+     * @param  array<PieceStatus>  $statuses
+     * @param  array<PiecePov>  $povs
+     * @param  array<PieceTense>  $tenses
+     * @param  array<PieceGenre>  $genres
+     * @param  array<PieceTone>  $tones
+     * @param  array<PieceTheme>  $themes
+     * @param  array<Tag>  $tags
      */
     public function __construct(
         public Piece $piece,

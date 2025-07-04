@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\api\v1\Listings;
 
 use App\Actions\Listings\PieceTypeListAction;
@@ -7,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\ApiResponses;
 use Illuminate\Http\JsonResponse;
 
-class PieceTypeListController extends Controller
+final class PieceTypeListController extends Controller
 {
     use ApiResponses;
 

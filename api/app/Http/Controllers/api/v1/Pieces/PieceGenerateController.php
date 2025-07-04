@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\api\v1\Pieces;
 
 use App\Actions\Pieces\PieceGenerateAction;
@@ -12,10 +14,10 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Throwable;
 
-class PieceGenerateController extends Controller
+final class PieceGenerateController extends Controller
 {
-    use AuthorizesRequests;
     use ApiResponses;
+    use AuthorizesRequests;
 
     public function __invoke(PieceRequest $request, PieceGenerateAction $action): JsonResponse
     {

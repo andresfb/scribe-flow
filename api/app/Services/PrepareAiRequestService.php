@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Dtos\Ai\PromptItem;
@@ -26,7 +28,7 @@ final class PrepareAiRequestService
 
     private array $resultInfo = [];
 
-    public function __construct(private readonly ContentGeneratorFactory $contentAiFactory){}
+    public function __construct(private readonly ContentGeneratorFactory $contentAiFactory) {}
 
     /**
      * @throws Exception

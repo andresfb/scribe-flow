@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\api\v1\Users;
 
 use App\Actions\Users\LoadUserAction;
@@ -16,19 +18,19 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class UserController extends Controller
+final class UserController extends Controller
 {
-    use AuthorizesRequests;
     use ApiResponses;
+    use AuthorizesRequests;
     use RelationshipIncluder;
 
     public function show(int $user, LoadUserAction $userAction): UserResource
     {
         $includes = [];
         // TODO: add the user includes
-//        if ($this->include('incomeCategories')) {
-//            $includes[] = 'incomeCategories';
-//        }
+        //        if ($this->include('incomeCategories')) {
+        //            $includes[] = 'incomeCategories';
+        //        }
 
         $userModel = $userAction->handle(
             $user,

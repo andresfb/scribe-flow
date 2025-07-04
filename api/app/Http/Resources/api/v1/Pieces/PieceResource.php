@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\api\v1\Pieces;
 
 use App\Http\Resources\api\v1\Tags\TagResource;
@@ -9,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Piece */
-class PieceResource extends JsonResource
+final class PieceResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -59,11 +61,11 @@ class PieceResource extends JsonResource
                     $request->routeIs('pieces.create'),
                     $this->piece_theme_id ?? 0
                 ),
-                'setting_time_period' =>  $this->when(
+                'setting_time_period' => $this->when(
                     $request->routeIs('pieces.show', 'pieces.create'),
                     $this->setting_time_period ?? '',
                 ),
-                'setting_location' =>  $this->when(
+                'setting_location' => $this->when(
                     $request->routeIs('pieces.show', 'pieces.create'),
                     $this->setting_location ?? '',
                 ),

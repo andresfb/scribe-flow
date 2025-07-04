@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dtos\Users;
 
 use Illuminate\Support\Facades\Hash;
 use Spatie\LaravelData\Data;
 
-class UserItem extends Data
+final class UserItem extends Data
 {
     public function __construct(
         public readonly string $name = '',

@@ -19,8 +19,8 @@ use App\Models\Pieces\Piece;
 use App\Services\GeneratorContentService;
 use Exception;
 use Illuminate\Console\Command;
-
 use Throwable;
+
 use function Laravel\Prompts\clear;
 
 final class TestAppCommand extends Command

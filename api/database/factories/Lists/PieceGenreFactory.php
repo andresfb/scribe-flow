@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories\Lists;
 
 use App\Models\Lists\PieceGenre;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
-class PieceGenreFactory extends Factory
+final class PieceGenreFactory extends Factory
 {
     protected $model = PieceGenre::class;
 

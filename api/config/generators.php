@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Services\OllamaServiceCheckerInterface;
 use Prism\Prism\Enums\Provider;
 

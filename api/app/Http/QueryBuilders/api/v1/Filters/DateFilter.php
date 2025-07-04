@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\QueryBuilders\api\v1\Filters;
 
 use Carbon\CarbonImmutable;
-use Spatie\QueryBuilder\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\QueryBuilder\Filters\Filter;
 
-class DateFilter implements Filter
+final class DateFilter implements Filter
 {
     private readonly string $timezone;
 

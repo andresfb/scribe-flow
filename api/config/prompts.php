@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     'pieces' => [
@@ -52,8 +54,8 @@ return [
             'base' => env(
                 'PROMPTS_PIECES_ENDINGS',
                 'Please respond with the content only; do not add any extra options or comments. '
-                . "\n Return the data in JSON format using the following structure: "
-                . ' { "content": "[CONTENT HERE]"%s } '
+                ."\n Return the data in JSON format using the following structure: "
+                .' { "content": "[CONTENT HERE]"%s } '
             ),
 
             'title_template' => env(

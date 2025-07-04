@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Carbon\CarbonImmutable;
@@ -24,11 +26,11 @@ use Laravel\Sanctum\HasApiTokens;
  * @property ?CarbonImmutable $created_at
  * @property ?CarbonImmutable $updated_at
  */
-class User extends Authenticatable
+final class User extends Authenticatable
 {
+    use HasApiTokens;
     use HasFactory;
     use Notifiable;
-    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -54,7 +56,7 @@ class User extends Authenticatable
         'two_factor_confirmed_at',
     ];
 
-    public static function getDefaultUser(): ?User
+    public static function getDefaultUser(): ?self
     {
         return self::where('is_default', true)
             ->first();

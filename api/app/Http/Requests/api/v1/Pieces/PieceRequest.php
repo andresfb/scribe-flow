@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\api\v1\Pieces;
 
 use App\Traits\FailedValidator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PieceRequest extends FormRequest
+final class PieceRequest extends FormRequest
 {
     use FailedValidator;
 

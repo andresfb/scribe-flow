@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories\Lists;
 
 use App\Models\Lists\PieceType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PieceTypeFactory extends Factory
+final class PieceTypeFactory extends Factory
 {
     protected $model = PieceType::class;
 

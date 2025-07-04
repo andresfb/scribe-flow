@@ -17,7 +17,7 @@ final readonly class PieceDeleteAction
      */
     public function handle(Piece $model): void
     {
-        DB::transaction(static function ()use ($model): void {
+        DB::transaction(static function () use ($model): void {
             $model->syncTags([]);
 
             // TODO: delete any extra child records

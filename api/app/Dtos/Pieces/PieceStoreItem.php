@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dtos\Pieces;
 
 use Illuminate\Support\Carbon;
@@ -8,7 +10,7 @@ use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 
-class PieceStoreItem extends Data
+final class PieceStoreItem extends Data
 {
     public function __construct(
         public readonly int|Optional $piece_type_id,
@@ -25,11 +27,11 @@ class PieceStoreItem extends Data
         public readonly string|Optional $synopsis,
         public readonly int|Optional $target_word_count,
         public readonly int|Optional $current_word_count,
-        #[WithCast(DateTimeInterfaceCast::class, format: "Y-m-d")]
+        #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
         public readonly Carbon|Optional $start_date,
-        #[WithCast(DateTimeInterfaceCast::class, format: "Y-m-d")]
+        #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
         public readonly Carbon|Optional $target_completion_date,
-        #[WithCast(DateTimeInterfaceCast::class, format: "Y-m-d")]
+        #[WithCast(DateTimeInterfaceCast::class, format: 'Y-m-d')]
         public readonly Carbon|Optional $completion_date,
         public readonly array|Optional $themes,
         public readonly array|Optional $tags,

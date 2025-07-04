@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\QueryBuilders\api\v1\Pieces;
 
 use App\Http\QueryBuilders\api\v1\Filters\DateFilter;
@@ -10,7 +12,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class PieceListQuery extends QueryBuilder
+final class PieceListQuery extends QueryBuilder
 {
     public function __construct(PieceListRequest $request)
     {
@@ -33,33 +35,33 @@ class PieceListQuery extends QueryBuilder
             AllowedSort::field('created', 'created_at'),
             AllowedSort::field('updated', 'updated_at'),
         )
-        ->allowedFilters(
-            // TODO: See how to filter by child relationships in the Spatie QueryBuilder
-            AllowedFilter::exact('status', 'piece_status_id'),
-            AllowedFilter::exact('type', 'piece_type_id'),
-            AllowedFilter::exact('pov', 'piece_pov_id'),
-            AllowedFilter::exact('tense', 'piece_tense_id'),
-            AllowedFilter::exact('genre', 'piece_genre_id'),
-            AllowedFilter::exact('sub_genre', 'piece_sub_genre_id'),
-            AllowedFilter::exact('tone', 'piece_tone_id'),
-            AllowedFilter::exact('theme', 'piece_theme_id'),
-            AllowedFilter::partial('period', 'setting_time_period'),
-            AllowedFilter::partial('location', 'setting_location'),
-            AllowedFilter::custom(
-                'search',
-                new FuzzyFilter(
-                    'title',
-                    'synopsis',
-                    'genre',
-                    'sub_genre',
-                    'setting_time_period',
-                    'setting_location'
-                )
-            ),
-            AllowedFilter::custom('created', new DateFilter),
-            AllowedFilter::custom('start_date', new DateFilter),
-            AllowedFilter::custom('completion_date', new DateFilter),
-        );
+            ->allowedFilters(
+                // TODO: See how to filter by child relationships in the Spatie QueryBuilder
+                AllowedFilter::exact('status', 'piece_status_id'),
+                AllowedFilter::exact('type', 'piece_type_id'),
+                AllowedFilter::exact('pov', 'piece_pov_id'),
+                AllowedFilter::exact('tense', 'piece_tense_id'),
+                AllowedFilter::exact('genre', 'piece_genre_id'),
+                AllowedFilter::exact('sub_genre', 'piece_sub_genre_id'),
+                AllowedFilter::exact('tone', 'piece_tone_id'),
+                AllowedFilter::exact('theme', 'piece_theme_id'),
+                AllowedFilter::partial('period', 'setting_time_period'),
+                AllowedFilter::partial('location', 'setting_location'),
+                AllowedFilter::custom(
+                    'search',
+                    new FuzzyFilter(
+                        'title',
+                        'synopsis',
+                        'genre',
+                        'sub_genre',
+                        'setting_time_period',
+                        'setting_location'
+                    )
+                ),
+                AllowedFilter::custom('created', new DateFilter),
+                AllowedFilter::custom('start_date', new DateFilter),
+                AllowedFilter::custom('completion_date', new DateFilter),
+            );
     }
 
     public function loadRelationship(?string $relationship): self

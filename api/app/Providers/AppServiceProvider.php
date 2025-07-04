@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
@@ -11,7 +13,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -31,16 +33,16 @@ class AppServiceProvider extends ServiceProvider
         $this->configureVite();
 
         if ($this->app->isProduction()) {
-            $this->app['request']->server->set('HTTPS','on');
+            $this->app['request']->server->set('HTTPS', 'on');
             URL::forceScheme('https');
         } else {
             URL::forceScheme('http');
         }
 
-        RateLimiter::for('api', static fn(Request $request) =>
+        RateLimiter::for('api', static fn (Request $request) =>
             // 60 requests per minute, segmented by user ID or IP
             Limit::perMinute(90)
-            ->by($request->user()?->id ?: $request->ip()));
+                ->by($request->user()?->id ?: $request->ip()));
     }
 
     /**

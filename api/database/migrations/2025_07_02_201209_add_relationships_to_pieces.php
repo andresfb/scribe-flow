@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Lists\PieceGenre;
 use App\Models\Lists\PieceTheme;
 use App\Models\Lists\PieceTone;

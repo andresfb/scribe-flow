@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Lists\PiecePov;
 use App\Models\Lists\PieceStatus;
 use App\Models\Lists\PieceTense;

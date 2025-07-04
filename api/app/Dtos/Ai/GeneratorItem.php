@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dtos\Ai;
 
 use Spatie\LaravelData\Data;
@@ -22,7 +24,7 @@ final class GeneratorItem extends Data
 
     public function getModel(): string
     {
-        if (!blank($this->model)) {
+        if (! blank($this->model)) {
             return $this->model;
         }
 

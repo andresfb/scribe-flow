@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PieceTypeSeeder extends Seeder
+final class PieceTypeSeeder extends Seeder
 {
     public function run(): void
     {
@@ -18,7 +20,7 @@ class PieceTypeSeeder extends Seeder
                 'max_count' => 120000,
                 'randomizable' => true,
                 'active' => true,
-                'order' => 1
+                'order' => 1,
             ],
             [
                 'slug' => 'novella',
@@ -28,7 +30,7 @@ class PieceTypeSeeder extends Seeder
                 'max_count' => 40000,
                 'randomizable' => true,
                 'active' => true,
-                'order' => 2
+                'order' => 2,
             ],
             [
                 'slug' => 'short-story',
@@ -38,7 +40,7 @@ class PieceTypeSeeder extends Seeder
                 'max_count' => 10000,
                 'randomizable' => true,
                 'active' => true,
-                'order' => 3
+                'order' => 3,
             ],
             [
                 'slug' => 'screenplay',
@@ -48,7 +50,7 @@ class PieceTypeSeeder extends Seeder
                 'max_count' => 25000,
                 'randomizable' => false,
                 'active' => true,
-                'order' => 4
+                'order' => 4,
             ],
             [
                 'slug' => 'poem',
@@ -58,7 +60,7 @@ class PieceTypeSeeder extends Seeder
                 'max_count' => 200,
                 'randomizable' => false,
                 'active' => true,
-                'order' => 5
+                'order' => 5,
             ],
             [
                 'slug' => 'other',
@@ -68,7 +70,7 @@ class PieceTypeSeeder extends Seeder
                 'max_count' => 500000,
                 'randomizable' => false,
                 'active' => true,
-                'order' => 6
+                'order' => 6,
             ],
         ]);
     }

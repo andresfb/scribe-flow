@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\api\v1\Users;
 
 use App\Actions\Fortify\PasswordValidationRules;
@@ -7,7 +9,7 @@ use App\Traits\FailedValidator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class UserUpdateRequest extends FormRequest
+final class UserUpdateRequest extends FormRequest
 {
     use FailedValidator;
     use PasswordValidationRules;
@@ -21,7 +23,7 @@ class UserUpdateRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                'unique:users,email'
+                'unique:users,email',
             ],
             'password' => ['nullable', 'string', Password::default(), 'confirmed'],
             'is_default' => ['nullable', 'boolean'],

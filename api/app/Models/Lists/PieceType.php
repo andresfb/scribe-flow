@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Lists;
 
 use Exception;
@@ -19,7 +21,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property bool $active
  * @property int $order
  */
-class PieceType extends Model
+final class PieceType extends Model
 {
     use HasFactory;
     use HasSlug;

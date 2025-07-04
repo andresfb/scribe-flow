@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Models\User;
@@ -14,7 +16,7 @@ use function Laravel\Prompts\form;
 use function Laravel\Prompts\intro;
 use function Laravel\Prompts\outro;
 
-class ChangePasswordCommand extends Command
+final class ChangePasswordCommand extends Command
 {
     protected $signature = 'change:password';
 

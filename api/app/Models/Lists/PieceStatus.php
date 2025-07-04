@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Lists;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +17,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property bool $default
  * @property int $order
  */
-class PieceStatus extends Model
+final class PieceStatus extends Model
 {
     use HasFactory;
     use HasSlug;
@@ -29,6 +31,15 @@ class PieceStatus extends Model
         'default',
         'order',
     ];
+
+    public static function getDefault(): int
+    {
+        return self::query()
+            ->where('active', true)
+            ->where('default', true)
+            ->firstOrFail()
+            ->id;
+    }
 
     public function getSlugOptions(): SlugOptions
     {
@@ -44,14 +55,5 @@ class PieceStatus extends Model
             'default' => 'boolean',
             'order' => 'integer',
         ];
-    }
-
-    public static function getDefault(): int
-    {
-        return self::query()
-            ->where('active', true)
-            ->where('default', true)
-            ->firstOrFail()
-            ->id;
     }
 }

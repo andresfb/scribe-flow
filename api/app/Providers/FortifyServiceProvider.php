@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
@@ -14,7 +16,7 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
 
-class FortifyServiceProvider extends ServiceProvider
+final class FortifyServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -43,7 +45,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for(
             'two-factor',
-            static fn(Request $request) => Limit::perMinute(5)->by(
+            static fn (Request $request) => Limit::perMinute(5)->by(
                 $request->session()->get('login.id')
             )
         );

@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\QueryBuilders\api\v1\Filters;
 
-use Spatie\QueryBuilder\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Spatie\QueryBuilder\Filters\Filter;
 
-class FuzzyFilter implements Filter
+final class FuzzyFilter implements Filter
 {
     private readonly array $columns;
 
@@ -21,7 +23,7 @@ class FuzzyFilter implements Filter
     }
 
     /**
-     * @param string $value
+     * @param  string  $value
      */
     public function __invoke(Builder $query, mixed $value, string $property): void
     {
@@ -83,7 +85,7 @@ class FuzzyFilter implements Filter
             return false;
         }
 
-        return !Str::startsWith($property, $query->getModel()->getTable().'.');
+        return ! Str::startsWith($property, $query->getModel()->getTable().'.');
     }
 
     protected function isProperty(Builder $query, string $property): bool
@@ -92,7 +94,7 @@ class FuzzyFilter implements Filter
             return false;
         }
 
-        return !(Str::contains($property, '.')
+        return ! (Str::contains($property, '.')
             && ! Str::startsWith($property, $query->getModel()->getTable().'.'));
     }
 }

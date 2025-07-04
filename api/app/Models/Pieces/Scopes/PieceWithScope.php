@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Pieces\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class PieceWithScope implements Scope
+final class PieceWithScope implements Scope
 {
     public function apply(Builder $builder, Model $model): void
     {

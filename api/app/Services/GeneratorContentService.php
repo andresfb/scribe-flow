@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Dtos\Ai\PromptItem;
@@ -15,7 +17,7 @@ use Prism\Prism\Text\Response;
 use RuntimeException;
 use Throwable;
 
-readonly class GeneratorContentService
+final readonly class GeneratorContentService
 {
     private GeneratorRequest $request;
 
@@ -40,7 +42,7 @@ readonly class GeneratorContentService
             $output = $this->aiService->generate($promptItem);
 
             if (blank($output->text)) {
-                throw new RuntimeException("No text returned from AI");
+                throw new RuntimeException('No text returned from AI');
             }
 
             $outputText = str($output->text)
@@ -68,13 +70,13 @@ readonly class GeneratorContentService
                     'model' => $promptItem->generator->getModel(),
                     'prompt' => $promptItem->prompt,
                     'response' => $this->encodeResponse($output),
-                    'total_tokens' => $output->usage->completionTokens + $output->usage->promptTokens
+                    'total_tokens' => $output->usage->completionTokens + $output->usage->promptTokens,
                 ]);
             });
 
             // TODO: add the broadcasting processes
 
-//            broadcast(new ContentGenerated($this->generation))->toOthers();
+            //            broadcast(new ContentGenerated($this->generation))->toOthers();
         } catch (Throwable $e) {
             $data = [
                 'status' => GeneratorStatus::FAILED,
@@ -97,7 +99,7 @@ readonly class GeneratorContentService
 
             $this->request->update($data);
 
-//            broadcast(new ContentFailed($this->generation))->toOthers();
+            //            broadcast(new ContentFailed($this->generation))->toOthers();
 
             Log::error("Error generating request id: $requestId: {$e->getMessage()}");
             Log::debug($e->getTraceAsString());
@@ -109,7 +111,7 @@ readonly class GeneratorContentService
      */
     private function encodeResponse(?Response $response): array
     {
-        if (!$response instanceof Response) {
+        if (! $response instanceof Response) {
             return [];
         }
 
@@ -127,7 +129,7 @@ readonly class GeneratorContentService
 
         Log::info(
             "AI Generated this response: $aiResponse from this request: "
-            . print_r($this->request->toArray(), true)
+            .print_r($this->request->toArray(), true)
         );
 
         return ['ai_response' => $aiResponse];

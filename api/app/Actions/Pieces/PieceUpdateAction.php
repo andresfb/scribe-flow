@@ -27,7 +27,7 @@ final readonly class PieceUpdateAction
 
             $updated = $model->update($data);
             if (! $updated) {
-                throw new RuntimeException("Could not update piece", 406);
+                throw new RuntimeException('Could not update piece', 406);
             }
 
             $model->syncTags($tags);

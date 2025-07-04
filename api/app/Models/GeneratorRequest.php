@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\GeneratorStatus;
@@ -24,7 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property ?CarbonImmutable $created_at
  * @property ?CarbonImmutable $updated_at
  */
-class GeneratorRequest extends Model
+final class GeneratorRequest extends Model
 {
     use SoftDeletes;
 

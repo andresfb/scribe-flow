@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories\Pieces;
 
 use App\Models\Lists\PieceGenre;
@@ -13,7 +15,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class PieceFactory extends Factory
+final class PieceFactory extends Factory
 {
     protected $model = Piece::class;
 
@@ -37,7 +39,7 @@ class PieceFactory extends Factory
             'created_at' => $now,
             'updated_at' => $now,
 
-            'user_id' =>User::factory(),
+            'user_id' => User::factory(),
             'piece_type_id' => PieceType::factory(),
             'piece_status_id' => PieceStatus::factory(),
             'piece_pov_id' => PiecePov::factory(),

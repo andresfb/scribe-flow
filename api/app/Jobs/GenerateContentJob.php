@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jobs;
 
 use App\Services\GeneratorContentService;
@@ -11,14 +13,14 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class GenerateContentJob implements ShouldQueue
+final class GenerateContentJob implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
 
-    public function __construct(private readonly int $requestId){}
+    public function __construct(private readonly int $requestId) {}
 
     /**
      * @throws Throwable

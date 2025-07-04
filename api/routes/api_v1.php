@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\api\v1\Listings\PieceGenreController;
 use App\Http\Controllers\api\v1\Listings\PiecePovController;
 use App\Http\Controllers\api\v1\Listings\PieceStatusListController;
@@ -21,7 +23,7 @@ Route::middleware(['auth:sanctum'])
             ]);
 
             return response()->json([
-                'message' => 'Hello my baby, hello my honey, hello my sweet '.$request->input('name')
+                'message' => 'Hello my baby, hello my honey, hello my sweet '.$request->input('name'),
             ]);
         });
 
@@ -50,7 +52,7 @@ Route::middleware(['auth:sanctum'])
             ->name('piece-themes.list');
 
         Route::resource('/pieces', PieceController::class, [
-            'except' => ['edit']
+            'except' => ['edit'],
         ]);
 
         Route::put('/pieces/generate', PieceGenerateController::class)

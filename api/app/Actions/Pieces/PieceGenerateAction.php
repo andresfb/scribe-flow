@@ -21,7 +21,7 @@ final readonly class PieceGenerateAction
      */
     public function handle(PieceStoreItem $item, int $userId): int
     {
-        return DB::transaction(static function () use($item, $userId) : int {
+        return DB::transaction(static function () use ($item, $userId): int {
             $pieceType = PieceType::where('id', $item->piece_type_id)
                 ->where('active', true)
                 ->firstOrFail();
