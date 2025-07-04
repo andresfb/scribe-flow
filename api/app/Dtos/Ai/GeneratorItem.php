@@ -6,18 +6,28 @@ use Spatie\LaravelData\Data;
 
 final class GeneratorItem extends Data
 {
+    private string $model = '';
+
     public function __construct(
         public readonly string $provider,
         public readonly bool $enabled,
         public readonly array $models,
-        public readonly int $maxTokens,
-        public readonly float $presencePenalty,
-        public readonly int $requestTimeout,
+        public readonly int $max_tokens,
+        public readonly float $presence_penalty,
+        public readonly int $request_timeout,
         public readonly float $temperature,
+        public readonly bool $check_service,
+        public readonly ?string $service_checker,
     ) {}
 
     public function getModel(): string
     {
-        return (string) collect($this->models)->random();
+        if (!blank($this->model)) {
+            return $this->model;
+        }
+
+        $this->model = (string) collect($this->models)->random();
+
+        return $this->model;
     }
 }

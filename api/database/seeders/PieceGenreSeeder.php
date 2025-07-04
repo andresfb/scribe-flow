@@ -17,7 +17,10 @@ class PieceGenreSeeder extends Seeder
             DB::table('piece_genres')->insert([
                 'slug' => str($genre->title)->slug(),
                 'name' => $genre->title,
-                'description' => $genre->description,
+                'description' => str($genre->description)
+                    ->replace('novels', 'stories')
+                    ->replace('Novels', 'Stories')
+                    ->value(),
                 'active' => (bool) $genre->active,
             ]);
         }

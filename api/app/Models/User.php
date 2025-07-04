@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,8 +21,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property bool $is_default
  * @property string $timezone
  * @property string $remember_token
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property ?CarbonImmutable $created_at
+ * @property ?CarbonImmutable $updated_at
  */
 class User extends Authenticatable
 {

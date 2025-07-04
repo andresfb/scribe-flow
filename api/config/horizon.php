@@ -229,41 +229,45 @@ return [
 
         ],
 
-        'default-supervisor' => [
-            'connection' => 'redis',
-            'queue' => ['default'],
-            'balance' => 'auto',
-            'minProcesses' => 1,
-            'maxProcesses' => 2,
-            'tries' => 1,
-        ],
+        'local' => [
 
-        'search-supervisor' => [
-            'connection' => 'redis',
-            'queue' => ['search'],
-            'balance' => 'simple',
-            'processes' => 1,
-            'maxProcesses' => 1,
-            'tries' => 1,
-        ],
+            'default-supervisor' => [
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'auto',
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
+                'tries' => 1,
+            ],
 
-        'media-supervisor' => [
-            'connection' => 'redis',
-            'queue' => ['media'],
-            'balance' => 'auto',
-            'minProcesses' => 1,
-            'maxProcesses' => 2,
-            'timeout' => 300, // 5 Minutes
-            'tries' => 1,
-        ],
+            'search-supervisor' => [
+                'connection' => 'redis',
+                'queue' => ['search'],
+                'balance' => 'simple',
+                'processes' => 1,
+                'maxProcesses' => 1,
+                'tries' => 1,
+            ],
 
-        'ai-supervisor' => [
-            'connection' => 'redis',
-            'queue' => ['ai'],
-            'balance' => 'simple',
-            'maxProcesses' => 1,
-            'timeout' => 300, // 5 Minutes
-            'tries' => 1,
+            'media-supervisor' => [
+                'connection' => 'redis',
+                'queue' => ['media'],
+                'balance' => 'auto',
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
+                'timeout' => 300, // 5 Minutes
+                'tries' => 1,
+            ],
+
+            'ai-supervisor' => [
+                'connection' => 'redis',
+                'queue' => ['ai'],
+                'balance' => 'simple',
+                'maxProcesses' => 1,
+                'timeout' => 300, // 5 Minutes
+                'tries' => 1,
+            ],
+
         ],
 
     ],

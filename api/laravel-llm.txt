@@ -1,0 +1,1288 @@
+TITLE: Extend Laravel Collection with a custom 'toUpper' macro
+DESCRIPTION: Illustrates how to add a new, custom method named `toUpper` to the `Illuminate\Support\Collection` class using the `macro` feature. This macro iterates over the collection's string values and converts them to uppercase using `Illuminate\Support\Str::upper`.
+SOURCE: https://laravel.com/docs/12.x/collections
+
+LANGUAGE: PHP
+CODE:
+```
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+
+Collection::macro('toUpper', function () {
+    return $this->map(function (string $value) {
+        return Str::upper($value);
+    });
+});
+
+$collection = collect(['first', 'second']);
+
+$upper = $collection->toUpper();
+
+// ['FIRST', 'SECOND']
+```
+
+----------------------------------------
+
+TITLE: Conditionally Register a Service Binding with Laravel bindIf
+DESCRIPTION: Illustrates using `$this->app->bindIf()` to register a service binding only if one has not already been registered for the given type. This prevents accidental overwrites of existing bindings.
+SOURCE: https://laravel.com/docs/12.x/container
+
+LANGUAGE: PHP
+CODE:
+```
+$this->app->bindIf(Transistor::class, function (Application $app) {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
+
+----------------------------------------
+
+TITLE: Type-hint Interfaces for Dependency Injection in Laravel
+DESCRIPTION: This example shows how to type-hint an interface in a class constructor. When this class is resolved by the Laravel container, it will automatically inject the concrete implementation that has been bound to the `EventPusher` interface.
+SOURCE: https://laravel.com/docs/12.x/container
+
+LANGUAGE: PHP
+CODE:
+```
+use App\Contracts\EventPusher;
+
+/**
+ * Create a new class instance.
+ */
+public function __construct(
+    protected EventPusher $pusher,
+) {}
+```
+
+----------------------------------------
+
+TITLE: Manually Register Laravel Observer in Service Provider
+DESCRIPTION: Register an Eloquent observer manually by invoking the `observe` method on the model within the `boot` method of an application's service provider (e.g., `AppServiceProvider`). This provides programmatic control over observer registration.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: PHP
+CODE:
+```
+use AppModelsUser;
+use AppObserversUserObserver;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    User::observe(UserObserver::class);
+}
+```
+
+----------------------------------------
+
+TITLE: Define PHP Class with Dependency-Injected Method
+DESCRIPTION: Defines a `PodcastStats` class in PHP with a `generate` method. This method demonstrates dependency injection by type-hinting an `AppleMusic` instance, which the Laravel container can automatically resolve and inject when the method is called.
+SOURCE: https://laravel.com/docs/12.x/container
+
+LANGUAGE: PHP
+CODE:
+```
+namespace App;
+
+use AppServicesAppleMusic;
+
+class PodcastStats
+{
+    /**
+     * Generate a new podcast stats report.
+     */
+    public function generate(AppleMusic $apple): array
+    {
+        return [
+            // ...
+        ];
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Dispatching Job After Database Commit in Laravel
+DESCRIPTION: This snippet demonstrates how to ensure a job is dispatched only after all open database transactions have been successfully committed. This is useful when the 'after_commit' queue connection configuration option is not set to true.
+SOURCE: https://laravel.com/docs/12.x/queues
+
+LANGUAGE: php
+CODE:
+```
+use App\Jobs\ProcessPodcast;
+
+ProcessPodcast::dispatch($podcast)->afterCommit();
+```
+
+----------------------------------------
+
+TITLE: Laravel Collection unless() Method - Basic Conditional Execution
+DESCRIPTION: The `unless` method executes a given callback only if the first argument evaluates to `false`. The collection instance and the boolean value are passed to the closure. This example demonstrates how `unless` prevents execution when the condition is `true` and allows it when `false`.
+SOURCE: https://laravel.com/docs/12.x/collections
+
+LANGUAGE: PHP
+CODE:
+```
+$collection = collect([1, 2, 3]);
+
+$collection->unless(true, function (Collection $collection, bool $value) {
+    return $collection->push(4);
+});
+
+$collection->unless(false, function (Collection $collection, bool $value) {
+    return $collection->push(5);
+});
+
+$collection->all();
+
+// [1, 2, 3, 5]
+```
+
+----------------------------------------
+
+TITLE: Order `belongsToMany` Relationships by Pivot Table Columns
+DESCRIPTION: Shows how to use the `orderByPivot` method to sort the results of a `belongsToMany` relationship query based on a column in the intermediate pivot table. This allows for custom ordering of related models based on attributes stored in the pivot table.
+SOURCE: https://laravel.com/docs/12.x/eloquent-relationships
+
+LANGUAGE: PHP
+CODE:
+```
+return $this->belongsToMany(Badge::class)
+    ->where('rank', 'gold')
+    ->orderByPivot('created_at', 'desc');
+```
+
+----------------------------------------
+
+TITLE: Injecting Request in Laravel Controller Method
+DESCRIPTION: Demonstrates how to inject the `Illuminate\Http\Request` instance into a controller method (`store`) to access incoming request data, such as input fields via `$request->input('name')`.
+SOURCE: https://laravel.com/docs/12.x/requests
+
+LANGUAGE: php
+CODE:
+```
+namespace App\Http\Controllers;
+
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    /**
+     * Store a new user.
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $name = $request->input('name');
+
+        // Store the user...
+
+        return redirect('/users');
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Assign Custom Eloquent Collection using CollectedBy Attribute (PHP)
+DESCRIPTION: To associate a custom `Collection` object with an Eloquent model, you can use the `CollectedBy` attribute. This attribute, applied directly to the model class, specifies which custom collection class should be instantiated when Eloquent returns a collection of that model type.
+SOURCE: https://laravel.com/docs/12.x/eloquent-collections
+
+LANGUAGE: PHP
+CODE:
+```
+<?php
+
+namespace App\Models;
+
+use App\Support\UserCollection;
+use Illuminate\Database\Eloquent\Attributes\CollectedBy;
+use Illuminate\Database\Eloquent\Model;
+
+#[CollectedBy(UserCollection::class)]
+class User extends Model
+{
+    // ...
+}
+```
+
+----------------------------------------
+
+TITLE: Access Eloquent Model Attribute with Defined Accessor (PHP)
+DESCRIPTION: This PHP example demonstrates how to retrieve the value of an attribute (`first_name`) on an Eloquent model instance after an accessor has been defined for it. The accessor's logic is automatically applied when the attribute is accessed, returning the transformed value.
+SOURCE: https://laravel.com/docs/12.x/eloquent-mutators
+
+LANGUAGE: php
+CODE:
+```
+use App\Models\User;
+
+$user = User::find(1);
+
+$firstName = $user->first_name;
+```
+
+----------------------------------------
+
+TITLE: Define Laravel Custom Cast for Address Value Object
+DESCRIPTION: This PHP class implements `Illuminate\Contracts\Database\Eloquent\CastsAttributes` to handle casting multiple database columns (`address_line_one`, `address_line_two`) into a single `Address` value object and vice-versa. The `get` method constructs the `Address` object from model attributes, while the `set` method converts the `Address` object back into an array of storable key-value pairs for the database, ensuring data integrity.
+SOURCE: https://laravel.com/docs/12.x/eloquent-mutators
+
+LANGUAGE: php
+CODE:
+```
+<?php
+
+namespace App\Casts;
+
+use App\ValueObjects\Address;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
+
+class AsAddress implements CastsAttributes
+{
+    /**
+     * Cast the given value.
+     *
+     * @param  array<string, mixed>  $attributes
+     */
+    public function get(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): Address {
+        return new Address(
+            $attributes['address_line_one'],
+            $attributes['address_line_two']
+        );
+    }
+
+    /**
+     * Prepare the given value for storage.
+     *
+     * @param  array<string, mixed>  $attributes
+     * @return array<string, string>
+     */
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): array {
+        if (! $value instanceof Address) {
+            throw new InvalidArgumentException('The given value is not an Address instance.');
+        }
+
+        return [
+            'address_line_one' => $value->lineOne,
+            'address_line_two' => $value->lineTwo,
+        ];
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Retrieve a collection of column values with Laravel DB pluck
+DESCRIPTION: Explains how to use `DB::table()->pluck('column_name')` to get an `Illuminate\Support\Collection` instance containing only the values of a single specified column from multiple rows. The example includes iterating through the resulting collection.
+SOURCE: https://laravel.com/docs/12.x/queries
+
+LANGUAGE: PHP
+CODE:
+```
+use Illuminate\Support\Facades\DB;
+
+$titles = DB::table('users')->pluck('title');
+
+foreach ($titles as $title) {
+    echo $title;
+}
+```
+
+----------------------------------------
+
+TITLE: Modify Laravel Collection in-place with transform()
+DESCRIPTION: The `transform` method iterates over the collection and calls the given callback with each item. The items in the collection are replaced by the values returned by the callback, directly modifying the original collection.
+SOURCE: https://laravel.com/docs/12.x/collections
+
+LANGUAGE: PHP
+CODE:
+```
+$collection = collect([1, 2, 3, 4, 5]);
+
+$collection->transform(function (int $item, int $key) {
+    return $item * 2;
+});
+
+$collection->all();
+
+// [2, 4, 6, 8, 10]
+```
+
+----------------------------------------
+
+TITLE: Implement `serialize` for Custom Cast Value Object Serialization
+DESCRIPTION: To enable serialization of custom value objects used in Eloquent models, your custom cast class must implement the `Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes` interface. This requires defining a `serialize` method that returns the string representation of the value object, ensuring it's properly converted when the model is serialized to an array or JSON.
+SOURCE: https://laravel.com/docs/12.x/eloquent-mutators
+
+LANGUAGE: php
+CODE:
+```
+/**
+ * Get the serialized representation of the value.
+ *
+ * @param  array<string, mixed>  $attributes
+ */
+public function serialize(
+    Model $model,
+    string $key,
+    mixed $value,
+    array $attributes,
+): string {
+    return (string) $value;
+}
+```
+
+----------------------------------------
+
+TITLE: Upserting Eloquent Records
+DESCRIPTION: The `upsert` method allows for atomic creation or updating of records. It takes an array of values to insert/update, a `uniqueBy` array of columns that uniquely identify records, and an `update` array of columns to modify if a match is found. Timestamps are automatically handled. Note that most databases require unique indexes on `uniqueBy` columns.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: PHP
+CODE:
+```
+Flight::upsert([
+    ['departure' => 'Oakland', 'destination' => 'San Diego', 'price' => 99],
+    ['departure' => 'Chicago', 'destination' => 'New York', 'price' => 150]
+], uniqueBy: ['departure', 'destination'], update: ['price']);
+```
+
+----------------------------------------
+
+TITLE: Retrieve Original Eloquent Model Attribute Values with getOriginal
+DESCRIPTION: This snippet demonstrates the `getOriginal()` method, which retrieves the original values of model attributes, regardless of any subsequent changes made to the model instance. It shows how to get a specific attribute's original value or an array of all original attributes.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: PHP
+CODE:
+```
+$user = User::find(1);
+
+$user->name; // John
+$user->email; // [email protected]
+
+$user->name = 'Jack';
+$user->name; // Jack
+
+$user->getOriginal('name'); // John
+$user->getOriginal(); // Array of original attributes...
+```
+
+----------------------------------------
+
+TITLE: Laravel Collection unless() Method - Conditional Execution with Else Callback
+DESCRIPTION: The `unless` method can accept a second callback, which will be executed if the first argument evaluates to `true`. This provides an 'else' functionality, allowing different actions based on the condition. In this example, the second callback adds `5` to the collection because the first argument is `true`.
+SOURCE: https://laravel.com/docs/12.x/collections
+
+LANGUAGE: PHP
+CODE:
+```
+$collection = collect([1, 2, 3]);
+
+$collection->unless(true, function (Collection $collection, bool $value) {
+    return $collection->push(4);
+}, function (Collection $collection, bool $value) {
+    return $collection->push(5);
+});
+
+$collection->all();
+
+// [1, 2, 3, 5]
+```
+
+----------------------------------------
+
+TITLE: Create or Retrieve Stripe Customer in Laravel
+DESCRIPTION: Explains how to use `createOrGetStripeCustomer` to retrieve a Stripe customer object for a given billable model, creating a new customer in Stripe if one doesn't already exist.
+SOURCE: https://laravel.com/docs/12.x/billing
+
+LANGUAGE: PHP
+CODE:
+```
+$stripeCustomer = $user->createOrGetStripeCustomer();
+```
+
+----------------------------------------
+
+TITLE: Implement Validation Rules in Laravel Form Request
+DESCRIPTION: The `rules` method within a Laravel form request class is where you define the validation rules for the incoming request data. It returns an array mapping field names to their corresponding validation rules, which are automatically applied when the request is processed.
+SOURCE: https://laravel.com/docs/12.x/validation
+
+LANGUAGE: php
+CODE:
+```
+/**
+ * Get the validation rules that apply to the request.
+ *
+ * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+ */
+public function rules(): array
+{
+    return [
+        'title' => 'required|unique:posts|max:255',
+        'body' => 'required',
+    ];
+}
+```
+
+----------------------------------------
+
+TITLE: Mark Exception Class to Prevent Reporting with ShouldntReport Interface
+DESCRIPTION: This code defines a custom exception class that implements the `Illuminate\Contracts\Debug\ShouldntReport` interface. Laravel's exception handler will automatically ignore any exception instance of a class that implements this interface, preventing it from being reported.
+SOURCE: https://laravel.com/docs/12.x/errors
+
+LANGUAGE: PHP
+CODE:
+```
+<?php
+
+namespace App\Exceptions;
+
+use Exception;
+use Illuminate\Contracts\Debug\ShouldntReport;
+
+class PodcastProcessingException extends Exception implements ShouldntReport
+{
+    //
+}
+```
+
+----------------------------------------
+
+TITLE: Create New Eloquent Model Instance
+DESCRIPTION: Demonstrates how to create a new model instance using the `create` method. This method returns the newly inserted model and requires the model to have mass assignable attributes defined to prevent security vulnerabilities.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: PHP
+CODE:
+```
+use App\Models\Flight;
+
+$flight = Flight::create([
+    'name' => 'London to Paris',
+]);
+```
+
+----------------------------------------
+
+TITLE: Implement Laravel Global Eloquent Scope
+DESCRIPTION: Provides an example of implementing a custom global Eloquent scope by creating a PHP class that implements the `Illuminate\Database\Eloquent\Scope` interface and defines the `apply` method to add `where` constraints to a query builder.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: PHP
+CODE:
+```
+<?php
+
+namespace App\Models\Scopes;
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
+
+class AncientScope implements Scope
+{
+    /**
+     * Apply the scope to a given Eloquent query builder.
+     */
+    public function apply(Builder $builder, Model $model): void
+    {
+        $builder->where('created_at', '<', now()->subYears(2000));
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Injecting Illuminate\Http\Request into a Route
+DESCRIPTION: This example shows how the Illuminate\Http\Request object can be type-hinted directly in a route definition. Laravel's container automatically injects the current request instance, demonstrating implicit dependency injection without manual container interaction.
+SOURCE: https://laravel.com/docs/12.x/container
+
+LANGUAGE: php
+CODE:
+```
+use Illuminate\Http\Request;
+
+Route::get('/', function (Request $request) {
+    // ...
+});
+```
+
+----------------------------------------
+
+TITLE: Remove Items from a Laravel Collection by Key
+DESCRIPTION: The `forget` method removes one or more items from the collection based on their specified keys. Unlike most other collection methods, `forget` modifies the collection in place rather than returning a new instance. It can remove single or multiple keys.
+SOURCE: https://laravel.com/docs/12.x/collections
+
+LANGUAGE: PHP
+CODE:
+```
+$collection = collect(['name' => 'Taylor', 'framework' => 'Laravel']);
+
+// Forget a single key...
+$collection->forget('name');
+
+// ['framework' => 'Laravel']
+
+// Forget multiple keys...
+$collection->forget(['name', 'framework']);
+
+// []
+```
+
+----------------------------------------
+
+TITLE: Remove Specific Global Scope by Class Name in Laravel
+DESCRIPTION: This example shows how to remove a specific global scope from an Eloquent query using the `withoutGlobalScope` method. It accepts the class name of the scope to be removed, allowing for temporary disabling of a previously applied global filter for a particular query.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: php
+CODE:
+```
+User::withoutGlobalScope(AncientScope::class)->get();
+```
+
+----------------------------------------
+
+TITLE: Lazy Eager Load Only If Missing in Laravel
+DESCRIPTION: Explains how to use the `loadMissing` method to eager load a relationship only if it has not already been loaded. This prevents redundant database queries and optimizes performance by avoiding unnecessary data retrieval.
+SOURCE: https://laravel.com/docs/12.x/eloquent-relationships
+
+LANGUAGE: PHP
+CODE:
+```
+$book->loadMissing('author');
+```
+
+----------------------------------------
+
+TITLE: Wait for JavaScript Event on Specific Selector (Laravel Dusk)
+DESCRIPTION: Demonstrates how to attach an event listener to a specific element using a CSS selector with the `waitForEvent` method in Laravel Dusk. This allows waiting for events on elements other than the `body` or a scoped element.
+SOURCE: https://laravel.com/docs/dusk
+
+LANGUAGE: PHP
+CODE:
+```
+$browser->waitForEvent('load', '.selector');
+```
+
+----------------------------------------
+
+TITLE: Use Page-Specific Shorthand Selectors in Laravel Dusk
+DESCRIPTION: Shows how to use a previously defined page-specific shorthand selector (e.g., `@email`) in a Laravel Dusk browser interaction. This allows for cleaner and more concise element targeting in tests.
+SOURCE: https://laravel.com/docs/12.x/dusk
+
+LANGUAGE: PHP
+CODE:
+```
+$browser->type('@email', '[email protected]');
+```
+
+----------------------------------------
+
+TITLE: Set Eloquent Model Primary Key Data Type to String
+DESCRIPTION: Illustrates how to specify that an Eloquent model's primary key is not an integer by defining the `protected $keyType` property as 'string'. This is crucial for models using UUIDs or other string-based primary keys.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: php
+CODE:
+```
+<?php
+
+class Flight extends Model
+{
+    /**
+     * The data type of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+}
+```
+
+----------------------------------------
+
+TITLE: Dump and Die in Laravel
+DESCRIPTION: The `dd` function dumps the given variables to the output and immediately terminates the script execution. It's commonly used for debugging purposes.
+SOURCE: https://laravel.com/docs/12.x/helpers
+
+LANGUAGE: PHP
+CODE:
+```
+dd($value);
+```
+
+LANGUAGE: PHP
+CODE:
+```
+dd($value1, $value2, $value3, ...);
+```
+
+----------------------------------------
+
+TITLE: Conditionally Invoke Closure if String Does Not Exactly Match (Laravel Str)
+DESCRIPTION: The `whenNotExactly` method checks if a fluent string instance does not precisely match a given string. If the strings are not identical, the provided closure is invoked, with the `Stringable` instance passed as an argument. This is useful for conditional logic when a string differs from an expected value.
+SOURCE: https://laravel.com/docs/12.x/strings
+
+LANGUAGE: PHP
+CODE:
+```
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('framework')->whenNotExactly('laravel', function (Stringable $string) {
+    return $string->title();
+});
+
+// 'Framework'
+```
+
+----------------------------------------
+
+TITLE: Implement and Route a Basic Laravel Controller
+DESCRIPTION: Defines a standard Laravel controller with a public method to handle HTTP requests and registers a corresponding route to invoke that method.
+SOURCE: https://laravel.com/docs/12.x/controllers
+
+LANGUAGE: php
+CODE:
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\View\View;
+
+class UserController extends Controller
+{
+    /**
+     * Show the profile for a given user.
+     */
+    public function show(string $id): View
+    {
+        return view('user.profile', [
+            'user' => User::findOrFail($id)
+        ]);
+    }
+}
+```
+
+LANGUAGE: php
+CODE:
+```
+use App\Http\Controllers\UserController;
+
+Route::get('/user/{id}', [UserController::class, 'show']);
+```
+
+----------------------------------------
+
+TITLE: Access a Parent Model via BelongsTo Relationship in Laravel
+DESCRIPTION: This PHP example demonstrates how to retrieve a comment's parent post by accessing the `post` dynamic relationship property after defining the `belongsTo` relationship.
+SOURCE: https://laravel.com/docs/12.x/eloquent-relationships
+
+LANGUAGE: PHP
+CODE:
+```
+use AppModelsComment;
+
+$comment = Comment::find(1);
+
+return $comment->post->title;
+```
+
+----------------------------------------
+
+TITLE: Register Eloquent Model Event Listeners with Closures
+DESCRIPTION: This PHP example shows how to register event listeners using closures directly within the `booted` method of an Eloquent model. This approach allows for inline handling of model events, such as the `created` event, without needing separate event classes. The closure receives an instance of the affected model.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: php
+CODE:
+```
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (User $user) {
+            // ...
+        });
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Check if Key Exists in Laravel Collection with has()
+DESCRIPTION: The `has` method determines if a given key exists in the collection. It can check for a single key or multiple keys, returning true if all specified keys are present, and false otherwise. This is useful for validating the presence of required data.
+SOURCE: https://laravel.com/docs/12.x/collections
+
+LANGUAGE: php
+CODE:
+```
+$collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
+
+$collection->has('product');
+// true
+
+$collection->has(['product', 'amount']);
+// true
+
+$collection->has(['amount', 'price']);
+// false
+```
+
+----------------------------------------
+
+TITLE: Define Eloquent Attribute Casts in Model
+DESCRIPTION: This PHP code snippet shows how to define attribute casts within a Laravel Eloquent model. The `casts` method returns an array mapping model attributes (e.g., `is_admin`) to their desired data types (e.g., `boolean`) for automatic type conversion when accessing the attribute.
+SOURCE: https://laravel.com/docs/12.x/eloquent-mutators
+
+LANGUAGE: PHP
+CODE:
+```
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_admin' => 'boolean',
+        ];
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Repopulate Form Fields with Blade old() Helper
+DESCRIPTION: For convenience within Blade templates, Laravel provides a global `old()` helper function. This snippet illustrates its usage to repopulate form fields with previously submitted input, returning `null` if no old input exists for the specified field.
+SOURCE: https://laravel.com/docs/12.x/validation
+
+LANGUAGE: Blade
+CODE:
+```
+<input type="text" name="title" value="{{ old('title') }}">
+```
+
+----------------------------------------
+
+TITLE: Debug Laravel HTTP Responses with DD Methods (Dump and Die)
+DESCRIPTION: Alternatively, use `dd`, `ddHeaders`, `ddBody`, `ddJson`, and `ddSession` methods to dump information about the response and then immediately stop script execution. This is useful for quickly debugging and terminating the test flow.
+SOURCE: https://laravel.com/docs/12.x/http-tests
+
+LANGUAGE: PHP
+CODE:
+```
+test('basic test', function () {
+    $response = $this->get('/');
+
+    $response->dd();
+    $response->ddHeaders();
+    $response->ddBody();
+    $response->ddJson();
+    $response->ddSession();
+});
+```
+
+LANGUAGE: PHP
+CODE:
+```
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     */
+    public function test_basic_test(): void
+    {
+        $response = $this->get('/');
+
+        $response->dd();
+        $response->ddHeaders();
+        $response->ddBody();
+        $response->ddJson();
+        $response->ddSession();
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Alias aggregate function results
+DESCRIPTION: Illustrates how to specify a custom alias for the result of an aggregate function like `withSum`, allowing you to access the aggregated value using a more descriptive or convenient name.
+SOURCE: https://laravel.com/docs/12.x/eloquent-relationships
+
+LANGUAGE: php
+CODE:
+```
+$posts = Post::withSum('comments as total_comments', 'votes')->get();
+
+foreach ($posts as $post) {
+    echo $post->total_comments;
+}
+```
+
+----------------------------------------
+
+TITLE: Add Columns After Existing Column in Laravel Migration (MariaDB/MySQL)
+DESCRIPTION: This example shows how to use the `after` method in Laravel migrations to specify the order of new columns. This functionality is specific to MariaDB and MySQL databases, allowing new columns to be placed immediately after a specified existing column.
+SOURCE: https://laravel.com/docs/12.x/migrations
+
+LANGUAGE: PHP
+CODE:
+```
+$table->after('password', function (Blueprint $table) {
+    $table->string('address_line1');
+    $table->string('address_line2');
+    $table->string('city');
+});
+```
+
+----------------------------------------
+
+TITLE: Assert Link Absence (Laravel Dusk)
+DESCRIPTION: Asserts that a link with the specified text content is not present on the page. This can be used to confirm that certain navigation options are hidden or unavailable under specific conditions.
+SOURCE: https://laravel.com/docs/12.x/dusk
+
+LANGUAGE: PHP
+CODE:
+```
+$browser->assertDontSeeLink($linkText);
+```
+
+----------------------------------------
+
+TITLE: Generate an Implicit Custom Validation Rule in Laravel
+DESCRIPTION: This Artisan command generates a new custom validation rule class named 'Uppercase' with the '--implicit' option. This option ensures the rule will run even if the attribute being validated is empty, allowing the developer to define its specific behavior for missing or empty inputs.
+SOURCE: https://laravel.com/docs/12.x/validation
+
+LANGUAGE: PHP
+CODE:
+```
+php artisan make:rule Uppercase --implicit
+```
+
+----------------------------------------
+
+TITLE: Define HasMany Relationship in Laravel User Model
+DESCRIPTION: Illustrates how to define a `HasMany` relationship within an Eloquent model. This example shows a `User` model having many `Post` models, setting up the relationship for subsequent querying.
+SOURCE: https://laravel.com/docs/12.x/eloquent-relationships
+
+LANGUAGE: PHP
+CODE:
+```
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class User extends Model
+{
+    /**
+     * Get all of the posts for the user.
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+}
+```
+
+----------------------------------------
+
+TITLE: Add custom validation logic to `suggest` using a closure
+DESCRIPTION: Illustrates how to implement custom validation rules for the `suggest` input by passing a closure to the `validate` argument. The closure receives the input value and should return an error message string if validation fails, or `null` if the input is valid.
+SOURCE: https://laravel.com/docs/12.x/prompts
+
+LANGUAGE: PHP
+CODE:
+```
+$name = suggest(
+    label: 'What is your name?',
+    options: ['Taylor', 'Dayle'],
+    validate: fn (string $value) => match (true) {
+        strlen($value) < 3 => 'The name must be at least 3 characters.',
+        strlen($value) > 255 => 'The name must not exceed 255 characters.',
+        default => null
+    }
+);
+```
+
+----------------------------------------
+
+TITLE: Filter Collection by Key-Value Pair (Loose Comparison)
+DESCRIPTION: Shows the `where` method filtering a collection based on a key-value pair using loose comparison. It extracts items where the specified key's value matches the given value.
+SOURCE: https://laravel.com/docs/12.x/collections
+
+LANGUAGE: PHP
+CODE:
+```
+$collection = collect([
+    ['product' => 'Desk', 'price' => 200],
+    ['product' => 'Chair', 'price' => 100],
+    ['product' => 'Bookcase', 'price' => 150],
+    ['product' => 'Door', 'price' => 100],
+]);
+
+$filtered = $collection->where('price', 100);
+
+$filtered->all();
+
+/*
+    [
+        ['product' => 'Chair', 'price' => 100],
+        ['product' => 'Door', 'price' => 100],
+    ]
+*/
+```
+
+----------------------------------------
+
+TITLE: Utilize Chained Eloquent Local Scopes
+DESCRIPTION: This PHP example shows how to apply defined local scopes to an Eloquent model query. Multiple scopes can be chained together to combine their constraints, such as retrieving popular and active users.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: PHP
+CODE:
+```
+use App\Models\User;
+
+$users = User::popular()->active()->orderBy('created_at')->get();
+```
+
+----------------------------------------
+
+TITLE: Include Soft Deleted Models in Eloquent Query
+DESCRIPTION: Demonstrates how to force soft deleted models to be included in query results using the `withTrashed()` method. By default, soft deleted models are excluded.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: PHP
+CODE:
+```
+use App\Models\Flight;
+
+$flights = Flight::withTrashed()
+    ->where('account_id', 1)
+    ->get();
+```
+
+----------------------------------------
+
+TITLE: Group Laravel Collection by String Key
+DESCRIPTION: Demonstrates how to use the `groupBy()` method on a Laravel Collection to group items by a simple string key, such as 'account_id'. The result is a new collection where keys are the grouped values and values are collections of matching items.
+SOURCE: https://laravel.com/docs/12.x/collections
+
+LANGUAGE: PHP
+CODE:
+```
+$collection = collect([
+    ['account_id' => 'account-x10', 'product' => 'Chair'],
+    ['account_id' => 'account-x10', 'product' => 'Bookcase'],
+    ['account_id' => 'account-x11', 'product' => 'Desk'],
+]);
+
+$grouped = $collection->groupBy('account_id');
+
+$grouped->all();
+
+/*
+    [
+        'account-x10' => [
+            ['account_id' => 'account-x10', 'product' => 'Chair'],
+            ['account_id' => 'account-x10', 'product' => 'Bookcase'],
+        ],
+        'account-x11' => [
+            ['account_id' => 'account-x11', 'product' => 'Desk'],
+        ],
+    ]
+*/
+```
+
+----------------------------------------
+
+TITLE: Configure Laravel Sanctum to Use Custom PersonalAccessToken Model
+DESCRIPTION: This PHP snippet illustrates how to instruct Laravel Sanctum to use a custom `PersonalAccessToken` model. By calling `Sanctum::usePersonalAccessTokenModel` within your `AppServiceProvider`'s `boot` method, you ensure that Sanctum utilizes your extended model for all API token operations, incorporating any custom logic or attributes you've defined.
+SOURCE: https://laravel.com/docs/12.x/sanctum
+
+LANGUAGE: PHP
+CODE:
+```
+use App\Models\Sanctum\PersonalAccessToken;
+use Laravel\Sanctum\Sanctum;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+}
+```
+
+----------------------------------------
+
+TITLE: Laravel TestResponse Assertion Methods Reference
+DESCRIPTION: A comprehensive list of all available assertion methods within Laravel's `Illuminate\Testing\TestResponse` class, used for validating various aspects of HTTP responses during testing.
+SOURCE: https://laravel.com/docs/12.x/http-tests
+
+LANGUAGE: APIDOC
+CODE:
+```
+Illuminate\Testing\TestResponse:
+  assertAccepted(): Asserts response has 202 HTTP status code.
+  assertBadRequest(): Asserts response has 400 HTTP status code.
+  assertClientError(): Asserts response has >= 400, < 500 HTTP status code.
+  assertConflict(): Asserts response has 409 HTTP status code.
+  assertCookie(cookieName: string, value: string = null): Asserts response contains given cookie.
+  assertCookieExpired(cookieName: string): Asserts response contains given cookie and it is expired.
+  assertCookieNotExpired(cookieName: string): Asserts response contains given cookie and it is not expired.
+  assertCookieMissing(cookieName: string): Asserts response does not contain given cookie.
+  assertCreated(): Asserts response has 201 HTTP status code.
+  assertDontSee(text: string, escape: bool = true): Asserts response does not contain given text.
+  assertDontSeeText(text: string): Asserts response does not contain given text, ignoring HTML.
+  assertDownload(): Asserts response is a download.
+  assertExactJson(data: array): Asserts response JSON matches exactly.
+  assertExactJsonStructure(structure: array): Asserts response JSON structure matches exactly.
+  assertForbidden(): Asserts response has 403 HTTP status code.
+  assertFound(): Asserts response has 302 HTTP status code.
+  assertGone(): Asserts response has 410 HTTP status code.
+  assertHeader(headerName: string, value: string = null): Asserts response contains given header.
+  assertHeaderMissing(headerName: string): Asserts response does not contain given header.
+  assertInternalServerError(): Asserts response has 500 HTTP status code.
+  assertJson(data: array): Asserts response contains given JSON fragment.
+  assertJsonCount(count: int, key: string = null): Asserts response JSON array has given count.
+  assertJsonFragment(data: array): Asserts response JSON contains given fragment.
+  assertJsonIsArray(key: string = null): Asserts response JSON is an array.
+  assertJsonIsObject(key: string = null): Asserts response JSON is an object.
+  assertJsonMissing(data: array): Asserts response JSON does not contain given fragment.
+  assertJsonMissingExact(data: array): Asserts response JSON does not exactly match given fragment.
+  assertJsonMissingValidationErrors(keys: array = null): Asserts response JSON has no validation errors.
+  assertJsonPath(path: string, value: mixed): Asserts response JSON path has given value.
+  assertJsonMissingPath(path: string): Asserts response JSON does not contain given path.
+  assertJsonStructure(structure: array): Asserts response JSON has given structure.
+  assertJsonValidationErrors(keys: array = null): Asserts response JSON has validation errors.
+  assertJsonValidationErrorFor(key: string): Asserts response JSON has validation error for given key.
+  assertLocation(uri: string): Asserts response has given Location header.
+  assertMethodNotAllowed(): Asserts response has 405 HTTP status code.
+  assertMovedPermanently(): Asserts response has 301 HTTP status code.
+  assertContent(content: string): Asserts response content matches.
+  assertNoContent(status: int = 204): Asserts response has no content and given status.
+  assertStreamed(): Asserts response is streamed.
+  assertStreamedContent(content: string): Asserts response streamed content matches.
+  assertNotFound(): Asserts response has 404 HTTP status code.
+  assertOk(): Asserts response has 200 HTTP status code.
+  assertPaymentRequired(): Asserts response has 402 HTTP status code.
+  assertPlainCookie(cookieName: string, value: string = null): Asserts response contains given plain cookie.
+  assertRedirect(uri: string = null): Asserts response is a redirect.
+  assertRedirectBack(): Asserts response redirects back.
+  assertRedirectBackWithErrors(): Asserts response redirects back with errors.
+  assertRedirectBackWithoutErrors(): Asserts response redirects back without errors.
+  assertRedirectContains(uri: string): Asserts response redirects to URI containing string.
+  assertRedirectToRoute(routeName: string, parameters: array = []): Asserts response redirects to given route.
+  assertRedirectToSignedRoute(routeName: string, parameters: array = []): Asserts response redirects to given signed route.
+  assertRequestTimeout(): Asserts response has 408 HTTP status code.
+  assertSee(text: string, escape: bool = true): Asserts response contains given text.
+  assertSeeInOrder(text: array, escape: bool = true): Asserts response contains given text in order.
+  assertSeeText(text: string): Asserts response contains given text, ignoring HTML.
+  assertSeeTextInOrder(text: array): Asserts response contains given text in order, ignoring HTML.
+  assertServerError(): Asserts response has >= 500, < 600 HTTP status code.
+  assertServiceUnavailable(): Asserts response has 503 HTTP status code.
+  assertSessionHas(key: string, value: mixed = null): Asserts session has given key/value.
+  assertSessionHasInput(key: string, value: mixed = null): Asserts session has given input key/value.
+  assertSessionHasAll(bindings: array): Asserts session has all given key/values.
+  assertSessionHasErrors(keys: array = null, format: string = null): Asserts session has errors.
+  assertSessionHasErrorsIn(bag: string, keys: array = null, format: string = null): Asserts session has errors in given bag.
+  assertSessionHasNoErrors(): Asserts session has no errors.
+  assertSessionDoesntHaveErrors(keys: array = null): Asserts session does not have errors.
+  assertSessionMissing(key: string): Asserts session does not have given key.
+  assertStatus(status: int): Asserts response has given HTTP status code.
+  assertSuccessful(): Asserts response has 2xx HTTP status code.
+  assertTooManyRequests(): Asserts response has 429 HTTP status code.
+  assertUnauthorized(): Asserts response has 401 HTTP status code.
+  assertUnprocessable(): Asserts response has 422 HTTP status code.
+  assertUnsupportedMediaType(): Asserts response has 415 HTTP status code.
+  assertValid(key: string = null): Asserts response has no validation errors for given key.
+  assertInvalid(key: string = null): Asserts response has validation errors for given key.
+  assertViewHas(key: string, value: mixed = null): Asserts view has given key/value.
+  assertViewHasAll(bindings: array): Asserts view has all given key/values.
+  assertViewIs(view: string): Asserts view is given view.
+  assertViewMissing(key: string): Asserts view does not have given key.
+```
+
+----------------------------------------
+
+TITLE: Query Eloquent Models Attached to a Collection in Many-to-Many Relationship in PHP
+DESCRIPTION: Illustrates how to use `whereAttachedTo` with an Eloquent collection to retrieve models attached to any of the models within the collection. This example retrieves posts attached to a collection of tags.
+SOURCE: https://laravel.com/docs/12.x/eloquent-relationships
+
+LANGUAGE: php
+CODE:
+```
+$tags = Tag::whereLike('name', '%laravel%')->get();
+
+$posts = Post::whereAttachedTo($tags)->get();
+```
+
+----------------------------------------
+
+TITLE: Start Laravel Development Servers
+DESCRIPTION: A sequence of commands to navigate into the newly created application directory, install frontend dependencies, build assets, and then start Laravel's local development server, queue worker, and Vite development server for live reloading.
+SOURCE: https://laravel.com/docs/12.x/installation
+
+LANGUAGE: bash
+CODE:
+```
+cd example-app
+npm install && npm run build
+composer run dev
+```
+
+----------------------------------------
+
+TITLE: Sync Many-to-Many Associations in Laravel Eloquent
+DESCRIPTION: Explains the `sync` method, which manages many-to-many associations by accepting an array of IDs. It ensures that only the provided IDs exist in the intermediate table, detaching any others.
+SOURCE: https://laravel.com/docs/12.x/eloquent-relationships
+
+LANGUAGE: PHP
+CODE:
+```
+$user->roles()->sync([1, 2, 3]);
+```
+
+----------------------------------------
+
+TITLE: Group Laravel Collection by Callback Function
+DESCRIPTION: Illustrates grouping Laravel Collection items using a callback function. This allows for custom grouping logic, such as extracting a substring from an item's property to define the group key, providing flexibility beyond simple key-based grouping.
+SOURCE: https://laravel.com/docs/12.x/collections
+
+LANGUAGE: PHP
+CODE:
+```
+$grouped = $collection->groupBy(function (array $item, int $key) {
+    return substr($item['account_id'], -3);
+});
+
+$grouped->all();
+
+/*
+    [
+        'x10' => [
+            ['account_id' => 'account-x10', 'product' => 'Chair'],
+            ['account_id' => 'account-x10', 'product' => 'Bookcase'],
+        ],
+        'x11' => [
+            ['account_id' => 'account-x11', 'product' => 'Desk'],
+        ],
+    ]
+*/
+```
+
+----------------------------------------
+
+TITLE: Eager Load Multiple Nested Relationships Using Array Syntax in Laravel
+DESCRIPTION: This snippet provides an alternative method for specifying multiple nested eager loaded relationships. It uses a nested array structure within the `with` method, which can be convenient for complex eager loading scenarios.
+SOURCE: https://laravel.com/docs/12.x/eloquent-relationships
+
+LANGUAGE: php
+CODE:
+```
+$books = Book::with([
+    'author' => [
+        'contacts',
+        'publisher',
+    ],
+])->get();
+```
+
+----------------------------------------
+
+TITLE: Merge Eloquent Attribute Casts at Runtime
+DESCRIPTION: This PHP code illustrates how to dynamically add or override attribute casts on a Laravel Eloquent model instance at runtime using the `mergeCasts` method. This allows for temporary cast definitions without modifying the model's static `casts` array, useful for specific operations.
+SOURCE: https://laravel.com/docs/12.x/eloquent-mutators
+
+LANGUAGE: PHP
+CODE:
+```
+$user->mergeCasts([
+    'is_admin' => 'integer',
+    'options' => 'object',
+]);
+```
+
+----------------------------------------
+
+TITLE: Create a One-Off Charge with `invoiceFor`
+DESCRIPTION: Shows an alternative method, `invoiceFor`, to create a simple one-off charge against the customer's default payment method, specifying a description and amount. It's recommended to use `invoicePrice` or `tabPrice` for better analytics.
+SOURCE: https://laravel.com/docs/12.x/billing
+
+LANGUAGE: php
+CODE:
+```
+$user->invoiceFor('One Time Fee', 500);
+```
+
+----------------------------------------
+
+TITLE: Laravel: Set Subscription Quantity
+DESCRIPTION: Allows you to set a specific quantity for the price when creating a subscription. This is done by invoking the `quantity` method on the subscription builder before creating the subscription.
+SOURCE: https://laravel.com/docs/12.x/billing
+
+LANGUAGE: PHP
+CODE:
+```
+$user->newSubscription('default', 'price_monthly')
+    ->quantity(5)
+    ->create($paymentMethod);
+```
+
+----------------------------------------
+
+TITLE: Throw Exception if Eloquent Model Not Found
+DESCRIPTION: Explains the `findOrFail` and `firstOrFail` methods, which retrieve a single Eloquent model but throw an `Illuminate\Database\Eloquent\ModelNotFoundException` if no matching record is found. This is particularly useful in routes or controllers for robust error handling when a record is expected to exist.
+SOURCE: https://laravel.com/docs/12.x/eloquent
+
+LANGUAGE: PHP
+CODE:
+```
+$flight = Flight::findOrFail(1);
+
+$flight = Flight::where('legs', '>', 3)->firstOrFail();
+```

@@ -12,6 +12,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property string $slug
  * @property string $name
  * @property bool $active
+ * @property bool $default
  * @property int $order
  */
 class PieceStatus extends Model
@@ -25,6 +26,7 @@ class PieceStatus extends Model
         'slug',
         'name',
         'active',
+        'default',
         'order',
     ];
 
@@ -39,7 +41,17 @@ class PieceStatus extends Model
     {
         return [
             'active' => 'boolean',
+            'default' => 'boolean',
             'order' => 'integer',
         ];
+    }
+
+    public static function getDefault(): int
+    {
+        return self::query()
+            ->where('active', true)
+            ->where('default', true)
+            ->firstOrFail()
+            ->id;
     }
 }

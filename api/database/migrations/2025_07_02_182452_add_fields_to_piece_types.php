@@ -13,11 +13,11 @@ return new class extends Migration
                 ->after('name')
                 ->nullable();
 
-            $table->unsignedSmallInteger('min_count')
+            $table->unsignedInteger('min_count')
                 ->after('description')
                 ->default(0);
 
-            $table->unsignedSmallInteger('max_count')
+            $table->unsignedInteger('max_count')
                 ->after('min_count')
                 ->default(0);
 

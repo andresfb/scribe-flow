@@ -6,7 +6,7 @@ return [
 
         'base' => env(
             'PROMPTS_PIECES_BASE',
-            'Please generate a %s of % words max '
+            'Please generate a %s of %d words max '
         ),
 
         'title' => env(
@@ -21,22 +21,22 @@ return [
 
         'genre' => env(
             'PROMPTS_PIECES_GENRE',
-            'in the %s genre described as "%s" '
+            'in the "%s" genre, described as "%s" '
         ),
 
         'sub_genre' => env(
             'PROMPTS_PIECES_SUB_GENRE',
-            'and the %s sub-genre described as "%s" '
+            'and the "%s" sub-genre described as "%s" '
         ),
 
         'tone' => env(
             'PROMPTS_PIECES_TONE',
-            'using a %s tone described as "%s" '
+            'using a "%s" tone described as "%s" '
         ),
 
         'theme' => env(
             'PROMPTS_PIECES_THEME',
-            'with a %s theme described as "%s" '
+            'with a "%s" theme described as "%s" '
         ),
 
         'settings' => [
@@ -66,7 +66,7 @@ return [
         'limits' => [
 
             'words' => [
-                'synopsys' => env('PROMPTS_PIECES_LIMITS_WORDS_SYNOPSYS', 500),
+                'synopsis' => (int) env('PROMPTS_PIECES_LIMITS_WORDS_SYNOPSIS', 200),
             ],
 
         ],

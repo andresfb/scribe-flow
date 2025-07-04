@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\GeneratorStatus;
 use App\Enums\GeneratorType;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,12 +14,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $user_id
  * @property string $type
  * @property string $status
- * @property string $service
- * @property string $model
+ * @property ?string $service
+ * @property ?string $model
+ * @property ?string $prompt
  * @property int $total_tokens
- * @property array $request
- * @property array $content
- * @property array $response
+ * @property ?array $request
+ * @property ?array $response
+ * @property ?CarbonImmutable $deleted_at
+ * @property ?CarbonImmutable $created_at
+ * @property ?CarbonImmutable $updated_at
  */
 class GeneratorRequest extends Model
 {
@@ -30,9 +34,9 @@ class GeneratorRequest extends Model
         'status',
         'service',
         'model',
+        'prompt',
         'total_tokens',
         'request',
-        'content',
         'response',
     ];
 
@@ -45,7 +49,6 @@ class GeneratorRequest extends Model
     {
         return [
             'request' => 'array',
-            'content' => 'array',
             'response' => 'array',
             'total_tokens' => 'integer',
             'type' => GeneratorType::class,

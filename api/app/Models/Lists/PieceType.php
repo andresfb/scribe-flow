@@ -2,6 +2,7 @@
 
 namespace App\Models\Lists;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
@@ -45,7 +46,13 @@ class PieceType extends Model
             return 1000;
         }
 
-        return (int) ceil(($type->min_count + $type->max_count) / 2);
+        try {
+            $maxMultiple = (int) floor($type->max_count / $type->min_count);
+
+            return random_int(1, $maxMultiple) * $type->max_count;
+        } catch (Exception) {
+            return $type->min_count;
+        }
     }
 
     public function getSlugOptions(): SlugOptions

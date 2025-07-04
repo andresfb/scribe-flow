@@ -4,12 +4,14 @@ namespace App\Services;
 
 use App\Enums\GeneratorStatus;
 use App\Models\GeneratorRequest;
+use App\Models\Lists\PieceStatus;
 use App\Models\Lists\PieceType;
 use App\Models\Pieces\Piece;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Prism\Prism\Text\Response;
+use RuntimeException;
 use Throwable;
 
 readonly class GeneratorContentService
@@ -28,25 +30,28 @@ readonly class GeneratorContentService
     {
         $output = null;
         $promptItem = null;
-        $this->request = GeneratorRequest::whereId($requestId)
+        $this->request = GeneratorRequest::query()
+            ->where('id', $requestId)
             ->firstOrFail();
 
         try {
             $promptItem = $this->prepareService->execute($this->request);
             $output = $this->aiService->generate($promptItem);
-            $content = json_decode($output->text, true, 512, JSON_THROW_ON_ERROR);
+
+            if (blank($output->text)) {
+                throw new RuntimeException("No text returned from AI");
+            }
+
+            $outputText = str($output->text)
+                ->replace('`', '')
+                ->replace('json', '');
+
+            $content = json_decode($outputText, true, 512, JSON_THROW_ON_ERROR);
 
             DB::transaction(function () use ($content, $output, $promptItem) {
-                $this->request->update([
-                    'status' => GeneratorStatus::COMPLETED,
-                    'response' => $this->encodeResponse($output),
-                    'service' => $promptItem->generator->provider,
-                    'model' => $promptItem->generator->getModel(),
-                    'total_tokens' => $output->usage->completionTokens + $output?->usage->promptTokens
-                ]);
-
                 $data = $promptItem->pieceItem->toArray();
                 $data['user_id'] = $this->request->user_id;
+                $data['piece_status_id'] = PieceStatus::getDefault();
                 $data['synopsis'] = $content['content'];
                 $data['target_word_count'] = PieceType::getWordCount($promptItem->pieceItem->piece_type_id);
 
@@ -55,9 +60,18 @@ readonly class GeneratorContentService
                 }
 
                 Piece::create($data);
+
+                $this->request->update([
+                    'status' => GeneratorStatus::COMPLETED,
+                    'service' => $promptItem->generator->provider,
+                    'model' => $promptItem->generator->getModel(),
+                    'prompt' => $promptItem->prompt,
+                    'response' => $this->encodeResponse($output),
+                    'total_tokens' => $output->usage->completionTokens + $output->usage->promptTokens
+                ]);
             });
 
-            // TODO: add the broadcasting process
+            // TODO: add the broadcasting processes
 
 //            broadcast(new ContentGenerated($this->generation))->toOthers();
         } catch (Throwable $e) {
@@ -81,6 +95,7 @@ readonly class GeneratorContentService
 //            broadcast(new ContentFailed($this->generation))->toOthers();
 
             Log::error("Error generating request id: $requestId: {$e->getMessage()}");
+            Log::debug($e->getTraceAsString());
         }
     }
 

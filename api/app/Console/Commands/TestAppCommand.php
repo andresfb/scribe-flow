@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Dtos\Pieces\PieceStoreItem;
+use App\Enums\GeneratorStatus;
+use App\Enums\GeneratorType;
+use App\Models\GeneratorRequest;
 use App\Models\Lists\PieceGenre;
 use App\Models\Lists\PiecePov;
 use App\Models\Lists\PieceStatus;
@@ -12,9 +16,11 @@ use App\Models\Lists\PieceTheme;
 use App\Models\Lists\PieceTone;
 use App\Models\Lists\PieceType;
 use App\Models\Pieces\Piece;
+use App\Services\GeneratorContentService;
 use Exception;
 use Illuminate\Console\Command;
 
+use Throwable;
 use function Laravel\Prompts\clear;
 
 final class TestAppCommand extends Command
@@ -23,15 +29,26 @@ final class TestAppCommand extends Command
 
     protected $description = 'Tests runner';
 
-    public function handle(): void
+    public function handle(GeneratorContentService $service): void
     {
         clear();
 
         try {
             $this->info("\nStarting at: ".now()."\n");
 
-            return;
-        } catch (Exception $e) {
+            $item = PieceStoreItem::from([
+                'piece_type_id' => 3, // short story
+            ]);
+
+            $request = GeneratorRequest::create([
+                'user_id' => 1,
+                'status' => GeneratorStatus::REQUESTED,
+                'type' => GeneratorType::SYNOPSIS,
+                'request' => $item->toArray(),
+            ]);
+
+            $service->execute($request->id);
+        } catch (Throwable $e) {
             $this->error("\nError Testing");
             $this->error($e->getMessage().PHP_EOL);
         } finally {

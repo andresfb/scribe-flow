@@ -12,6 +12,8 @@ class PieceRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
+            'piece_pov_id' => ['nullable', 'integer', 'exists:piece_povs,id'],
+            'piece_tense_id' => ['nullable', 'integer', 'exists:piece_tenses,id'],
             'piece_genre_id' => ['nullable', 'integer', 'exists:piece_genres,id'],
             'piece_sub_genre_id' => ['nullable', 'integer', 'exists:piece_genres,id'],
             'piece_tone_id' => ['nullable', 'integer', 'exists:piece_tones,id'],
@@ -22,17 +24,15 @@ class PieceRequest extends FormRequest
             'target_word_count' => ['nullable', 'integer'],
             'start_date' => ['nullable', 'date'],
             'target_completion_date' => ['nullable', 'date'],
+            'current_word_count' => ['nullable', 'integer'],
             'completion_date' => ['nullable', 'date'],
             'tags.*' => ['nullable', 'string'],
         ];
 
         $required = $this->routeIs('pieces.create') ? 'required' : 'nullable';
 
-        $rules['current_word_count'] = [$required, 'integer'];
-        $rules['piece_status_id'] = [$required, 'integer', 'exists:piece_statuses,id'];
-        $rules['piece_pov_id'] = [$required, 'integer', 'exists:piece_povs,id'];
-        $rules['piece_tense_id'] = [$required, 'integer', 'exists:piece_tenses,id'];
         $rules['title'] = [$required, 'min:3', 'max:150'];
+        $rules['piece_status_id'] = [$required, 'integer', 'exists:piece_statuses,id'];
 
         if ($this->routeIs('pieces.generate')) {
             $rules['piece_type_id'] = ['required', 'integer', 'exists:piece_types,id'];
