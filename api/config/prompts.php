@@ -2,11 +2,14 @@
 
 return [
 
+    // TODO: move the prompts to a table with a 'name', 'prompt_data' fields and store them in json format
+    // TODO: create a PiecePrompt DTO with the structure below.
+
     'pieces' => [
 
         'base' => env(
             'PROMPTS_PIECES_BASE',
-            'Please generate a %s of %d words max '
+            'Please generate a %d words story idea '
         ),
 
         'title' => env(
@@ -16,7 +19,7 @@ return [
 
         'type' => env(
             'PROMPTS_PIECES_TYPE',
-            'for a %s '
+            'for a "%s" '
         ),
 
         'genre' => env(
@@ -41,9 +44,9 @@ return [
 
         'settings' => [
 
-            'time_period' => env('PROMPTS_PIECES_SETTINGS_TIME_PERIOD', 'set in the %s time period '),
+            'time_period' => env('PROMPTS_PIECES_SETTINGS_TIME_PERIOD', 'set in the "%s" time period. '),
 
-            'location' => env('PROMPTS_PIECES_SETTINGS_LOCATION', 'set in the %s location '),
+            'location' => env('PROMPTS_PIECES_SETTINGS_LOCATION', 'set in a "%s" location. '),
 
         ],
 
@@ -51,9 +54,10 @@ return [
 
             'base' => env(
                 'PROMPTS_PIECES_ENDINGS',
-                'Please respond with the content only; do not add any extra options or comments. '
+                'Avoid telling the story, just give me the idea. Please respond with'
+                .' the content only; do not add any extra instructions, options or comments. '
                 . "\n Return the data in JSON format using the following structure: "
-                . ' { "content": "[CONTENT HERE]"%s } '
+                . ' { "content": "[IDEA HERE]"%s } '
             ),
 
             'title_template' => env(
@@ -66,7 +70,7 @@ return [
         'limits' => [
 
             'words' => [
-                'synopsis' => (int) env('PROMPTS_PIECES_LIMITS_WORDS_SYNOPSIS', 200),
+                'synopsis' => (int) env('PROMPTS_PIECES_LIMITS_WORDS_SYNOPSIS', 100),
             ],
 
         ],
