@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Database\Factories\Lists;
 
-use App\Models\Lists\PieceTense;
+use App\Models\Lists\Tense;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class PieceTenseFactory extends Factory
 {
-    protected $model = PieceTense::class;
+    protected $model = Tense::class;
 
     public function definition(): array
     {

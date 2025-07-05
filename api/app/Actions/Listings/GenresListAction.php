@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Actions\Listings;
 
-use App\Models\Lists\PieceTheme;
+use App\Models\Lists\Genre;
 
-final readonly class PieceThemesListAction
+final readonly class GenresListAction
 {
     /**
      * Execute the action.
      */
     public function handle(): array
     {
-        return PieceTheme::query()
+        return Genre::query()
             ->where('active', true)
             ->orderBy('name')
             ->get()

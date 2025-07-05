@@ -10,7 +10,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('piece_genres', static function (Blueprint $table): void {
+        Schema::create('genres', static function (Blueprint $table): void {
             $table->id();
             $table->string('slug');
             $table->string('name');
@@ -23,6 +23,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('piece_genres');
+        Schema::dropIfExists('genres');
     }
 };

@@ -16,7 +16,7 @@ final class PieceGenreSeeder extends Seeder
             ->get();
 
         foreach ($genres as $genre) {
-            DB::table('piece_genres')->insert([
+            DB::table('genres')->insert([
                 'slug' => str($genre->title)->slug(),
                 'name' => $genre->title,
                 'description' => str($genre->description)

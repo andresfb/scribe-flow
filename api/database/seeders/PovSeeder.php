@@ -7,11 +7,11 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-final class PiecePovSeeder extends Seeder
+final class PovSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('piece_povs')->insert([
+        DB::table('povs')->insert([
             ['slug' => 'first-person', 'name' => 'First Person', 'active' => true, 'order' => 1],
             ['slug' => 'second-person', 'name' => 'Second Person', 'active' => true, 'order' => 2],
             ['slug' => 'third-person-limited', 'name' => 'Third Person Limited', 'active' => true, 'order' => 3],

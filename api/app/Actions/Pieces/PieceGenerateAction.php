@@ -33,7 +33,7 @@ final readonly class PieceGenerateAction
             $request = GeneratorRequest::create([
                 'user_id' => $userId,
                 'status' => GeneratorStatus::REQUESTED,
-                'type' => GeneratorType::SYNOPSIS,
+                'type' => GeneratorType::IDEA,
                 'request' => $item->toArray(),
             ]);
 

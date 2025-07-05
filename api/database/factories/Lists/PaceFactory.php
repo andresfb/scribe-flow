@@ -1,15 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Database\Factories\Lists;
 
-use App\Models\Lists\Genre;
+use App\Models\Lists\Pace;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-final class PieceGenreFactory extends Factory
+class PaceFactory extends Factory
 {
-    protected $model = Genre::class;
+    protected $model = Pace::class;
 
     public function definition(): array
     {

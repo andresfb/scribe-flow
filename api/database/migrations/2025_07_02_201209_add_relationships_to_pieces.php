@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Models\Lists\PieceGenre;
-use App\Models\Lists\PieceTheme;
-use App\Models\Lists\PieceTone;
+use App\Models\Lists\Genre;
+use App\Models\Lists\Theme;
+use App\Models\Lists\Tone;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,29 +14,29 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pieces', static function (Blueprint $table): void {
-            $table->foreignIdFor(PieceGenre::class)
+            $table->foreignIdFor(Genre::class)
                 ->nullable()
-                ->after('piece_tense_id')
-                ->constrained('piece_genres');
+                ->after('tense_id')
+                ->constrained('genres');
 
-            $table->foreignId('piece_sub_genre_id')
+            $table->foreignId('sub_genre_id')
                 ->nullable()
-                ->after('piece_genre_id')
-                ->constrained('piece_genres', 'id');
+                ->after('genre_id')
+                ->constrained('genres', 'id');
 
-            $table->foreignIdFor(PieceTone::class)
+            $table->foreignIdFor(Tone::class)
                 ->nullable()
-                ->after('piece_sub_genre_id')
-                ->constrained('piece_tones');
+                ->after('sub_genre_id')
+                ->constrained('tones');
 
-            $table->foreignIdFor(PieceTheme::class)
+            $table->foreignIdFor(Theme::class)
                 ->nullable()
-                ->after('piece_tone_id')
-                ->constrained('piece_themes');
+                ->after('tone_id')
+                ->constrained('themes');
 
             $table->dropColumn('themes');
 
-            $table->dropIndex('pieces_genre_index');
+            $table->dropIndex('genre_index');
             $table->dropColumn('genre');
 
             $table->dropColumn('sub_genre');
@@ -46,17 +46,17 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pieces', static function (Blueprint $table): void {
-            $table->dropForeign(['piece_genre_id']);
-            $table->dropColumn('piece_genre_id');
+            $table->dropForeign(['genre_id']);
+            $table->dropColumn('genre_id');
 
-            $table->dropForeign(['piece_sub_genre_id']);
-            $table->dropColumn('piece_sub_genre_id');
+            $table->dropForeign(['sub_genre_id']);
+            $table->dropColumn('sub_genre_id');
 
-            $table->dropForeign(['piece_tone_id']);
-            $table->dropColumn('piece_tone_id');
+            $table->dropForeign(['tone_id']);
+            $table->dropColumn('tone_id');
 
-            $table->dropForeign(['piece_theme_id']);
-            $table->dropColumn('piece_theme_id');
+            $table->dropForeign(['theme_id']);
+            $table->dropColumn('theme_id');
 
             $table->json('themes')
                 ->after('current_word_count')

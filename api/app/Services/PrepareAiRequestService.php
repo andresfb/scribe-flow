@@ -8,9 +8,9 @@ use App\Dtos\Ai\PromptItem;
 use App\Dtos\Pieces\PieceStoreItem;
 use App\Factories\ContentGeneratorFactory;
 use App\Models\GeneratorRequest;
-use App\Models\Lists\PieceGenre;
-use App\Models\Lists\PieceTheme;
-use App\Models\Lists\PieceTone;
+use App\Models\Lists\Genre;
+use App\Models\Lists\Theme;
+use App\Models\Lists\Tone;
 use App\Models\Lists\PieceType;
 use Exception;
 use Illuminate\Support\Facades\Config;
@@ -35,11 +35,11 @@ final class PrepareAiRequestService
      */
     public function execute(GeneratorRequest $generator): PromptItem
     {
-        Log::notice("Generating the prompt for a {$generator->type->value} piece");
+        Log::notice("Generating the prompt for a {$generator->type} piece");
 
         $pieceItem = PieceStoreItem::from($generator->request);
 
-        $prompt = Str::of($this->getBasePrompt($generator->type->value))
+        $prompt = Str::of($this->getBasePrompt($generator->type))
             ->append($this->getType($pieceItem))
             ->append($this->getTitle($pieceItem))
             ->append($this->getGenre($pieceItem))
@@ -104,19 +104,19 @@ final class PrepareAiRequestService
 
     private function getGenre(PieceStoreItem $pieceItem): string
     {
-        if ($pieceItem->piece_genre_id instanceof Optional || blank($pieceItem->piece_genre_id)) {
-            $genre = PieceGenre::query()
+        if ($pieceItem->genre_id instanceof Optional || blank($pieceItem->genre_id)) {
+            $genre = Genre::query()
                 ->where('active', true)
                 ->inRandomOrder()
                 ->firstOrFail();
         } else {
-            $genre = PieceGenre::where('id', $pieceItem->piece_genre_id)
+            $genre = Genre::where('id', $pieceItem->genre_id)
                 ->where('active', true)
                 ->firstOrFail();
         }
 
         $this->selectedGenreId = $genre->id;
-        $this->resultInfo['piece_genre_id'] = $genre->id;
+        $this->resultInfo['genre_id'] = $genre->id;
 
         return sprintf(
             Config::string('prompts.pieces.genre'),
@@ -127,7 +127,7 @@ final class PrepareAiRequestService
 
     private function getSubGenre(PieceStoreItem $pieceItem): string
     {
-        if ($pieceItem->piece_sub_genre_id instanceof Optional || blank($pieceItem->piece_sub_genre_id)) {
+        if ($pieceItem->sub_genre_id instanceof Optional || blank($pieceItem->sub_genre_id)) {
             try {
                 $genSubGenre = random_int(0, 1);
             } catch (RandomException) {
@@ -138,19 +138,19 @@ final class PrepareAiRequestService
                 return '';
             }
 
-            $subGenre = PieceGenre::query()
+            $subGenre = Genre::query()
                 ->where('active', true)
                 ->where('id', '!=', $this->selectedGenreId)
                 ->inRandomOrder()
                 ->firstOrFail();
         } else {
-            $subGenre = PieceGenre::where('id', $pieceItem->piece_sub_genre_id)
+            $subGenre = Genre::where('id', $pieceItem->sub_genre_id)
                 ->where('active', true)
                 ->where('id', '!=', $this->selectedGenreId)
                 ->firstOrFail();
         }
 
-        $this->resultInfo['piece_sub_genre_id'] = $subGenre->id;
+        $this->resultInfo['sub_genre_id'] = $subGenre->id;
 
         return sprintf(
             Config::string('prompts.pieces.sub_genre'),
@@ -161,18 +161,18 @@ final class PrepareAiRequestService
 
     private function getTone(PieceStoreItem $pieceItem): string
     {
-        if ($pieceItem->piece_tone_id instanceof Optional || blank($pieceItem->piece_tone_id)) {
-            $tone = PieceTone::query()
+        if ($pieceItem->tone_id instanceof Optional || blank($pieceItem->tone_id)) {
+            $tone = Tone::query()
                 ->where('active', true)
                 ->inRandomOrder()
                 ->firstOrFail();
         } else {
-            $tone = PieceTone::where('id', $pieceItem->piece_tone_id)
+            $tone = Tone::where('id', $pieceItem->tone_id)
                 ->where('active', true)
                 ->firstOrFail();
         }
 
-        $this->resultInfo['piece_tone_id'] = $tone->id;
+        $this->resultInfo['tone_id'] = $tone->id;
 
         return sprintf(
             Config::string('prompts.pieces.tone'),
@@ -183,18 +183,18 @@ final class PrepareAiRequestService
 
     private function getTheme(PieceStoreItem $pieceItem): string
     {
-        if ($pieceItem->piece_theme_id instanceof Optional || blank($pieceItem->piece_theme_id)) {
-            $tone = PieceTheme::query()
+        if ($pieceItem->theme_id instanceof Optional || blank($pieceItem->theme_id)) {
+            $tone = Theme::query()
                 ->where('active', true)
                 ->inRandomOrder()
                 ->firstOrFail();
         } else {
-            $tone = PieceTheme::where('id', $pieceItem->piece_theme_id)
+            $tone = Theme::where('id', $pieceItem->theme_id)
                 ->where('active', true)
                 ->firstOrFail();
         }
 
-        $this->resultInfo['piece_theme_id'] = $tone->id;
+        $this->resultInfo['theme_id'] = $tone->id;
 
         return sprintf(
             Config::string('prompts.pieces.theme'),

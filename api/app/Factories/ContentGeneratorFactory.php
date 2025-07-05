@@ -16,9 +16,7 @@ final readonly class ContentGeneratorFactory
 {
     public function execute(PromptItem $promptItem): PromptItem
     {
-        /** @var GeneratorItem $item */
         $item = null;
-
         Log::notice('Searching for AI generator...');
 
         foreach ($this->loadGenerators()->shuffle() as $generatorItem) {

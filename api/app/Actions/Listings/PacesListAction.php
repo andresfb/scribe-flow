@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Actions\Listings;
 
-use App\Models\Lists\PieceTense;
+use App\Models\Lists\Pace;
 
-final readonly class PieceTenseListAction
+final readonly class PacesListAction
 {
     /**
      * Execute the action.
      */
     public function handle(): array
     {
-        return PieceTense::query()
+        return Pace::query()
             ->where('active', true)
-            ->orderBy('order')
+            ->orderBy('name')
             ->get()
             ->pluck('name', 'id')
             ->toArray();

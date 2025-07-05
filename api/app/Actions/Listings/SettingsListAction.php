@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Actions\Listings;
 
-use App\Models\Lists\PieceTone;
+use App\Models\Setting;
 
-final readonly class PieceTonesListAction
+final readonly class SettingsListAction
 {
     /**
      * Execute the action.
      */
     public function handle(): array
     {
-        return PieceTone::query()
+        return Setting::query()
             ->where('active', true)
-            ->orderBy('name')
+            ->orderBy('order')
             ->get()
             ->pluck('name', 'id')
             ->toArray();

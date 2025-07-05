@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\api\v1\Listings;
 
-use App\Actions\Listings\PieceTonesListAction;
+use App\Actions\Listings\GenresListAction;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponses;
 use Illuminate\Http\JsonResponse;
 
-final class PieceToneController extends Controller
+final class GenreController extends Controller
 {
     use ApiResponses;
 
-    public function __invoke(PieceTonesListAction $action): JsonResponse
+    public function __invoke(GenresListAction $action): JsonResponse
     {
         return $this->ok(
-            'List Piece Tones',
+            'List Genres',
             $action->handle()
         );
     }

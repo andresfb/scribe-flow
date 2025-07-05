@@ -11,7 +11,7 @@ final class PieceThemeSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('piece_themes')->insert([
+        DB::table('themes')->insert([
             ['slug' => 'redemption', 'name' => 'Redemption', 'description' => 'A character seeks to atone for past sins or mistakes, finding peace and transformation through their journey.', 'active' => true],
             ['slug' => 'forbidden-love', 'name' => 'Forbidden Love', 'description' => 'Two people fall in love against cultural, societal, or familial rules, creating intense emotional stakes.', 'active' => true],
             ['slug' => 'betrayal-and-loyalty', 'name' => 'Betrayal and Loyalty', 'description' => 'Explores trust, deception, and the pain of being betrayed by someone close, or the courage to remain loyal under pressure.', 'active' => true],

@@ -21,6 +21,9 @@ final class PieceWithScope implements Scope
             'subGenre',
             'tone',
             'theme',
+            'character',
+            'pace',
+            'setting',
         ]);
     }
 }

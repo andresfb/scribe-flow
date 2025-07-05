@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Models\Lists\PiecePov;
+use App\Models\Lists\Pov;
 use App\Models\Lists\PieceStatus;
-use App\Models\Lists\PieceTense;
+use App\Models\Lists\Tense;
 use App\Models\Lists\PieceType;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -24,10 +24,10 @@ return new class extends Migration
                 ->constrained('piece_types');
             $table->foreignIdFor(PieceStatus::class)
                 ->constrained('piece_statuses');
-            $table->foreignIdFor(PiecePov::class)
-                ->constrained('piece_povs');
-            $table->foreignIdFor(PieceTense::class)
-                ->constrained('piece_tenses');
+            $table->foreignIdFor(Pov::class)
+                ->constrained('povs');
+            $table->foreignIdFor(Tense::class)
+                ->constrained('tenses');
             $table->string('slug')->index();
             $table->string('title', 150);
             $table->string('genre', 100)->index()->nullable();

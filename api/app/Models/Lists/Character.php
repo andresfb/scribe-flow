@@ -1,24 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models\Lists;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Spatie\Tags\HasSlug;
 
 /**
  * @property int $id
  * @property string $slug
  * @property string $name
+ * @property string $description
  * @property bool $active
- * @property int $order
  */
-final class PiecePov extends Model
+class Character extends Model
 {
-    use HasFactory;
     use HasSlug;
 
     public $timestamps = false;
@@ -26,8 +22,8 @@ final class PiecePov extends Model
     protected $fillable = [
         'slug',
         'name',
+        'description',
         'active',
-        'order',
     ];
 
     public function getSlugOptions(): SlugOptions
@@ -41,7 +37,6 @@ final class PiecePov extends Model
     {
         return [
             'active' => 'boolean',
-            'order' => 'integer',
         ];
     }
 }

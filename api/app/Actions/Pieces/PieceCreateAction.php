@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Actions\Pieces;
 
-use App\Actions\Listings\PieceGenresListAction;
-use App\Actions\Listings\PiecePovListAction;
+use App\Actions\Listings\CharactersAction;
+use App\Actions\Listings\GenresListAction;
+use App\Actions\Listings\PovListAction;
 use App\Actions\Listings\PieceStatusesListAction;
-use App\Actions\Listings\PieceTenseListAction;
-use App\Actions\Listings\PieceThemesListAction;
-use App\Actions\Listings\PieceTonesListAction;
+use App\Actions\Listings\SettingsListAction;
+use App\Actions\Listings\TenseListAction;
+use App\Actions\Listings\ThemesListAction;
+use App\Actions\Listings\TonesListAction;
 use App\Actions\Listings\PieceTypeListAction;
 use App\Actions\Listings\TagsListAction;
 use App\Dtos\Pieces\PieceCreateItem;
@@ -20,11 +22,14 @@ final readonly class PieceCreateAction
     public function __construct(
         private PieceTypeListAction $typeListAction,
         private PieceStatusesListAction $statusesListAction,
-        private PiecePovListAction $povsListAction,
-        private PieceTenseListAction $tensesListAction,
-        private PieceGenresListAction $genresListAction,
-        private PieceTonesListAction $tonesListAction,
-        private PieceThemesListAction $themesListAction,
+        private PovListAction $povsListAction,
+        private TenseListAction $tensesListAction,
+        private GenresListAction $genresListAction,
+        private TonesListAction $tonesListAction,
+        private ThemesListAction $themesListAction,
+        private CharactersAction $charactersAction,
+        private PacesListAction $pacesListAction,
+        private SettingsListAction $settingsListAction,
         private TagsListAction $tagsListAction
     ) {}
 
@@ -45,6 +50,9 @@ final readonly class PieceCreateAction
             genres: $this->genresListAction->handle(),
             tones: $this->tonesListAction->handle(),
             themes: $this->themesListAction->handle(),
+            characters: $this->charactersAction->handle(),
+            paces: $this->pacesListAction->handle(),
+            settings: $this->settingsListAction->handle(),
             tags: $this->tagsListAction->handle(),
         );
     }

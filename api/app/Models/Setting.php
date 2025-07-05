@@ -1,22 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Models\Lists;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Spatie\Tags\HasSlug;
 
 /**
  * @property int $id
  * @property string $slug
  * @property string $name
+ * @property string $description
  * @property bool $active
- * @property int $order
  */
-final class PieceTense extends Model
+class Setting extends Model
 {
     use HasFactory;
     use HasSlug;
@@ -27,7 +25,6 @@ final class PieceTense extends Model
         'slug',
         'name',
         'active',
-        'order',
     ];
 
     public function getSlugOptions(): SlugOptions
@@ -41,7 +38,6 @@ final class PieceTense extends Model
     {
         return [
             'active' => 'boolean',
-            'order' => 'integer',
         ];
     }
 }

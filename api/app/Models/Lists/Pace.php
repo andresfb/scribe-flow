@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models\Lists;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,9 +11,10 @@ use Spatie\Tags\HasSlug;
  * @property int $id
  * @property string $slug
  * @property string $name
+ * @property string $description
  * @property bool $active
  */
-final class PieceGenre extends Model
+class Pace extends Model
 {
     use HasFactory;
     use HasSlug;

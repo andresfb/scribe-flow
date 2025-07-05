@@ -11,22 +11,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pieces', static function (Blueprint $table): void {
-            $table->dropForeign(['piece_pov_id']);
-            $table->unsignedBigInteger('piece_pov_id')
+            $table->dropForeign(['pov_id']);
+            $table->unsignedBigInteger('pov_id')
                 ->nullable()
                 ->change();
-            $table->foreign('piece_pov_id')
+            $table->foreign('pov_id')
                 ->references('id')
-                ->on('piece_povs')
+                ->on('povs')
                 ->onDelete('set null');
 
-            $table->dropForeign(['piece_tense_id']);
-            $table->unsignedBigInteger('piece_tense_id')
+            $table->dropForeign(['tense_id']);
+            $table->unsignedBigInteger('tense_id')
                 ->nullable()
                 ->change();
-            $table->foreign('piece_tense_id')
+            $table->foreign('tense_id')
                 ->references('id')
-                ->on('piece_tenses')
+                ->on('tenses')
                 ->onDelete('set null');
 
         });
@@ -35,22 +35,22 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pieces', static function (Blueprint $table): void {
-            $table->dropForeign(['piece_pov_id']);
-            $table->unsignedBigInteger('piece_pov_id')
+            $table->dropForeign(['pov_id']);
+            $table->unsignedBigInteger('pov_id')
                 ->nullable(false)
                 ->change();
-            $table->foreign('piece_pov_id')
+            $table->foreign('pov_id')
                 ->references('id')
-                ->on('piece_povs')
+                ->on('povs')
                 ->onDelete('cascade');
 
-            $table->dropForeign(['piece_tense_id']);
-            $table->unsignedBigInteger('piece_tense_id')
+            $table->dropForeign(['tense_id']);
+            $table->unsignedBigInteger('tense_id')
                 ->nullable(false)
                 ->change();
-            $table->foreign('piece_tense_id')
+            $table->foreign('tense_id')
                 ->references('id')
-                ->on('piece_tenses')
+                ->on('tenses')
                 ->onDelete('cascade');
         });
     }

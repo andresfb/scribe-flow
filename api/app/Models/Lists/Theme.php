@@ -13,9 +13,10 @@ use Spatie\Tags\HasSlug;
  * @property int $id
  * @property string $slug
  * @property string $name
+ * @property string $description
  * @property bool $active
  */
-final class PieceTone extends Model
+final class Theme extends Model
 {
     use HasFactory;
     use HasSlug;

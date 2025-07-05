@@ -11,7 +11,7 @@ Scribe Flow is a comprehensive writing project management system built with Lara
 ### Core Models
 - **Piece**: Central writing project model with comprehensive metadata (genre, tone, theme, POV, tense, status, word counts, dates)
 - **User**: Standard Laravel user model with Fortify authentication
-- **Lists**: Lookup tables for piece attributes (PieceGenre, PieceTone, PieceTheme, PiecePov, PieceTense, PieceStatus, PieceType)
+- **Lists**: Lookup tables for piece attributes (PieceGenre, PieceTone, PieceTheme, Pov, PieceTense, PieceStatus, PieceType)
 - **GeneratorRequest**: Tracks AI generation requests and responses
 - **Tag**: Spatie tags integration for flexible categorization
 

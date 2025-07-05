@@ -16,11 +16,12 @@ final class DatabaseSeeder extends Seeder
         $this->call([
             PieceTypeSeeder::class,
             PieceStatusSeeder::class,
-            PiecePovSeeder::class,
+            PovSeeder::class,
             PieceTenseSeeder::class,
             PieceGenreSeeder::class,
             PieceToneSeeder::class,
             PieceThemeSeeder::class,
+            ExtraPieceGenreSeeder::class,
         ]);
     }
 }

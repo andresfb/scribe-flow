@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Actions\Listings;
 
-use App\Models\Lists\PieceGenre;
+use App\Models\Lists\Tense;
 
-final readonly class PieceGenresListAction
+final readonly class TenseListAction
 {
     /**
      * Execute the action.
      */
     public function handle(): array
     {
-        return PieceGenre::query()
+        return Tense::query()
             ->where('active', true)
-            ->orderBy('name')
+            ->orderBy('order')
             ->get()
             ->pluck('name', 'id')
             ->toArray();

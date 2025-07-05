@@ -22,7 +22,7 @@ final class DateFilter implements Filter
         $this->timezone = config('constants.default_timezone');
     }
 
-    public function __invoke(Builder $query, $value, string $property): void
+    public function __invoke(Builder $query, mixed $value, string $property): void
     {
         $property = $this->translations[$property] ?? $property;
 

@@ -6,6 +6,7 @@ namespace App\Enums;
 
 enum GeneratorType: string
 {
+    case IDEA = 'idea';
     case SYNOPSIS = 'synopsis';
     case OUTLINE = 'outline';
     case PARAGRAPH = 'paragraph';

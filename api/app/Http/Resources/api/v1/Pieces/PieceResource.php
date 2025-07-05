@@ -21,14 +21,17 @@ final class PieceResource extends JsonResource
             'attributes' => [
                 'user_id' => $this->user_id,
                 'title' => $this->title ?? '',
-                'type' => $this->type?->name ?? '',
-                'status' => $this->status?->name ?? '',
-                'pov' => $this->pov?->name ?? '',
-                'tense' => $this->tense?->name ?? '',
-                'genre' => $this->genre?->name ?? '',
-                'sub_genre' => $this->subGenre?->name ?? '',
-                'tone' => $this->tone?->name ?? '',
-                'theme' => $this->theme?->name ?? '',
+                'type' => $this->type->name ?? '',
+                'status' => $this->status->name ?? '',
+                'pov' => $this->pov->name ?? '',
+                'tense' => $this->tense->name ?? '',
+                'genre' => $this->genre->name ?? '',
+                'sub_genre' => $this->subGenre->name ?? '',
+                'tone' => $this->tone->name ?? '',
+                'theme' => $this->theme->name ?? '',
+                'character' => $this->character->name ?? '',
+                'pace' => $this->pace->name ?? '',
+                'setting' => $this->setting->name ?? '',
                 'piece_type_id' => $this->when(
                     $request->routeIs('pieces.create'),
                     $this->piece_type_id ?? 0
@@ -37,37 +40,45 @@ final class PieceResource extends JsonResource
                     $request->routeIs('pieces.create'),
                     $this->piece_status_id ?? 0
                 ),
-                'piece_pov_id' => $this->when(
+                'pov_id' => $this->when(
                     $request->routeIs('pieces.create'),
-                    $this->piece_pov_id ?? 0
+                    $this->pov_id ?? 0
                 ),
-                'piece_tense_id' => $this->when(
+                'tense_id' => $this->when(
                     $request->routeIs('pieces.create'),
-                    $this->piece_tense_id ?? 0
+                    $this->tense_id ?? 0
                 ),
-                'piece_genre_id' => $this->when(
+                'genre_id' => $this->when(
                     $request->routeIs('pieces.create'),
-                    $this->piece_genre_id ?? 0
+                    $this->genre_id ?? 0
                 ),
-                'piece_sub_genre_id' => $this->when(
+                'sub_genre_id' => $this->when(
                     $request->routeIs('pieces.create'),
-                    $this->piece_sub_genre_id ?? 0
+                    $this->sub_genre_id ?? 0
                 ),
-                'piece_tone_id' => $this->when(
+                'tone_id' => $this->when(
                     $request->routeIs('pieces.create'),
-                    $this->piece_tone_id ?? 0
+                    $this->tone_id ?? 0
                 ),
-                'piece_theme_id' => $this->when(
+                'theme_id' => $this->when(
                     $request->routeIs('pieces.create'),
-                    $this->piece_theme_id ?? 0
+                    $this->theme_id ?? 0
+                ),
+                'character_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->character_id ?? 0
+                ),
+                'pace_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->pace_id ?? 0
+                ),
+                'settings_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->settings_id ?? 0
                 ),
                 'setting_time_period' => $this->when(
                     $request->routeIs('pieces.show', 'pieces.create'),
                     $this->setting_time_period ?? '',
-                ),
-                'setting_location' => $this->when(
-                    $request->routeIs('pieces.show', 'pieces.create'),
-                    $this->setting_location ?? '',
                 ),
                 'synopsis' => $this->when(
                     $request->routeIs('pieces.show', 'pieces.create'),
@@ -75,11 +86,11 @@ final class PieceResource extends JsonResource
                 ),
                 'target_word_count' => $this->target_word_count ?? 0,
                 'current_word_count' => $this->current_word_count ?? 0,
-                'start_date' => $this->start_date?->toDateString() ?? '',
-                'target_completion_date' => $this->target_completion_date?->toDateString() ?? '',
-                'completion_date' => $this->completion_date?->toDateString() ?? '',
-                'created_at' => $this->created_at?->toDatetimeString() ?? '',
-                'updated_at' => $this->updated_at?->toDatetimeString() ?? '',
+                'start_date' => $this->start_date->toDateString() ?? '',
+                'target_completion_date' => $this->target_completion_date->toDateString() ?? '',
+                'completion_date' => $this->completion_date->toDateString() ?? '',
+                'created_at' => $this->created_at->toDatetimeString() ?? '',
+                'updated_at' => $this->updated_at->toDatetimeString() ?? '',
                 'themes' => $this->whenNull(
                     $request->routeIs('pieces.show', 'pieces.create'),
                     $this->themes ?? []

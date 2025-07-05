@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\api\v1\Listings;
 
-use App\Actions\Listings\PiecePovListAction;
+use App\Actions\Listings\TenseListAction;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponses;
 use Illuminate\Http\JsonResponse;
 
-final class PiecePovController extends Controller
+final class TenseController extends Controller
 {
     use ApiResponses;
 
-    public function __invoke(PiecePovListAction $action): JsonResponse
+    public function __invoke(TenseListAction $action): JsonResponse
     {
         return $this->ok(
-            'List Piece POVs',
+            'List Tenses',
             $action->handle()
         );
     }

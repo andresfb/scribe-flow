@@ -56,14 +56,14 @@ final class FuzzyFilter implements Filter
         });
     }
 
-    protected function applyRelationFilters(Builder $query, array $attributes, $value): void
+    protected function applyRelationFilters(Builder $query, array $attributes, mixed $value): void
     {
         foreach ($attributes as $relation => $columns) {
             $this->applyRelationFilter($query, $relation, $columns, $value);
         }
     }
 
-    protected function applyRelationFilter(Builder $query, $relation, array $attributes, string $value): void
+    protected function applyRelationFilter(Builder $query, mixed $relation, array $attributes, string $value): void
     {
         $query->orWhereHas($relation, function (Builder $query) use ($attributes, $value): void {
             $this->applyFilters($query, $attributes, $value);

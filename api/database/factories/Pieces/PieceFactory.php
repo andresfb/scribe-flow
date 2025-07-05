@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Database\Factories\Pieces;
 
-use App\Models\Lists\PieceGenre;
-use App\Models\Lists\PiecePov;
+use App\Models\Lists\Genre;
+use App\Models\Lists\Pace;
+use App\Models\Lists\Pov;
 use App\Models\Lists\PieceStatus;
-use App\Models\Lists\PieceTense;
-use App\Models\Lists\PieceTone;
+use App\Models\Lists\Tense;
+use App\Models\Lists\Theme;
+use App\Models\Lists\Tone;
 use App\Models\Lists\PieceType;
 use App\Models\Pieces\Piece;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -29,7 +32,6 @@ final class PieceFactory extends Factory
         return [
             'title' => $this->faker->word(),
             'setting_time_period' => $this->faker->paragraph(),
-            'setting_location' => $this->faker->word(),
             'synopsis' => $this->faker->paragraphs(asText: true),
             'target_word_count' => $this->faker->randomNumber(),
             'current_word_count' => $this->faker->randomNumber(),
@@ -42,12 +44,15 @@ final class PieceFactory extends Factory
             'user_id' => User::factory(),
             'piece_type_id' => PieceType::factory(),
             'piece_status_id' => PieceStatus::factory(),
-            'piece_pov_id' => PiecePov::factory(),
-            'piece_tense_id' => PieceTense::factory(),
-            'piece_genre_id' => PieceGenre::factory(),
-            'piece_sub_genre_id' => PieceGenre::factory(),
-            'piece_tone_id' => PieceTone::factory(),
-            'piece_sub_tone_id' => PieceTone::factory(),
+            'pov_id' => Pov::factory(),
+            'tense_id' => Tense::factory(),
+            'genre_id' => Genre::factory(),
+            'sub_genre_id' => Genre::factory(),
+            'tone_id' => Tone::factory(),
+            'theme_id' => Theme::factory(),
+            'character_id' => '', // TODO: add the character factory
+            'piece_id' => Pace::factory(),
+            'setting_id' => Setting::factory(),
         ];
     }
 }

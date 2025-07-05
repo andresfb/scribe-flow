@@ -17,13 +17,13 @@ use Prism\Prism\Text\Response;
 use RuntimeException;
 use Throwable;
 
-final readonly class GeneratorContentService
+final class GeneratorContentService
 {
     private GeneratorRequest $request;
 
     public function __construct(
-        private PrepareAiRequestService $prepareService,
-        private GeneratorAiService $aiService,
+        private readonly PrepareAiRequestService $prepareService,
+        private readonly GeneratorAiService $aiService,
     ) {}
 
     /**
@@ -47,7 +47,8 @@ final readonly class GeneratorContentService
 
             $outputText = str($output->text)
                 ->replace('`', '')
-                ->replace('json', '');
+                ->replace('json', '')
+                ->value();
 
             $content = json_decode($outputText, true, 512, JSON_THROW_ON_ERROR);
 
@@ -76,7 +77,7 @@ final readonly class GeneratorContentService
 
             // TODO: add the broadcasting processes
 
-            //            broadcast(new ContentGenerated($this->generation))->toOthers();
+            // broadcast(new ContentGenerated($this->generation))->toOthers();
         } catch (Throwable $e) {
             $data = [
                 'status' => GeneratorStatus::FAILED,
@@ -94,12 +95,12 @@ final readonly class GeneratorContentService
                 $data['model'] = $promptItem instanceof PromptItem
                     ? $promptItem->generator->getModel()
                     : 'unknown';
-                $data['total_tokens'] = ($output->usage->completionTokens + $output->usage->promptTokens) ?? 0;
+                $data['total_tokens'] = $output->usage->completionTokens + $output->usage->promptTokens;
             }
 
             $this->request->update($data);
 
-            //            broadcast(new ContentFailed($this->generation))->toOthers();
+            // broadcast(new ContentFailed($this->generation))->toOthers();
 
             Log::error("Error generating request id: $requestId: {$e->getMessage()}");
             Log::debug($e->getTraceAsString());

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Actions\Listings;
 
-use App\Models\Lists\PiecePov;
+use App\Models\Lists\Theme;
 
-final readonly class PiecePovListAction
+final readonly class ThemesListAction
 {
     /**
      * Execute the action.
      */
     public function handle(): array
     {
-        return PiecePov::query()
+        return Theme::query()
             ->where('active', true)
-            ->orderBy('order')
+            ->orderBy('name')
             ->get()
             ->pluck('name', 'id')
             ->toArray();

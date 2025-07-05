@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Database\Factories\Lists;
 
-use App\Models\Lists\PieceTheme;
+use App\Models\Lists\Theme;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class PieceThemeFactory extends Factory
 {
-    protected $model = PieceTheme::class;
+    protected $model = Theme::class;
 
     public function definition(): array
     {

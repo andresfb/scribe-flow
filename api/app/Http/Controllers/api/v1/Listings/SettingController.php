@@ -1,22 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\api\v1\Listings;
 
-use App\Actions\Listings\PieceTenseListAction;
+use App\Actions\Listings\SettingsListAction;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponses;
 use Illuminate\Http\JsonResponse;
 
-final class PieceTenseController extends Controller
+class SettingController extends Controller
 {
     use ApiResponses;
 
-    public function __invoke(PieceTenseListAction $action): JsonResponse
+    public function __invoke(SettingsListAction $action): JsonResponse
     {
         return $this->ok(
-            'List Piece Tenses',
+            'List Settings',
             $action->handle()
         );
     }

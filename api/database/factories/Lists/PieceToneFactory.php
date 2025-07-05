@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Database\Factories\Lists;
 
-use App\Models\Lists\PieceTone;
+use App\Models\Lists\Tone;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 final class PieceToneFactory extends Factory
 {
-    protected $model = PieceTone::class;
+    protected $model = Tone::class;
 
     public function definition(): array
     {

@@ -8,12 +8,12 @@ use App\Dtos\Pieces\PieceStoreItem;
 use App\Enums\GeneratorStatus;
 use App\Enums\GeneratorType;
 use App\Models\GeneratorRequest;
-use App\Models\Lists\PieceGenre;
-use App\Models\Lists\PiecePov;
+use App\Models\Lists\Genre;
+use App\Models\Lists\Pov;
 use App\Models\Lists\PieceStatus;
-use App\Models\Lists\PieceTense;
-use App\Models\Lists\PieceTheme;
-use App\Models\Lists\PieceTone;
+use App\Models\Lists\Tense;
+use App\Models\Lists\Theme;
+use App\Models\Lists\Tone;
 use App\Models\Lists\PieceType;
 use App\Models\Pieces\Piece;
 use App\Services\GeneratorContentService;
@@ -43,7 +43,7 @@ final class TestAppCommand extends Command
             $request = GeneratorRequest::create([
                 'user_id' => 1,
                 'status' => GeneratorStatus::REQUESTED,
-                'type' => GeneratorType::SYNOPSIS,
+                'type' => GeneratorType::IDEA,
                 'request' => $item->toArray(),
             ]);
 
@@ -74,27 +74,27 @@ final class TestAppCommand extends Command
                         ->inRandomOrder()
                         ->first()
                         ->id,
-                    'piece_pov_id' => PiecePov::where('active', true)
+                    'pov_id' => Pov::where('active', true)
                         ->inRandomOrder()
                         ->first()
                         ->id,
-                    'piece_tense_id' => PieceTense::where('active', true)
+                    'tense_id' => Tense::where('active', true)
                         ->inRandomOrder()
                         ->first()
                         ->id,
-                    'piece_genre_id' => PieceGenre::where('active', true)
+                    'genre_id' => Genre::where('active', true)
                         ->inRandomOrder()
                         ->first()
                         ->id,
-                    'piece_sub_genre_id' => PieceGenre::where('active', true)
+                    'sub_genre_id' => Genre::where('active', true)
                         ->inRandomOrder()
                         ->first()
                         ->id,
-                    'piece_tone_id' => PieceTone::where('active', true)
+                    'tone_id' => Tone::where('active', true)
                         ->inRandomOrder()
                         ->first()
                         ->id,
-                    'piece_theme_id' => PieceTheme::where('active', true)
+                    'theme_id' => Theme::where('active', true)
                         ->inRandomOrder()
                         ->first()
                         ->id,

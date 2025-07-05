@@ -14,14 +14,16 @@ final class PieceRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'piece_pov_id' => ['nullable', 'integer', 'exists:piece_povs,id'],
-            'piece_tense_id' => ['nullable', 'integer', 'exists:piece_tenses,id'],
-            'piece_genre_id' => ['nullable', 'integer', 'exists:piece_genres,id'],
-            'piece_sub_genre_id' => ['nullable', 'integer', 'exists:piece_genres,id'],
-            'piece_tone_id' => ['nullable', 'integer', 'exists:piece_tones,id'],
-            'piece_theme_id' => ['nullable', 'integer', 'exists:piece_themes,id'],
+            'pov_id' => ['nullable', 'integer', 'exists:povs,id'],
+            'tense_id' => ['nullable', 'integer', 'exists:tenses,id'],
+            'genre_id' => ['nullable', 'integer', 'exists:genres,id'],
+            'sub_genre_id' => ['nullable', 'integer', 'exists:genres,id'],
+            'tone_id' => ['nullable', 'integer', 'exists:tones,id'],
+            'theme_id' => ['nullable', 'integer', 'exists:themes,id'],
+            'character_id' => ['nullable', 'integer', 'exists:characters,id'],
+            'pace_id' => ['nullable', 'integer', 'exists:paces,id'],
+            'setting_id' => ['nullable', 'integer', 'exists:settings,id'],
             'setting_time_period' => ['nullable', 'string', 'min:2', 'max:255'],
-            'setting_location' => ['nullable', 'string', 'min:2', 'max:255'],
             'synopsis' => ['nullable', 'string'],
             'target_word_count' => ['nullable', 'integer'],
             'start_date' => ['nullable', 'date'],
