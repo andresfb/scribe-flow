@@ -205,6 +205,8 @@ final class PrepareAiRequestService
 
     private function getSettings(PieceStoreItem $pieceItem): string
     {
+        $hasPeriod = false;
+
         $settings = Str::of('');
         if (! $pieceItem->setting_time_period instanceof Optional && ! blank($pieceItem->setting_time_period)) {
             $settings = $settings->append(
@@ -212,10 +214,15 @@ final class PrepareAiRequestService
                 $pieceItem->setting_time_period,
             );
 
+            $hasPeriod = true;
             $this->resultInfo['setting_time_period'] = $pieceItem->setting_time_period;
         }
 
         if (! $pieceItem->setting_location instanceof Optional && ! blank($pieceItem->setting_location)) {
+            if ($hasPeriod) {
+                $settings = $settings->append(' And');
+            }
+
             $settings = $settings->append(
                 Config::string('prompts.pieces.settings.location'),
                 $pieceItem->setting_location,
