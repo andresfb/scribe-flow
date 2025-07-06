@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Pieces;
 
-use App\Dtos\Pieces\PieceStoreItem;
+use App\Dtos\Pieces\PieceItem;
 use App\Models\Pieces\Piece;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
@@ -17,7 +17,7 @@ final readonly class PieceUpdateAction
     /**
      * @throws Throwable
      */
-    public function handle(Piece $model, PieceStoreItem $item): Piece
+    public function handle(Piece $model, PieceItem $item): Piece
     {
         DB::transaction(static function () use ($model, $item): void {
             $data = $item->toArray();

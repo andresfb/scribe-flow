@@ -9,11 +9,12 @@ use App\Actions\Pieces\PieceDeleteAction;
 use App\Actions\Pieces\PieceGetAction;
 use App\Actions\Pieces\PieceStoreAction;
 use App\Actions\Pieces\PieceUpdateAction;
-use App\Dtos\Pieces\PieceStoreItem;
+use App\Dtos\Pieces\PieceItem;
 use App\Http\Controllers\Controller;
 use App\Http\QueryBuilders\api\v1\Pieces\PieceListQuery;
+use App\Http\Requests\api\v1\Pieces\PieceCreateRequest;
 use App\Http\Requests\api\v1\Pieces\PieceListRequest;
-use App\Http\Requests\api\v1\Pieces\PieceRequest;
+use App\Http\Requests\api\v1\Pieces\PieceUpdateRequest;
 use App\Http\Resources\api\v1\Pieces\PieceResource;
 use App\Models\Pieces\Piece;
 use App\Traits\ApiResponses;
@@ -60,14 +61,14 @@ final class PieceController extends Controller
             ]);
     }
 
-    public function store(PieceRequest $request, PieceStoreAction $action): PieceResource|JsonResponse
+    public function store(PieceCreateRequest $request, PieceStoreAction $action): PieceResource|JsonResponse
     {
         try {
             $this->authorize('create', Piece::class);
 
             return new PieceResource(
                 $action->handle(
-                    PieceStoreItem::from($request),
+                    PieceItem::from($request),
                     auth()->id()
                 )
             );
@@ -87,7 +88,7 @@ final class PieceController extends Controller
         return new PieceResource($model);
     }
 
-    public function update(PieceRequest $request, string $piece, PieceUpdateAction $update): PieceResource|JsonResponse
+    public function update(PieceUpdateRequest $request, string $piece, PieceUpdateAction $update): PieceResource|JsonResponse
     {
         try {
             $model = $update->getAction
@@ -95,7 +96,7 @@ final class PieceController extends Controller
 
             $this->authorize('update', $model);
 
-            $model = $update->handle($model, PieceStoreItem::from($request));
+            $model = $update->handle($model, PieceItem::from($request));
 
             return new PieceResource($model);
         } catch (Throwable $e) {

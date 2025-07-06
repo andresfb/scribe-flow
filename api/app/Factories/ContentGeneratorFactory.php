@@ -12,15 +12,26 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
 
-final readonly class ContentGeneratorFactory
+final class ContentGeneratorFactory
 {
+    private bool $clearedCache = false;
+
+    private string $cacheTag = 'ai:generators';
+
     public function execute(PromptItem $promptItem): PromptItem
     {
         $item = null;
+
         Log::notice('Searching for AI generator...');
 
+        /** @var GeneratorItem $generatorItem */
         foreach ($this->loadGenerators()->shuffle() as $generatorItem) {
             if (! $generatorItem->enabled) {
+                continue;
+            }
+
+            $cacheKey = $generatorItem->getCacheKey();
+            if (cache()->has($cacheKey)) {
                 continue;
             }
 
@@ -29,16 +40,33 @@ final readonly class ContentGeneratorFactory
             }
 
             $item = $generatorItem;
+            cache()->tags($this->cacheTag)
+                ->put(
+                    $cacheKey,
+                    $generatorItem->name,
+                    now()->addMinutes(
+                        Config::integer('generators.cache_ttl_minutes')
+                    )
+                );
+
             break;
         }
 
-        if ($item === null) {
-            throw new RuntimeException('No generators are enabled');
+        if ($item !== null) {
+            Log::notice("Found generator: {$item->name}, using model: {$item->getModel()}");
+
+            return $promptItem->withGenerator($item);
         }
 
-        Log::notice("Found generator: {$item->provider}, using model: {$item->getModel()}");
+        if (! $this->clearedCache) {
+            cache()->tags($this->cacheTag)->flush();
+            $this->clearedCache = true;
 
-        return $promptItem->withGenerator($item);
+            return $this->execute($promptItem);
+        }
+
+        throw new RuntimeException('No generators are enabled');
+
     }
 
     /**

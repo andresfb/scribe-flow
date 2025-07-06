@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property ?string $service
  * @property ?string $model
  * @property ?string $prompt
+ * @property ?string $message
  * @property int $total_tokens
  * @property ?array $request
  * @property ?array $response
@@ -37,7 +38,14 @@ final class GeneratorRequest extends Model
         'service',
         'model',
         'prompt',
+        'message',
         'total_tokens',
+        'request',
+        'response',
+    ];
+
+    protected $hidden = [
+        'prompt',
         'request',
         'response',
     ];

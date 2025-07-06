@@ -10,6 +10,7 @@ return [
     'services' => [
 
         'openai' => [
+            'name' => 'OpenAI',
             'provider' => Provider::OpenAI->value,
             'enabled' => (bool) env('OPENAI_ENABLED', false),
             'models' => explode(',', (string) env('OPENAI_MODELS', '')),
@@ -22,6 +23,7 @@ return [
         ],
 
         'anthropic' => [
+            'name' => 'Anthropic',
             'provider' => Provider::Anthropic->value,
             'enabled' => (bool) env('ANTHROPIC_ENABLED', false),
             'models' => explode(',', (string) env('ANTHROPIC_MODELS', '')),
@@ -33,7 +35,21 @@ return [
             'service_checker' => null,
         ],
 
+        'gemini' => [
+            'name' => 'Gemini',
+            'provider' => Provider::Gemini->value,
+            'enabled' => (bool) env('GEMINI_ENABLED', false),
+            'models' => explode(',', (string) env('GEMINI_MODELS', '')),
+            'max_tokens' => (int) env('GEMINI_MAX_TOKENS', 768),
+            'presence_penalty' => (float) env('GEMINI_PRESENCE_PENALTY', 0.3),
+            'request_timeout' => (int) env('GEMINI_REQUEST_TIMEOUT', 30),
+            'temperature' => (float) env('GEMINI_TEMPERATURE', 0.8),
+            'check_service' => false,
+            'service_checker' => null,
+        ],
+
         'open-router' => [
+            'name' => 'OpenRouter',
             'provider' => Provider::Mistral->value,
             'enabled' => (bool) env('OPEN_ROUTER_ENABLED', false),
             'models' => explode(',', (string) env('OPEN_ROUTER_MODELS', '')),
@@ -46,6 +62,7 @@ return [
         ],
 
         'ollama' => [
+            'name' => 'Ollama',
             'provider' => Provider::Ollama->value,
             'enabled' => (bool) env('OLLAMA_ENABLED', false),
             'models' => explode(',', (string) env('OLLAMA_MODELS', '')),
@@ -67,5 +84,7 @@ return [
         ],
 
     ],
+
+    'cache_ttl_minutes' => (int) env('GENERATORS_CACHE_TTL_MINUTES', 10),
 
 ];

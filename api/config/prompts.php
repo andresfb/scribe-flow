@@ -5,75 +5,42 @@ return [
     // TODO: move the prompts to a table with a 'name', 'prompt_data' fields and store them in json format
     // TODO: create a PiecePrompt DTO with the structure below.
 
-    'pieces' => [
+    'idea' => [
 
-        'base' => env(
-            'PROMPTS_PIECES_BASE',
-            'Please generate a %d words story idea '
+        'text' => env(
+            'PROMPTS_IDEA_TEXT',
+            <<<text
+Think like a professional author, brainstorm, and generate a <<WORDS>> words story idea<<TITLE>>for a <<TYPE>> with the following appeal terms:
+
+GENRE: <<GENRE>><<SUB_GENRE>>
+SETTING: <<SETTING>>
+TIME PERIOD: <<TIMELINE>>
+STORY LINE: <<STORYLINE>>
+PACE: <<PACE>>
+CHARACTER: <<CHARACTER>>
+STORY TONE: <<TONE>>
+WRITING STYLE: <<STYLE>>
+THEME: <<THEME>>
+
+Also, give me no less that three but no more that eight Tags that reflect the essence of the idea. Avoid telling the story, just give me the idea,
+and please respond with the content only; do not add any extra instructions, options or comments.
+
+Return the data in JSON format using the following structure:
+{ "content": "[IDEA HERE]"<<TITLE_TEMPLATE>>, "tags": ["tag1", "tag2",...] }
+text
         ),
 
         'title' => env(
-            'PROMPTS_PIECES_TITLE',
-            'and give it a title '
+            'PROMPTS_IDEA_TITLE',
+            ', with a title, '
         ),
 
-        'type' => env(
-            'PROMPTS_PIECES_TYPE',
-            'for a "%s" '
+        'title_template' => env(
+            'PROMPTS_IDEA_TITLE_TEMPLATE',
+            ', "title": "[TITLE HERE]" '
         ),
 
-        'genre' => env(
-            'PROMPTS_PIECES_GENRE',
-            'in the "%s" genre, described as "%s" '
-        ),
-
-        'sub_genre' => env(
-            'PROMPTS_PIECES_SUB_GENRE',
-            'and the "%s" sub-genre described as "%s" '
-        ),
-
-        'tone' => env(
-            'PROMPTS_PIECES_TONE',
-            'using a "%s" tone described as "%s" '
-        ),
-
-        'theme' => env(
-            'PROMPTS_PIECES_THEME',
-            'with a "%s" theme described as "%s" '
-        ),
-
-        'settings' => [
-
-            'time_period' => env('PROMPTS_PIECES_SETTINGS_TIME_PERIOD', 'set in the "%s" time period. '),
-
-            'location' => env('PROMPTS_PIECES_SETTINGS_LOCATION', 'set in a "%s" location. '),
-
-        ],
-
-        'endings' => [
-
-            'base' => env(
-                'PROMPTS_PIECES_ENDINGS',
-                'Avoid telling the story, just give me the idea. Please respond with'
-                .' the content only; do not add any extra instructions, options or comments. '
-                . "\n Return the data in JSON format using the following structure: "
-                . ' { "content": "[IDEA HERE]"%s } '
-            ),
-
-            'title_template' => env(
-                'PROMPTS_PIECES_ENDINGS_TITLE_TEMPLATE',
-                ', "title": "[TITLE HERE]" '
-            ),
-
-        ],
-
-        'limits' => [
-
-            'words' => [
-                'synopsis' => (int) env('PROMPTS_PIECES_LIMITS_WORDS_SYNOPSIS', 100),
-            ],
-
-        ],
+        'words_limit' => (int) env('PROMPTS_IDEA_WORDS_LIMIT', 200),
     ],
 
 ];

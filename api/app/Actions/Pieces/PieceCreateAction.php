@@ -6,11 +6,15 @@ namespace App\Actions\Pieces;
 
 use App\Actions\Listings\CharactersAction;
 use App\Actions\Listings\GenresListAction;
+use App\Actions\Listings\PacesListAction;
 use App\Actions\Listings\PovListAction;
 use App\Actions\Listings\PieceStatusesListAction;
 use App\Actions\Listings\SettingsListAction;
+use App\Actions\Listings\StorylinesListAction;
+use App\Actions\Listings\StylesListAction;
 use App\Actions\Listings\TenseListAction;
 use App\Actions\Listings\ThemesListAction;
+use App\Actions\Listings\TimelinesListAction;
 use App\Actions\Listings\TonesListAction;
 use App\Actions\Listings\PieceTypeListAction;
 use App\Actions\Listings\TagsListAction;
@@ -30,6 +34,9 @@ final readonly class PieceCreateAction
         private CharactersAction $charactersAction,
         private PacesListAction $pacesListAction,
         private SettingsListAction $settingsListAction,
+        private TimelinesListAction $timelineListAction,
+        private StorylinesListAction $storylineListAction,
+        private StylesListAction $stylesListAction,
         private TagsListAction $tagsListAction
     ) {}
 
@@ -53,6 +60,9 @@ final readonly class PieceCreateAction
             characters: $this->charactersAction->handle(),
             paces: $this->pacesListAction->handle(),
             settings: $this->settingsListAction->handle(),
+            timelines: $this->timelineListAction->handle(),
+            storylines: $this->storylineListAction->handle(),
+            style: $this->stylesListAction->handle(),
             tags: $this->tagsListAction->handle(),
         );
     }

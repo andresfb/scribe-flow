@@ -1,0 +1,18 @@
+meta {
+  name: Generate Settings
+  type: http
+  seq: 1
+}
+
+put {
+  url: http://api.scribeflow.lan/api/v1/pieces/generate/partial
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "piece_type_id": 3,
+    "title": "Carmen"
+  }
+}

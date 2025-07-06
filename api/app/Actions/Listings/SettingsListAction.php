@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Listings;
 
-use App\Models\Setting;
+use App\Models\Lists\Setting;
 
 final readonly class SettingsListAction
 {

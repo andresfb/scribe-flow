@@ -38,6 +38,9 @@ final readonly class PieceCreateItem
         public array $characters,
         public array $paces,
         public array $settings,
+        public array $timelines,
+        public array $storylines,
+        public array $style,
         public array $tags,
     ) {}
 }

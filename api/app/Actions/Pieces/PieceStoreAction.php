@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Actions\Pieces;
 
-use App\Dtos\Pieces\PieceStoreItem;
+use App\Dtos\Pieces\PieceItem;
+use App\Models\Lists\PieceStatus;
 use App\Models\Pieces\Piece;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
@@ -15,7 +16,7 @@ final readonly class PieceStoreAction
     /**
      * @throws Throwable
      */
-    public function handle(PieceStoreItem $item, int $userId): Piece
+    public function handle(PieceItem $item, int $userId): Piece
     {
         $slug = str($item->title)
             ->append(" $userId")
@@ -28,6 +29,7 @@ final readonly class PieceStoreAction
         return DB::transaction(static function () use ($item, $userId): Piece {
             $data = $item->toArray();
             $data['user_id'] = $userId;
+            $data['piece_status_id'] = PieceStatus::getDefault();
             unset($data['tags'], $data['slug']);
 
             $piece = Piece::create($data);

@@ -6,14 +6,17 @@ namespace Database\Factories\Pieces;
 
 use App\Models\Lists\Genre;
 use App\Models\Lists\Pace;
-use App\Models\Lists\Pov;
 use App\Models\Lists\PieceStatus;
+use App\Models\Lists\PieceType;
+use App\Models\Lists\Pov;
+use App\Models\Lists\Setting;
+use App\Models\Lists\Storyline;
+use App\Models\Lists\Style;
 use App\Models\Lists\Tense;
 use App\Models\Lists\Theme;
+use App\Models\Lists\Timeline;
 use App\Models\Lists\Tone;
-use App\Models\Lists\PieceType;
 use App\Models\Pieces\Piece;
-use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -31,8 +34,7 @@ final class PieceFactory extends Factory
 
         return [
             'title' => $this->faker->word(),
-            'setting_time_period' => $this->faker->paragraph(),
-            'synopsis' => $this->faker->paragraphs(asText: true),
+            'idea' => $this->faker->paragraphs(asText: true),
             'target_word_count' => $this->faker->randomNumber(),
             'current_word_count' => $this->faker->randomNumber(),
             'start_date' => $now->clone()->addWeeks($this->faker->numberBetween(1, 3)),
@@ -53,6 +55,9 @@ final class PieceFactory extends Factory
             'character_id' => '', // TODO: add the character factory
             'piece_id' => Pace::factory(),
             'setting_id' => Setting::factory(),
+            'timeline_id' => Timeline::factory(),
+            'storyline_id' => Storyline::factory(),
+            'style_id' => Style::factory(),
         ];
     }
 }

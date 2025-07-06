@@ -28,6 +28,13 @@ final class PieceType extends Model
 
     public $timestamps = false;
 
+    /** @noinspection PackedHashtableOptimizationInspection */
+    private const array THRESHOLDS = [
+        1000 => 1000,
+        100 => 100,
+        10 => 10,
+    ];
+
     protected $fillable = [
         'slug',
         'name',
@@ -49,12 +56,12 @@ final class PieceType extends Model
         }
 
         try {
-            $maxMultiple = (int) floor($type->max_count / $type->min_count);
-
-            return random_int(1, $maxMultiple) * $type->max_count;
+            $count = random_int($type->min_count, $type->max_count);
         } catch (Exception) {
             return $type->min_count;
         }
+
+        return self::roundToNearestThreshold($count);
     }
 
     public function getSlugOptions(): SlugOptions
@@ -73,5 +80,18 @@ final class PieceType extends Model
             'max_count' => 'integer',
             'order' => 'integer',
         ];
+    }
+
+    private static function roundToNearestThreshold(int $count): int
+    {
+        foreach (self::THRESHOLDS as $threshold => $base) {
+            if ($count < $threshold) {
+                continue;
+            }
+
+            return (int) round($count / $base) * $base;
+        }
+
+        return (int) round($count / 10) * 10;
     }
 }

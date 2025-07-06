@@ -17,12 +17,11 @@ return new class extends Migration
                 ->constrained('users');
             $table->char('status', 1);
             $table->string('type', 25);
-            $table->string('service');
-            $table->string('model');
-            $table->unsignedInteger('total_tokens')
-                ->default(0);
+            $table->string('service')->nullable();
+            $table->string('model')->nullable();
+            $table->text('prompt')->nullable();
+            $table->unsignedInteger('total_tokens')->default(0);
             $table->json('request');
-            $table->json('content')->nullable();
             $table->json('response')->nullable();
             $table->softDeletes();
             $table->timestamps();

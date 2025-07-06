@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('is_default')
                 ->default(false);
+            $table->string('timezone')
+                ->default('America/New_York');
             $table->rememberToken();
             $table->timestamps();
         });

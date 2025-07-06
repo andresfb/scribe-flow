@@ -8,8 +8,11 @@ use App\Http\Controllers\api\v1\Listings\PaceController;
 use App\Http\Controllers\api\v1\Listings\PovController;
 use App\Http\Controllers\api\v1\Listings\PieceStatusListController;
 use App\Http\Controllers\api\v1\Listings\SettingController;
+use App\Http\Controllers\api\v1\Listings\StorylineController;
+use App\Http\Controllers\api\v1\Listings\StyleController;
 use App\Http\Controllers\api\v1\Listings\TenseController;
 use App\Http\Controllers\api\v1\Listings\ThemeController;
+use App\Http\Controllers\api\v1\Listings\TimelineController;
 use App\Http\Controllers\api\v1\Listings\ToneController;
 use App\Http\Controllers\api\v1\Listings\PieceTypeListController;
 use App\Http\Controllers\api\v1\Pieces\PieceController;
@@ -54,8 +57,17 @@ Route::middleware(['auth:sanctum'])
         Route::get('/paces/list', PaceController::class)
             ->name('paces.list');
 
+        Route::get('/timelines/list', TimelineController::class)
+            ->name('timelines.list');
+
         Route::get('/settings/list', SettingController::class)
             ->name('settings.list');
+
+        Route::get('/storylines/list', StorylineController::class)
+            ->name('storylines.list');
+
+        Route::get('/styles/list', StyleController::class)
+            ->name('styles.list');
 
         Route::get('/piece-types/list', PieceTypeListController::class)
             ->name('piece-types.list');
@@ -67,7 +79,10 @@ Route::middleware(['auth:sanctum'])
             'except' => ['edit'],
         ]);
 
-        Route::put('/pieces/generate', PieceGenerateController::class)
-            ->name('pieces.generate');
+        Route::put('/pieces/generate/full', [PieceGenerateController::class, 'full'])
+            ->name('pieces.generate.full');
+
+        Route::put('/pieces/generate/partial', [PieceGenerateController::class, 'partial'])
+            ->name('pieces.generate.partial');
 
     });

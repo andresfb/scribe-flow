@@ -7,14 +7,17 @@ namespace App\Models\Pieces;
 use App\Models\Lists\Character;
 use App\Models\Lists\Genre;
 use App\Models\Lists\Pace;
-use App\Models\Lists\Pov;
 use App\Models\Lists\PieceStatus;
+use App\Models\Lists\PieceType;
+use App\Models\Lists\Pov;
+use App\Models\Lists\Setting;
+use App\Models\Lists\Storyline;
+use App\Models\Lists\Style;
 use App\Models\Lists\Tense;
 use App\Models\Lists\Theme;
+use App\Models\Lists\Timeline;
 use App\Models\Lists\Tone;
-use App\Models\Lists\PieceType;
 use App\Models\Pieces\Scopes\PieceWithScope;
-use App\Models\Setting;
 use App\Models\User;
 use App\Traits\DateAttributable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -41,10 +44,12 @@ use Spatie\Tags\HasTags;
  * @property int $character_id
  * @property int $piece_id
  * @property int $setting_id
+ * @property int $timeline_id
+ * @property int $storyline_id
+ * @property int $style_id
  * @property string $slug
  * @property string $title
- * @property string $setting_time_period
- * @property string $synopsis
+ * @property string $idea
  * @property array $themes
  * @property int $target_word_count
  * @property int $current_word_count
@@ -76,12 +81,13 @@ final class Piece extends Model
         'character_id',
         'piece_id',
         'setting_id',
+        'timeline_id',
+        'storyline_id',
+        'style_id',
         'title',
         'genre',
         'sub_genre',
-        'setting_time_period',
-        'setting_location',
-        'synopsis',
+        'idea',
         'target_word_count',
         'current_word_count',
         'start_date',
@@ -97,12 +103,12 @@ final class Piece extends Model
 
     public function type(): BelongsTo
     {
-        return $this->belongsTo(PieceType::class);
+        return $this->belongsTo(PieceType::class, 'piece_type_id', 'id');
     }
 
     public function status(): BelongsTo
     {
-        return $this->belongsTo(PieceStatus::class);
+        return $this->belongsTo(PieceStatus::class, 'piece_status_id', 'id');
     }
 
     public function pov(): BelongsTo
@@ -148,6 +154,21 @@ final class Piece extends Model
     public function setting(): BelongsTo
     {
         return $this->belongsTo(Setting::class);
+    }
+
+    public function timeline(): BelongsTo
+    {
+        return $this->belongsTo(Timeline::class);
+    }
+
+    public function storyline(): BelongsTo
+    {
+        return $this->belongsTo(Storyline::class);
+    }
+
+    public function style(): BelongsTo
+    {
+        return $this->belongsTo(Style::class);
     }
 
     public function getSlugOptions(): SlugOptions

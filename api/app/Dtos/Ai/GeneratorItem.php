@@ -11,6 +11,7 @@ final class GeneratorItem extends Data
     private string $model = '';
 
     public function __construct(
+        public readonly string $name,
         public readonly string $provider,
         public readonly bool $enabled,
         public readonly array $models,
@@ -31,5 +32,14 @@ final class GeneratorItem extends Data
         $this->model = (string) collect($this->models)->random();
 
         return $this->model;
+    }
+
+    public function getCacheKey(): string
+    {
+        return md5(sprintf(
+            "AI:PROVIDER:%s:MODEL:%s",
+            mb_strtoupper($this->name),
+            mb_strtoupper($this->getModel()),
+        ));
     }
 }

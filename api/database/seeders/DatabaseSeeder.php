@@ -13,15 +13,6 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            PieceTypeSeeder::class,
-            PieceStatusSeeder::class,
-            PovSeeder::class,
-            PieceTenseSeeder::class,
-            PieceGenreSeeder::class,
-            PieceToneSeeder::class,
-            PieceThemeSeeder::class,
-            ExtraPieceGenreSeeder::class,
-        ]);
+        //
     }
 }

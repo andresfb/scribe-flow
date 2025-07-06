@@ -24,6 +24,9 @@ final class PieceWithScope implements Scope
             'character',
             'pace',
             'setting',
+            'timeline',
+            'storyline',
+            'style',
         ]);
     }
 }

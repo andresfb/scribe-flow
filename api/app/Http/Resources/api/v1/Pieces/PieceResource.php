@@ -20,18 +20,6 @@ final class PieceResource extends JsonResource
             'id' => $this->slug,
             'attributes' => [
                 'user_id' => $this->user_id,
-                'title' => $this->title ?? '',
-                'type' => $this->type->name ?? '',
-                'status' => $this->status->name ?? '',
-                'pov' => $this->pov->name ?? '',
-                'tense' => $this->tense->name ?? '',
-                'genre' => $this->genre->name ?? '',
-                'sub_genre' => $this->subGenre->name ?? '',
-                'tone' => $this->tone->name ?? '',
-                'theme' => $this->theme->name ?? '',
-                'character' => $this->character->name ?? '',
-                'pace' => $this->pace->name ?? '',
-                'setting' => $this->setting->name ?? '',
                 'piece_type_id' => $this->when(
                     $request->routeIs('pieces.create'),
                     $this->piece_type_id ?? 0
@@ -74,21 +62,55 @@ final class PieceResource extends JsonResource
                 ),
                 'settings_id' => $this->when(
                     $request->routeIs('pieces.create'),
-                    $this->settings_id ?? 0
+                    $this->setting_id ?? 0
                 ),
-                'setting_time_period' => $this->when(
+                'timeline_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->timeline_id ?? 0
+                ),
+                'storyline_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->storyline_id ?? 0
+                ),
+                'style_id' => $this->when(
+                    $request->routeIs('pieces.create'),
+                    $this->style_id ?? 0
+                ),
+                'idea' => $this->when(
                     $request->routeIs('pieces.show', 'pieces.create'),
-                    $this->setting_time_period ?? '',
+                    $this->idea ?? ''
                 ),
-                'synopsis' => $this->when(
-                    $request->routeIs('pieces.show', 'pieces.create'),
-                    $this->synopsis ?? ''
-                ),
+                'title' => $this->title ?? '',
+                'type' => $this->type->name ?? '',
+                'status' => $this->status->name ?? '',
+                'pov' => $this->pov->name ?? '',
+                'pov_description' => $this->pov->description ?? '',
+                'tense' => $this->tense->name ?? '',
+                'tense_description' => $this->tense->description ?? '',
+                'genre' => $this->genre->name ?? '',
+                'genre_description' => $this->genre->description ?? '',
+                'sub_genre' => $this->subGenre->name ?? '',
+                'sub_genre_description' => $this->subGenre->description ?? '',
+                'tone' => $this->tone->name ?? '',
+                'tone_description' => $this->tone->description ?? '',
+                'theme' => $this->theme->name ?? '',
+                'theme_description' => $this->theme->description ?? '',
+                'character' => $this->character->name ?? '',
+                'character_description' => $this->character->description ?? '',
+                'pace' => $this->pace->name ?? '',
+                'pace_description' => $this->pace->description ?? '',
+                'setting' => $this->setting->name ?? '',
+                'setting_description' => $this->setting->description ?? '',
+                'timeline' => $this->timeline->name ?? '',
+                'storyline' => $this->storyline->name ?? '',
+                'storyline_description' => $this->storyline->description ?? '',
+                'style' => $this->style->name ?? '',
+                'style_description' => $this->style->description ?? '',
                 'target_word_count' => $this->target_word_count ?? 0,
                 'current_word_count' => $this->current_word_count ?? 0,
-                'start_date' => $this->start_date->toDateString() ?? '',
-                'target_completion_date' => $this->target_completion_date->toDateString() ?? '',
-                'completion_date' => $this->completion_date->toDateString() ?? '',
+                'start_date' => $this->start_date?->toDateString() ?? '',
+                'target_completion_date' => $this->target_completion_date?->toDateString() ?? '',
+                'completion_date' => $this->completion_date?->toDateString() ?? '',
                 'created_at' => $this->created_at->toDatetimeString() ?? '',
                 'updated_at' => $this->updated_at->toDatetimeString() ?? '',
                 'themes' => $this->whenNull(

@@ -6,9 +6,12 @@ namespace App\Services;
 
 use App\Dtos\Ai\PromptItem;
 use App\Enums\GeneratorStatus;
+use App\Events\ContentGeneratedEvent;
 use App\Models\GeneratorRequest;
 use App\Models\Lists\PieceStatus;
 use App\Models\Lists\PieceType;
+use App\Models\Lists\Pov;
+use App\Models\Lists\Tense;
 use App\Models\Pieces\Piece;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -55,29 +58,31 @@ final class GeneratorContentService
             DB::transaction(function () use ($content, $output, $promptItem): void {
                 $data = $promptItem->pieceItem->toArray();
                 $data['user_id'] = $this->request->user_id;
+                $data['idea'] = $content['content'];
                 $data['piece_status_id'] = PieceStatus::getDefault();
-                $data['synopsis'] = $content['content'];
+                $data['pov_id'] = Pov::weightedRandom()->first()->id ?? null;
+                $data['tense_id'] = Tense::weightedRandom()->first()->id ?? null;
                 $data['target_word_count'] = PieceType::getWordCount($promptItem->pieceItem->piece_type_id);
 
                 if (isset($content['title'])) {
                     $data['title'] = $content['title'];
                 }
 
-                Piece::create($data);
+                $piece = Piece::create($data);
+                $piece->attachTags($this->normalizeTags($content['tags']));
 
                 $this->request->update([
                     'status' => GeneratorStatus::COMPLETED,
-                    'service' => $promptItem->generator->provider,
+                    'service' => $promptItem->generator->name,
                     'model' => $promptItem->generator->getModel(),
                     'prompt' => $promptItem->prompt,
+                    'message' => "{$this->request->type->value} generated successfully.",
                     'response' => $this->encodeResponse($output),
                     'total_tokens' => $output->usage->completionTokens + $output->usage->promptTokens,
                 ]);
             });
 
-            // TODO: add the broadcasting processes
-
-            // broadcast(new ContentGenerated($this->generation))->toOthers();
+            ContentGeneratedEvent::dispatch($this->request->id);
         } catch (Throwable $e) {
             $data = [
                 'status' => GeneratorStatus::FAILED,
@@ -88,9 +93,10 @@ final class GeneratorContentService
                 $response = $this->encodeResponse($output);
                 $response['error'] = (array) $e;
 
+                $data['message'] = "Error generating request: {$e->getMessage()}";
                 $data['response'] = $response;
                 $data['service'] = $promptItem instanceof PromptItem
-                    ? $promptItem->generator->provider
+                    ? $promptItem->generator->name
                     : 'unknown';
                 $data['model'] = $promptItem instanceof PromptItem
                     ? $promptItem->generator->getModel()
@@ -100,8 +106,7 @@ final class GeneratorContentService
 
             $this->request->update($data);
 
-            // broadcast(new ContentFailed($this->generation))->toOthers();
-
+            ContentGeneratedEvent::dispatch($this->request->id);
             Log::error("Error generating request id: $requestId: {$e->getMessage()}");
             Log::debug($e->getTraceAsString());
         }
@@ -126,13 +131,21 @@ final class GeneratorContentService
             'meta' => (array) $response->meta,
         ];
 
-        $aiResponse = json_encode($responseData, JSON_THROW_ON_ERROR);
+        return [
+            'ai_response' => json_encode($responseData, JSON_THROW_ON_ERROR)
+        ];
+    }
 
-        Log::info(
-            "AI Generated this response: $aiResponse from this request: "
-            .print_r($this->request->toArray(), true)
-        );
+    private function normalizeTags(array $tags): array
+    {
+        $tags[] = 'AI Generated';
 
-        return ['ai_response' => $aiResponse];
+        return collect($tags)->map(function (string $tag) {
+            return str($tag)
+                ->trim()
+                ->title()
+                ->value();
+        })
+            ->toArray();
     }
 }
