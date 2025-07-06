@@ -11,7 +11,7 @@ Scribe Flow is a comprehensive writing project management system built with Lara
 ### Core Models
 - **Piece**: Central writing project model with comprehensive metadata (genre, tone, theme, POV, tense, status, word counts, dates)
 - **User**: Standard Laravel user model with Fortify authentication
-- **Lists**: Lookup tables for piece attributes (PieceGenre, PieceTone, PieceTheme, Pov, PieceTense, PieceStatus, PieceType)
+- **Lists**: Lookup tables for piece attributes (PieceGenre, PieceTone, PieceTheme, Pov, PieceTense, PieceStatus, PieceType, Setting, Timeline, Storyline, Style)
 - **GeneratorRequest**: Tracks AI generation requests and responses
 - **Tag**: Spatie tags integration for flexible categorization
 
@@ -101,14 +101,16 @@ Configure providers in `config/generators.php` and respective environment variab
 Business logic is organized in Action classes:
 - `PieceCreateAction`: Creates new pieces
 - `PieceUpdateAction`: Updates existing pieces
-- `PieceGenerateAction`: Handles AI content generation
+- `PieceGenerateFullAction`: Handles full AI content generation
+- `PieceGeneratePartialAction`: Handles partial AI content generation with smart defaults
+- List Actions: `StorylinesListAction`, `StylesListAction`, `TimelinesListAction`, `SettingsListAction`
 - Follow single responsibility principle
 
 ### DTOs (Data Transfer Objects)
 - `PieceCreateItem`: Piece creation data
-- `PieceStoreItem`: Piece storage data
+- `PieceItem`: Unified piece data (renamed from PieceStoreItem)
 - `PromptItem`: AI prompt configuration
-- `GeneratorItem`: AI generator configuration
+- `GeneratorItem`: AI generator configuration with caching support
 
 ### Model Relationships
 - Pieces belong to User and multiple List models
@@ -128,6 +130,12 @@ Business logic is organized in Action classes:
 - Jobs for AI content generation (GenerateContentJob)
 - Redis-based queues for production
 
+## Broadcasting & Real-time Features
+- Laravel Echo for real-time communication
+- WebSocket support with Reverb
+- `ContentGeneratedEvent` for AI generation notifications
+- Private channels for user-specific updates
+
 ## Code Style & Standards
 - Laravel Pint for code formatting
 - PHPStan level 9 for static analysis
@@ -135,17 +143,29 @@ Business logic is organized in Action classes:
 - Strict type declarations
 - Comprehensive docblocks for models
 
+## API Testing
+The project uses Bruno for API testing and documentation:
+- Collections organized by feature in `.bruno/ScribeFlow/`
+- CRUD operations for pieces in `Auth Access/Pieces/CRUD/`
+- List endpoints in `Auth Access/Pieces/Lists/`
+- Generation endpoints in `Auth Access/Pieces/Generate/`
+- All requests inherit authentication from parent folders
+
 ## Environment Configuration
 Key environment variables:
 - AI provider configurations (OPENAI_*, ANTHROPIC_*, OLLAMA_*, OPEN_ROUTER_*)
 - Database settings
 - Queue configuration
 - Horizon settings
+- Broadcasting configuration (REVERB_*, PUSHER_*)
 
 ## File Structure Notes
 - Models organized by domain (Pieces/, Lists/)
 - Services in app/Services/
 - DTOs in app/Dtos/
-- Actions in app/Actions/
+- Actions in app/Actions/ (organized by domain: Pieces/, Listings/)
 - API controllers in app/Http/Controllers/api/v1/
 - Custom scopes in app/Models/*/Scopes/
+- Traits for shared functionality in app/Traits/
+- Events in app/Events/ for broadcasting
+- Broadcasting channels in routes/channels.php
