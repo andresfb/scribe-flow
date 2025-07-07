@@ -29,15 +29,20 @@ final class SanctumTokenController extends Controller
             ]);
         }
 
+        $expiresAt = now()->addSeconds(
+            Config::integer('session.lifetime')
+        );
+
         $token = $user->createToken(
             name: $request->device_name,
-            expiresAt: now()->addSeconds(
-                Config::integer('session.lifetime')
-            )
+            expiresAt: $expiresAt,
         );
 
         return [
+            'name' => $user->name,
+            'email' => $user->email,
             'token' => $token->plainTextToken,
+            'expires' => $expiresAt->toDateTimeString(),
         ];
     }
 }
