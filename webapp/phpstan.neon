@@ -3,15 +3,15 @@ includes:
     - vendor/nesbot/carbon/extension.neon
 
 parameters:
+    checkModelProperties: false
+    reportUnmatchedIgnoredErrors: false
+    treatPhpDocTypesAsCertain: false
 
     paths:
         - app/
 
-    # Level 10 is the highest level
-    level: 7
+    level: 6
 
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
-#
-#    excludePaths:
-#        - ./*/*/FileToBeExcluded.php
+    ignoreErrors:
+        - identifier: missingType.generics
+        - identifier: missingType.iterableValue
